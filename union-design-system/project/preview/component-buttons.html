@@ -1,0 +1,31 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="_preview.css">
+<style>
+  .btn { display:inline-flex; align-items:center; gap:8px; height:44px; padding:0 20px; border-radius: var(--u-r-2); font: var(--u-sans); font-weight:500; font-size:14px; letter-spacing:-0.005em; border:1px solid transparent; cursor:pointer; transition: all 120ms var(--u-ease) }
+  .btn-primary { background: var(--u-ink); color: var(--u-bg) }
+  .btn-primary:hover { background: var(--u-ember) }
+  .btn-secondary { background: var(--u-surface-2); color: var(--u-ink); border-color: var(--u-rule-2) }
+  .btn-secondary:hover { background: var(--u-surface); border-color: var(--u-ink) }
+  .btn-ghost { background: transparent; color: var(--u-ink) }
+  .btn-ghost:hover { background: var(--u-surface) }
+  .btn-accent { background: var(--u-ember); color: var(--u-ember-ink) }
+  .btn-accent:hover { background: #c93c14 }
+  .btn-sm { height:32px; padding:0 12px; font-size:13px; border-radius: var(--u-r-1) }
+  .btn-lg { height:52px; padding:0 26px; font-size:15px; border-radius: var(--u-r-2) }
+  .arrow { width:16px; height:16px; display:inline-block; }
+</style></head>
+<body><div class="card">
+  <div class="eyebrow">Buttons — ink-first, ember reserved</div>
+  <div style="display:flex; gap:12px; margin-top:14px; align-items:center; flex-wrap:wrap">
+    <button class="btn btn-primary">Эхлэх<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    <button class="btn btn-secondary">Дэлгэрэнгүй</button>
+    <button class="btn btn-ghost">Хүчингүй</button>
+    <button class="btn btn-accent">Гишүүн болох</button>
+  </div>
+  <div style="display:flex; gap:12px; margin-top:14px; align-items:center; flex-wrap:wrap">
+    <button class="btn btn-primary btn-sm">Small</button>
+    <button class="btn btn-primary">Default</button>
+    <button class="btn btn-primary btn-lg">Large hero</button>
+    <button class="btn btn-secondary" disabled style="opacity:.4; cursor:not-allowed">Disabled</button>
+  </div>
+  <div class="code" style="margin-top:14px">Hover on primary → ember. Press → translateY(0) + inset shadow. Focus → 3px ember 35% ring.</div>
+</div></body></html>

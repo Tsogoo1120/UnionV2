@@ -1,101 +1,66 @@
-import Image from "next/image";
+import { redirect } from "next/navigation";
+import { MarketingHome } from "@/components/marketing/MarketingHome";
+import { getEffectiveStatus } from "@/lib/auth/getEffectiveStatus";
+import { pathForEffectiveStatus } from "@/lib/auth/redirectByEffectiveStatus";
+import { getCurrentProfile } from "@/lib/queries/profile";
+import { listAvailableSlots } from "@/lib/queries/coaching";
+import { getServicePreviews } from "@/lib/queries/service-previews";
+import { getIntroVideoSettings } from "@/lib/queries/site-settings";
+import { presignDownload } from "@/lib/r2/presign";
+import { createClient } from "@/lib/supabase/server";
 
-export default function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: { next?: string | string[]; landing?: string | string[] };
+}) {
+  const supabase = await createClient();
+  const profile = await getCurrentProfile(supabase);
+  const landingParam = searchParams.landing;
+  const showLanding =
+    landingParam === "1" ||
+    landingParam === "true" ||
+    (Array.isArray(landingParam) &&
+      (landingParam[0] === "1" || landingParam[0] === "true"));
+
+  if (profile && !showLanding) {
+    redirect(pathForEffectiveStatus(getEffectiveStatus(profile)));
+  }
+
+  const raw = searchParams.next;
+  const authReturnTo =
+    typeof raw === "string" && raw.startsWith("/") && !raw.startsWith("//")
+      ? raw
+      : undefined;
+
+  const [coachingSlots, introSettings, servicePreviews] = await Promise.all([
+    listAvailableSlots(supabase, { limit: 4 }),
+    getIntroVideoSettings(supabase),
+    getServicePreviews(supabase),
+  ]);
+
+  let introVideoUrl: string | null = null;
+  if (introSettings.introVideoR2Key) {
+    try {
+      introVideoUrl = await presignDownload({ key: introSettings.introVideoR2Key });
+    } catch {
+      introVideoUrl = null;
+    }
+  }
+
+  const introPosterUrl = introSettings.introPosterPath
+    ? supabase.storage.from("media-thumbnails").getPublicUrl(introSettings.introPosterPath).data
+        .publicUrl
+    : null;
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+    <MarketingHome
+      authReturnTo={authReturnTo}
+      coachingSlots={coachingSlots}
+      introVideoUrl={introVideoUrl}
+      introPosterUrl={introPosterUrl}
+      servicePreviews={servicePreviews}
+      signedIn={Boolean(profile)}
+    />
   );
 }

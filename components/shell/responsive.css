@@ -1,0 +1,17 @@
+/* Mobile shell primitives — ≤640px aligns with Tailwind `sm` upper bound */
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (max-width: 640px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  button,
+  [role="button"],
+  input[type="submit"],
+  input[type="button"] {
+    -webkit-tap-highlight-color: transparent;
+  }
+}

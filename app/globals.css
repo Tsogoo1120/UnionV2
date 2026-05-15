@@ -2,22 +2,212 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500&display=swap");
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --u-bg: #f2eee3;
+  --u-surface: #fbf9f3;
+  --u-surface-2: #ffffff;
+  --u-ink: #2a2520;
+  --u-ink-2: #5c564d;
+  --u-ink-3: #8e887e;
+  --u-ink-4: #bab3a5;
+  --u-rule: #e0d9c8;
+  --u-rule-2: #d2c9b2;
+
+  --u-ember: #e84a1f;
+  --u-ember-ink: #fbf9f3;
+  --u-ember-soft: #fbe2d5;
+
+  --u-indigo: #1f2b4c;
+  --u-indigo-ink: #f2eee3;
+  --u-indigo-soft: #dce0ea;
+
+  --u-success: #2b6b3d;
+  --u-success-soft: #dce8dd;
+  --u-warn: #b97a12;
+  --u-warn-soft: #f3e4c0;
+  --u-danger: #b8341a;
+  --u-danger-soft: #f1d8d2;
+
+  --u-dark: #262220;
+  --u-dark-2: #312c26;
+  --u-dark-ink: #f2eee3;
+  --u-dark-ink-2: #a89f8e;
+  --u-dark-rule: #3a352e;
+
+  --u-display: "Geist", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --u-sans: "Geist", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --u-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --u-display-xl: 700 96px/0.95 var(--u-display);
+  --u-display-l: 700 72px/0.98 var(--u-display);
+  --u-display-m: 700 56px/1.02 var(--u-display);
+  --u-display-s: 700 40px/1.06 var(--u-display);
+  --u-display-xs: 700 28px/1.18 var(--u-display);
+  --u-display-italic: 300 56px/1.04 var(--u-display);
+
+  --u-h1: 600 40px/1.15 var(--u-sans);
+  --u-h2: 600 28px/1.2 var(--u-sans);
+  --u-h3: 600 20px/1.3 var(--u-sans);
+  --u-h4: 600 16px/1.35 var(--u-sans);
+
+  --u-body-l: 400 18px/1.55 var(--u-sans);
+  --u-body: 400 15px/1.55 var(--u-sans);
+  --u-body-s: 400 13px/1.5 var(--u-sans);
+
+  --u-label: 500 12px/1.2 var(--u-sans);
+
+  --u-r-0: 0;
+  --u-r-1: 4px;
+  --u-r-2: 8px;
+  --u-r-3: 12px;
+  --u-r-4: 20px;
+  --u-r-pill: 999px;
+
+  --u-shadow-0: 0 0 0 1px var(--u-rule);
+  --u-shadow-1: 0 1px 0 0 var(--u-rule-2), 0 1px 2px rgba(20, 17, 13, 0.04);
+  --u-shadow-2: 0 2px 6px rgba(20, 17, 13, 0.06), 0 1px 0 0 var(--u-rule);
+  --u-shadow-3: 0 12px 28px -12px rgba(20, 17, 13, 0.18), 0 1px 0 0 var(--u-rule-2);
+  --u-shadow-press: inset 0 1px 0 0 rgba(20, 17, 13, 0.08);
+
+  --u-s-1: 4px;
+  --u-s-2: 8px;
+  --u-s-3: 12px;
+  --u-s-4: 16px;
+  --u-s-5: 20px;
+  --u-s-6: 24px;
+  --u-s-8: 32px;
+  --u-s-10: 40px;
+  --u-s-12: 48px;
+  --u-s-16: 64px;
+  --u-s-20: 80px;
+  --u-s-24: 96px;
+
+  --u-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --u-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --u-dur-1: 120ms;
+  --u-dur-2: 200ms;
+  --u-dur-3: 320ms;
+
+  --u-container: 1240px;
+  --u-gutter: 24px;
+
+  --u-border-strong: var(--u-rule-2);
+  --u-radius-20: 20px;
+
+  --u-focus: 0 0 0 3px rgba(232, 74, 31, 0.35);
+  --u-mute: #c9c2b4;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  background: var(--u-bg);
+  color: var(--u-ink);
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  font: var(--u-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1 {
+  font: var(--u-display-l);
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+h2 {
+  font: var(--u-display-m);
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+h3 {
+  font: var(--u-display-s);
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+h4 {
+  font: var(--u-h3);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+h5 {
+  font: var(--u-h4);
+  margin: 0;
+}
+
+p {
+  font: var(--u-body);
+  color: var(--u-ink-2);
+  margin: 0 0 1em;
+  text-wrap: pretty;
+}
+small {
+  font: var(--u-body-s);
+  color: var(--u-ink-3);
+}
+
+a {
+  color: var(--u-ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+a:hover {
+  color: var(--u-ember);
+}
+
+code,
+pre {
+  font: var(--u-mono);
+}
+code {
+  background: var(--u-surface);
+  padding: 2px 6px;
+  border-radius: var(--u-r-1);
+  border: 1px solid var(--u-rule);
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--u-rule);
+  margin: var(--u-s-8) 0;
+}
+
+::selection {
+  background: var(--u-ink);
+  color: var(--u-bg);
+}
+
+*:focus-visible {
+  outline: none;
+  box-shadow: var(--u-focus);
+}
+
+.u-eyebrow {
+  font: var(--u-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--u-ink-3);
+}
+.u-serif {
+  font-family: var(--u-display);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.u-serif-italic {
+  font-family: var(--u-display);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+.u-mute {
+  color: var(--u-ink-3);
+}
+.u-rule {
+  border-top: 1px solid var(--u-rule);
 }
 
 @layer utilities {

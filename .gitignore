@@ -31,6 +31,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# dev sanity-check pages (deleted at integration phase, see plan §19.5)
+/app/dev/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

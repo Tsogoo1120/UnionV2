@@ -1,0 +1,29 @@
+/* preview card base — used by all /preview/*.html cards */
+@import url("../colors_and_type.css");
+
+html, body {
+  margin: 0;
+  background: var(--u-bg);
+  color: var(--u-ink);
+  font: var(--u-body);
+  -webkit-font-smoothing: antialiased;
+}
+.card {
+  padding: 24px;
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+.row { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.col { display: flex; flex-direction: column; gap: 16px; }
+
+.eyebrow {
+  font: var(--u-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--u-ink-3);
+}
+.code {
+  font: var(--u-mono);
+  color: var(--u-ink-3);
+  font-size: 11px;
+}
