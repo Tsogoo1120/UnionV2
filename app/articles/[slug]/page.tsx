@@ -17,7 +17,16 @@ export default async function ArticlePage({
     redirect("/status/inactive");
   }
 
+  const getUrl = (p: string | null | undefined) =>
+    p ? supabase.storage.from("media-thumbnails").getPublicUrl(p).data.publicUrl : null;
+
   return (
-    <ArticleReader title={article.title} bodyMd={article.body} readingMinutes={article.reading_minutes} />
+    <ArticleReader
+      title={article.title}
+      bodyMd={article.body}
+      readingMinutes={article.reading_minutes}
+      heroImageUrl={getUrl(article.hero_image_path)}
+      descriptionImageUrl={getUrl(article.description_image_path)}
+    />
   );
 }

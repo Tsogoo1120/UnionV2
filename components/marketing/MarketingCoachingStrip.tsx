@@ -35,15 +35,15 @@ export function MarketingCoachingStrip({ slots, signedIn = false }: Props) {
       <div className="mx-auto max-w-container px-[var(--u-gutter)] py-[var(--u-s-12)] sm:py-[var(--u-s-20)]">
         <div className="mb-[var(--u-s-10)] grid items-end gap-[var(--u-s-8)] md:grid-cols-2 md:gap-[var(--u-s-16)]">
           <div>
-            <div className="u-eyebrow text-[var(--u-dark-ink-2)]">1:1 коучинг</div>
+            <div className="u-eyebrow text-[var(--u-dark-ink-2)]">1:1 online meeting</div>
             <h2 className="mt-3 max-w-[16ch] text-balance font-[family-name:var(--u-display)] text-[clamp(2.25rem,5vw,4rem)] font-bold leading-[1.02] tracking-[-0.02em]">
-              Нээлттэй цаг.
+              Уулзалт хийх.
               <br />
-              <span className="font-light text-[var(--u-dark-ink-2)]">Сонгож захиал.</span>
+              <span className="font-light text-[var(--u-dark-ink-2)]">Цагаа сонгоорой.</span>
             </h2>
           </div>
           <p className="m-0 max-w-[26ch] font-[var(--u-body-l)] text-[var(--u-dark-ink-2)] text-pretty sm:max-w-[420px]">
-            1 цагийн ганцаарчилсан уулзалт. Зөвлөгөө, оношилгоо, эсвэл зүгээр л сонсох — таны сонголтоор.
+            1 цагийг хоёр хуваана. Эхний хагаст нь тарот хөзрөөр 3 хүссэн асуултанд нь хариулна.Дараагийн хагаст нөхцөл байдлын талаар дэлгэрэнгүй ярилцаж, зөвлөгөө өгнө.
           </p>
         </div>
 

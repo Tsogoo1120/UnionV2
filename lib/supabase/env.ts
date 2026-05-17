@@ -25,3 +25,9 @@ export const supabaseAnonKey = (): string => {
   }
   return value;
 };
+
+/** Returns the public URL for a file in the media-thumbnails storage bucket. */
+export function mediaThumbnailPublicUrl(path: string | null | undefined): string | null {
+  if (!path) return null;
+  return `${supabaseUrl()}/storage/v1/object/public/media-thumbnails/${path}`;
+}

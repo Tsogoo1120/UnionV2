@@ -18,16 +18,20 @@ export default async function ReadingLessonPage({
   }
 
   const streamUrl = await getLessonStreamUrl(supabase, lesson.id, "collective");
-  const posterUrl =
-    "cover_image_path" in lesson && lesson.cover_image_path
-      ? supabase.storage.from("media-thumbnails").getPublicUrl(lesson.cover_image_path).data.publicUrl
-      : null;
+  const getUrl = (p: string | null | undefined) =>
+    p ? supabase.storage.from("media-thumbnails").getPublicUrl(p).data.publicUrl : null;
+
+  const cover = "cover_image_path" in lesson ? lesson.cover_image_path : null;
+  const hero = "hero_image_path" in lesson ? lesson.hero_image_path : null;
+  const descImg = "description_image_path" in lesson ? lesson.description_image_path : null;
 
   return (
     <LessonPlayer
       title={lesson.title}
       streamUrl={streamUrl}
-      posterUrl={posterUrl}
+      posterUrl={getUrl(cover)}
+      heroImageUrl={getUrl(hero)}
+      descriptionImageUrl={getUrl(descImg)}
       descriptionMd={lesson.description}
     />
   );

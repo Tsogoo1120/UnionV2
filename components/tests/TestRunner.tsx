@@ -13,6 +13,8 @@ export type TestRunnerProps = {
   slug: string;
   title: string;
   description: string | null;
+  heroImageUrl?: string | null;
+  descriptionImageUrl?: string | null;
   questions: TestQuestion[];
 };
 
@@ -21,6 +23,8 @@ export function TestRunner({
   slug,
   title,
   description,
+  heroImageUrl,
+  descriptionImageUrl,
   questions,
 }: TestRunnerProps) {
   const router = useRouter();
@@ -89,6 +93,23 @@ export function TestRunner({
         boxSizing: "border-box",
       }}
     >
+      {heroImageUrl ? (
+        <div
+          style={{
+            width: "100%",
+            borderRadius: "var(--u-r-3)",
+            overflow: "hidden",
+            marginBottom: 20,
+            aspectRatio: "16 / 7",
+          }}
+        >
+          <img
+            src={heroImageUrl}
+            alt=""
+            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+          />
+        </div>
+      ) : null}
       <h1
         style={{
           fontFamily: "var(--u-display)",
@@ -101,7 +122,16 @@ export function TestRunner({
         {title}
       </h1>
       {description ? (
-        <p style={{ font: "var(--u-body)", color: "var(--u-ink-2)", margin: "0 0 20px" }}>{description}</p>
+        <p style={{ font: "var(--u-body)", color: "var(--u-ink-2)", margin: "0 0 12px" }}>{description}</p>
+      ) : null}
+      {descriptionImageUrl ? (
+        <div style={{ marginBottom: 20, borderRadius: "var(--u-r-3)", overflow: "hidden" }}>
+          <img
+            src={descriptionImageUrl}
+            alt=""
+            style={{ width: "100%", display: "block" }}
+          />
+        </div>
       ) : null}
 
       <div

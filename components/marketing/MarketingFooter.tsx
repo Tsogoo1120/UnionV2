@@ -3,8 +3,14 @@ import { MarketingReveal } from "./MarketingReveal";
 
 const cols = [
   { h: "Үйлчилгээ", l: ["Видео хичээл", "Хамтын уншилт", "Нийгэмлэг", "Тест", "Нийтлэл"] },
-  { h: "Юнион", l: ["Aboout me", "Холбоо барих"] },
-  { h: "Холбоос", l: ["Instagram", "Facebook", "YouTube"] },
+  {
+    h: "Холбоос",
+    l: [
+      { label: "Instagram", href: "https://www.instagram.com/tsogoo_1120/" },
+      { label: "Facebook", href: "https://www.facebook.com/altan.tsog.373688/" },
+      { label: "YouTube", href: "https://www.youtube.com/@tsogoo_1120" },
+    ],
+  },
 ];
 
 const footerLinkClass =
@@ -44,15 +50,15 @@ export function MarketingFooter() {
           {cols.map((c) => (
             <div key={c.h}>
               <div className="u-eyebrow mb-4 text-[var(--u-dark-ink-2)]">{c.h}</div>
-              <ul className="m-0 flex list-none flex-col gap-2.5 p-0">
-                {c.l.map((x) => (
-                  <li key={x}>
-                    <Link href="/dashboard" className={footerLinkClass}>
-                      {x}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+<ul className="m-0 flex list-none flex-col gap-2.5 p-0">
+  {c.l.map((x) => (
+    <li key={typeof x === "string" ? x : x.label}>
+      <Link href={typeof x === "string" ? "/dashboard" : x.href} className={footerLinkClass}>
+        {typeof x === "string" ? x : x.label}
+      </Link>
+    </li>
+  ))}
+</ul>
             </div>
           ))}
         </div>

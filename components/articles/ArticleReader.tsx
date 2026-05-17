@@ -7,9 +7,11 @@ export type ArticleReaderProps = {
   title: string;
   bodyMd: string;
   readingMinutes: number | null;
+  heroImageUrl?: string | null;
+  descriptionImageUrl?: string | null;
 };
 
-export function ArticleReader({ title, bodyMd, readingMinutes }: ArticleReaderProps) {
+export function ArticleReader({ title, bodyMd, readingMinutes, heroImageUrl, descriptionImageUrl }: ArticleReaderProps) {
   return (
     <article
       style={{
@@ -20,6 +22,23 @@ export function ArticleReader({ title, bodyMd, readingMinutes }: ArticleReaderPr
         boxSizing: "border-box",
       }}
     >
+      {heroImageUrl ? (
+        <div
+          style={{
+            width: "100%",
+            borderRadius: "var(--u-r-3)",
+            overflow: "hidden",
+            marginBottom: 28,
+            aspectRatio: "21 / 9",
+          }}
+        >
+          <img
+            src={heroImageUrl}
+            alt=""
+            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+          />
+        </div>
+      ) : null}
       <header style={{ marginBottom: 28 }}>
         <h1
           style={{
@@ -50,6 +69,15 @@ export function ArticleReader({ title, bodyMd, readingMinutes }: ArticleReaderPr
           </span>
         ) : null}
       </header>
+      {descriptionImageUrl ? (
+        <div style={{ marginBottom: 28, borderRadius: "var(--u-r-3)", overflow: "hidden" }}>
+          <img
+            src={descriptionImageUrl}
+            alt=""
+            style={{ width: "100%", display: "block" }}
+          />
+        </div>
+      ) : null}
       <div
         className="u-prose u-article-body"
         style={{

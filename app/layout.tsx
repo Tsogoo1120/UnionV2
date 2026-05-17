@@ -5,9 +5,9 @@ import "../components/shell/responsive.css";
 import { ShellProviders } from "@/components/shell/ShellProviders";
 
 export const metadata: Metadata = {
-  title: "Union — Дотоод гэрэл, гадаад үйл",
+  title: "Union ",
   description:
-    "Видео хичээл, хамтын уншилт, сэтгэл судлалын тест, эссэ, нийгэмлэг — Union.",
+    "video lesson, collective tarot tsogoo.site tsogoo_1120",
   icons: { icon: "/union-monogram.svg" },
 };
 

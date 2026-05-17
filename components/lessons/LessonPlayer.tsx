@@ -8,6 +8,8 @@ export type LessonPlayerProps = {
   title: string;
   streamUrl: string;
   posterUrl: string | null;
+  heroImageUrl?: string | null;
+  descriptionImageUrl?: string | null;
   descriptionMd: string | null;
 };
 
@@ -15,6 +17,8 @@ export function LessonPlayer({
   title,
   streamUrl,
   posterUrl,
+  heroImageUrl,
+  descriptionImageUrl,
   descriptionMd,
 }: LessonPlayerProps) {
   return (
@@ -42,6 +46,23 @@ export function LessonPlayer({
       >
         ← Хичээлүүд
       </Link>
+      {heroImageUrl ? (
+        <div
+          style={{
+            width: "100%",
+            borderRadius: "var(--u-r-3)",
+            overflow: "hidden",
+            marginBottom: 20,
+            aspectRatio: "21 / 9",
+          }}
+        >
+          <img
+            src={heroImageUrl}
+            alt=""
+            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+          />
+        </div>
+      ) : null}
       <h1
         style={{
           fontFamily: "var(--u-display)",
@@ -85,6 +106,15 @@ export function LessonPlayer({
           }}
         >
           <ReactMarkdown remarkPlugins={[remarkGfm]}>{descriptionMd}</ReactMarkdown>
+        </div>
+      ) : null}
+      {descriptionImageUrl ? (
+        <div style={{ marginTop: 24, borderRadius: "var(--u-r-3)", overflow: "hidden" }}>
+          <img
+            src={descriptionImageUrl}
+            alt=""
+            style={{ width: "100%", display: "block", borderRadius: "var(--u-r-3)" }}
+          />
         </div>
       ) : null}
     </div>

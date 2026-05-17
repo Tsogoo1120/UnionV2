@@ -18,38 +18,38 @@ type ServiceItem = {
 
 const items: ServiceItem[] = [
   {
-    n: "01",
+    n: "",
     serviceId: "lessons",
-    title: "Видео хичээл",
-    sub: "video lessons",
+    title: "Video lessons",
+    sub: "Видео хичээлүүд",
     body: "Би та бүхэнд Докторуудын судалгааны ажлуудыг өөрийнхөө амьдралд хэрхэн ашиглаж болох талаас маш энгийн үг хэллэг жишээ ашиглаж хичээл бэлдсэн",
   },
   {
-    n: "02",
+    n: "",
     serviceId: "readings",
-    title: "Тарот уншлага",
-    sub: "collective readings",
+    title: "collective readings",
+    sub: "Тарот уншлага",
     body: "7 хоног тутам тарот хөзрөөр ямар энерги төлөвтэй байна бас юун дээр анхаарах хэрэгтэй талаар уншлага хийх болно",
   },
   {
-    n: "03",
+    n: "",
     serviceId: "community",
-    title: "Өөрийгөө илэрхийлэх",
-    sub: "community",
+    title: "community",
+    sub: "өөрийгөө илэрхийлэх",
     body: "Та өөрийнхөө сурсан туршлага мэдлэгээ бусадтай хуваалцах боломжтой",
   },
   {
-    n: "04",
+    n: "",
     serviceId: "tests",
-    title: "Сэтгэл судлалын тест",
-    sub: "psychology tests",
+    title: "psychology tests",
+    sub: "сэтгэл зүйн тестүүд",
     body: "Internet-д нээлттэй байдаг тэстүүдийг хариутай нь хамт орчуулан нийтэлсэн болно",
   },
   {
-    n: "05",
+    n: "",
     serviceId: "articles",
-    title: "Нийтлэлүүд",
-    sub: "essays",
+    title: "articles and essays",
+    sub: "нийтлэл",
     body: "Та бүхэнд өөрийнхөө уншиж судалсанаа тогтмол нийтлэх.",
   },
 ];
@@ -79,7 +79,6 @@ export function MarketingServiceList({ previews }: MarketingServiceListProps = {
       <div className="mx-auto max-w-container px-[var(--u-gutter)] pb-5 pt-[var(--u-s-12)] sm:pt-[var(--u-s-16)]">
         <div className="flex flex-wrap items-baseline justify-between gap-3">
           <div className="u-eyebrow">Үйлчилгээ — 5</div>
-          <div className="font-[var(--u-body-s)] text-[var(--u-ink-3)]">Нэг гишүүнчлэл</div>
         </div>
       </div>
       <div className="mx-auto max-w-container px-[var(--u-gutter)] pb-[var(--u-s-10)]">

@@ -20,15 +20,16 @@ export default async function LessonPage({
   const lesson = lessonRow as VideoLesson;
 
   const streamUrl = await getLessonStreamUrl(supabase, lesson.id, "video");
-  const posterUrl = lesson.thumbnail_path
-    ? supabase.storage.from("media-thumbnails").getPublicUrl(lesson.thumbnail_path).data.publicUrl
-    : null;
+  const getUrl = (p: string | null) =>
+    p ? supabase.storage.from("media-thumbnails").getPublicUrl(p).data.publicUrl : null;
 
   return (
     <LessonPlayer
       title={lesson.title}
       streamUrl={streamUrl}
-      posterUrl={posterUrl}
+      posterUrl={getUrl(lesson.thumbnail_path)}
+      heroImageUrl={getUrl(lesson.hero_image_path)}
+      descriptionImageUrl={getUrl(lesson.description_image_path)}
       descriptionMd={lesson.description}
     />
   );

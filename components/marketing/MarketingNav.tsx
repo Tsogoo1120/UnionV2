@@ -51,10 +51,7 @@ export function MarketingNav({ signInHref, memberHref }: MarketingNavProps) {
         Нийтлэл
       </Link>
       <Link href="#coaching" className={navLinkClass} onClick={() => setMenuOpen(false)}>
-        1:1 коучинг
-      </Link>
-      <Link href="#about" className={navLinkClass} onClick={() => setMenuOpen(false)}>
-        Тухай
+        1vs1 meeting
       </Link>
       <div className="mt-4 flex flex-col gap-2.5 border-t border-[var(--u-rule)] pt-4">
         <Link
@@ -100,10 +97,7 @@ export function MarketingNav({ signInHref, memberHref }: MarketingNavProps) {
               Нийтлэл
             </Link>
             <Link href="#coaching" className="no-underline text-inherit transition-colors duration-[var(--u-dur-2)] hover:text-[var(--u-ink)]">
-              1:1 коучинг
-            </Link>
-            <Link href="#about" className="no-underline text-inherit transition-colors duration-[var(--u-dur-2)] hover:text-[var(--u-ink)]">
-              Тухай
+              1:1 meeting
             </Link>
           </nav>
           <div className="flex items-center gap-3">

@@ -66,6 +66,11 @@ function gradForKey(key: string): string {
   return GRADS[h] ?? GRADS[0];
 }
 
+function thumbUrl(path: string | null | undefined): string | null {
+  if (!path) return null;
+  return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/media-thumbnails/${path}`;
+}
+
 function rowCardGridStyle(isWide: boolean, cols: string): CSSProperties {
   return {
     display: "grid",
@@ -508,6 +513,13 @@ function ContinueRow({
                 padding: 16,
               }}
             >
+              {thumbUrl(it.thumbnail_path) ? (
+                <img
+                  src={thumbUrl(it.thumbnail_path)!}
+                  alt=""
+                  style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                />
+              ) : null}
               <span
                 style={{
                   position: "absolute",
@@ -516,6 +528,7 @@ function ContinueRow({
                   font: "var(--u-mono)",
                   fontSize: 11,
                   color: "var(--u-dark-ink-2)",
+                  zIndex: 1,
                 }}
               >
                 Хичээл {String(i + 1).padStart(2, "0")}
@@ -528,11 +541,13 @@ function ContinueRow({
                   letterSpacing: "-0.015em",
                   color: "var(--u-dark-ink)",
                   lineHeight: 1.05,
+                  zIndex: 1,
+                  textShadow: thumbUrl(it.thumbnail_path) ? "0 1px 4px rgba(0,0,0,0.6)" : undefined,
                 }}
               >
                 {it.title}
               </div>
-              <svg style={{ position: "absolute", right: 14, top: 14 }} width="22" height="22" viewBox="0 0 32 32">
+              <svg style={{ position: "absolute", right: 14, top: 14, zIndex: 1 }} width="22" height="22" viewBox="0 0 32 32">
                 <circle cx="16" cy="16" r="15" fill="none" stroke="#F2EEE3" strokeWidth="1.2" />
                 <path d="M13 11l8 5-8 5z" fill="#F2EEE3" />
               </svg>
@@ -681,6 +696,13 @@ function LessonGridSection({
                 padding: 16,
               }}
             >
+              {thumbUrl(l.thumbnail_path) ? (
+                <img
+                  src={thumbUrl(l.thumbnail_path)!}
+                  alt=""
+                  style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                />
+              ) : null}
               <span
                 style={{
                   position: "absolute",
@@ -689,12 +711,13 @@ function LessonGridSection({
                   font: "var(--u-mono)",
                   fontSize: 11,
                   color: "var(--u-dark-ink-2)",
+                  zIndex: 1,
                 }}
               >
                 Хичээл {String(idx + 1).padStart(2, "0")}
               </span>
               {l.duration_seconds != null ? (
-                <span style={{ position: "absolute", top: 12, right: 14, font: "var(--u-body-s)", color: "var(--u-dark-ink-2)" }}>
+                <span style={{ position: "absolute", top: 12, right: 14, font: "var(--u-body-s)", color: "var(--u-dark-ink-2)", zIndex: 1 }}>
                   {Math.round(l.duration_seconds / 60)} мин
                 </span>
               ) : null}
@@ -706,11 +729,13 @@ function LessonGridSection({
                   letterSpacing: "-0.015em",
                   color: "var(--u-dark-ink)",
                   lineHeight: 1.02,
+                  zIndex: 1,
+                  textShadow: thumbUrl(l.thumbnail_path) ? "0 1px 4px rgba(0,0,0,0.6)" : undefined,
                 }}
               >
                 {l.title}
               </div>
-              <svg style={{ position: "absolute", right: 14, bottom: 14 }} width="28" height="28" viewBox="0 0 32 32">
+              <svg style={{ position: "absolute", right: 14, bottom: 14, zIndex: 1 }} width="28" height="28" viewBox="0 0 32 32">
                 <circle cx="16" cy="16" r="15" fill="none" stroke="#F2EEE3" strokeWidth="1.2" />
                 <path d="M13 11l8 5-8 5z" fill="#F2EEE3" />
               </svg>

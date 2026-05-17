@@ -17,12 +17,17 @@ export default async function TestPage({
     redirect("/status/inactive");
   }
 
+  const getUrl = (p: string | null | undefined) =>
+    p ? supabase.storage.from("media-thumbnails").getPublicUrl(p).data.publicUrl : null;
+
   return (
     <TestRunner
       testId={test.id}
       slug={test.slug}
       title={test.title}
       description={test.description}
+      heroImageUrl={getUrl(test.hero_image_path)}
+      descriptionImageUrl={getUrl(test.description_image_path)}
       questions={test.questions}
     />
   );
