@@ -15,6 +15,7 @@ const schema = z.object({
     .max(80, "Slug хэт урт байна.")
     .regex(/^[a-z0-9-]+$/, "Slug зөвхөн жижиг үсэг, тоо, зураас агуулна."),
   excerpt: z.string().trim().min(1, "Товч тайлбар оруулна уу.").max(500, "Товч тайлбар хэт урт байна."),
+  description: z.string().trim().optional().nullable(),
   body: z.string().trim().min(1, "Агуулга оруулна уу."),
   cover_image_path: z.string().optional().nullable(),
   hero_image_path: z.string().optional().nullable(),
@@ -40,6 +41,7 @@ export async function createArticle(
       title: formData.get("title"),
       slug: formData.get("slug"),
       excerpt: formData.get("excerpt"),
+      description: emptyToNull(formData.get("description")),
       body: formData.get("body"),
       cover_image_path: emptyToNull(formData.get("cover_image_path")),
       hero_image_path: emptyToNull(formData.get("hero_image_path")),
@@ -63,6 +65,7 @@ export async function createArticle(
         slug: data.slug,
         title: data.title,
         excerpt: data.excerpt,
+        description: data.description ?? null,
         body: data.body,
         cover_image_path: data.cover_image_path ?? null,
         hero_image_path: data.hero_image_path ?? null,

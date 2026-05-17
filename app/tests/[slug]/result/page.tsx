@@ -4,6 +4,7 @@ import { formatDate } from "@/lib/format";
 import { requireActive } from "@/lib/auth/requireSession";
 import { getLatestTestResultForSlug } from "@/lib/queries/tests";
 import { createClient } from "@/lib/supabase/server";
+import { BigFiveResult } from "@/components/tests/BigFiveResult";
 
 export default async function TestResultPage({
   params,
@@ -19,9 +20,15 @@ export default async function TestResultPage({
   }
 
   const { test, result } = bundle;
-  const scoreVal = result.score && typeof result.score === "object" && "value" in result.score
-    ? Number((result.score as { value: number }).value)
-    : null;
+  const isBigFive = test.scoring_rules?.type === "big_five";
+  const scoreVal =
+    !isBigFive && result.score && "value" in result.score
+      ? Number(result.score.value)
+      : null;
+  const simpleRanges =
+    !isBigFive && test.scoring_rules && "ranges" in test.scoring_rules
+      ? (test.scoring_rules.ranges ?? [])
+      : [];
 
   return (
     <div style={{ maxWidth: 560, margin: "0 auto", padding: "32px 16px 80px" }}>
@@ -32,50 +39,61 @@ export default async function TestResultPage({
         {formatDate(result.created_at, { withTime: true })}
       </p>
 
-      <section
-        style={{
-          background: "var(--u-surface-2)",
-          border: "1px solid var(--u-rule)",
-          borderRadius: "var(--u-r-3)",
-          padding: 22,
-          marginBottom: 20,
-        }}
-      >
-        <div className="u-eyebrow">Үр дүн</div>
-        <div style={{ font: "var(--u-h2)", marginTop: 8 }}>{result.result_summary ?? "—"}</div>
-        {scoreVal != null && !Number.isNaN(scoreVal) ? (
-          <div style={{ font: "var(--u-body)", color: "var(--u-ink-2)", marginTop: 8 }}>
-            Нийт оноо: <span style={{ fontFamily: "var(--u-mono)", fontWeight: 600 }}>{scoreVal}</span>
-          </div>
-        ) : null}
-      </section>
+      {isBigFive ? (
+        <section style={{ marginBottom: 24 }}>
+          <BigFiveResult test={test} result={result} />
+        </section>
+      ) : (
+        <>
+          <section
+            style={{
+              background: "var(--u-surface-2)",
+              border: "1px solid var(--u-rule)",
+              borderRadius: "var(--u-r-3)",
+              padding: 22,
+              marginBottom: 20,
+            }}
+          >
+            <div className="u-eyebrow">Үр дүн</div>
+            <div style={{ font: "var(--u-h2)", marginTop: 8 }}>{result.result_summary ?? "—"}</div>
+            {scoreVal != null && !Number.isNaN(scoreVal) ? (
+              <div style={{ font: "var(--u-body)", color: "var(--u-ink-2)", marginTop: 8 }}>
+                Нийт оноо:{" "}
+                <span style={{ fontFamily: "var(--u-mono)", fontWeight: 600 }}>{scoreVal}</span>
+              </div>
+            ) : null}
+          </section>
 
-      <section style={{ marginBottom: 24 }}>
-        <div className="u-eyebrow" style={{ marginBottom: 10 }}>
-          Онооны завсар
-        </div>
-        <div style={{ border: "1px solid var(--u-rule)", borderRadius: "var(--u-r-2)", overflow: "hidden" }}>
-          {(test.scoring_rules?.ranges ?? []).map((r, i) => (
-            <div
-              key={`${r.min}-${r.max}-${i}`}
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr 1.4fr",
-                gap: 8,
-                padding: "10px 14px",
-                borderTop: i === 0 ? "none" : "1px solid var(--u-rule)",
-                font: "var(--u-body-s)",
-              }}
-            >
-              <span style={{ fontFamily: "var(--u-mono)" }}>
-                {r.min}–{r.max}
-              </span>
-              <span style={{ color: "var(--u-ink-2)" }}>оноо</span>
-              <span style={{ fontWeight: 500 }}>{r.result}</span>
-            </div>
-          ))}
-        </div>
-      </section>
+          {simpleRanges.length > 0 ? (
+            <section style={{ marginBottom: 24 }}>
+              <div className="u-eyebrow" style={{ marginBottom: 10 }}>
+                Онооны завсар
+              </div>
+              <div style={{ border: "1px solid var(--u-rule)", borderRadius: "var(--u-r-2)", overflow: "hidden" }}>
+                {simpleRanges.map((r, i) => (
+                  <div
+                    key={`${r.min}-${r.max}-${i}`}
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "1fr 1fr 1.4fr",
+                      gap: 8,
+                      padding: "10px 14px",
+                      borderTop: i === 0 ? "none" : "1px solid var(--u-rule)",
+                      font: "var(--u-body-s)",
+                    }}
+                  >
+                    <span style={{ fontFamily: "var(--u-mono)" }}>
+                      {r.min}–{r.max}
+                    </span>
+                    <span style={{ color: "var(--u-ink-2)" }}>оноо</span>
+                    <span style={{ fontWeight: 500 }}>{r.result}</span>
+                  </div>
+                ))}
+              </div>
+            </section>
+          ) : null}
+        </>
+      )}
 
       <Link href="/dashboard" style={{ font: "var(--u-body-s)", color: "var(--u-ember)", fontWeight: 600 }}>
         ← Самбар руу

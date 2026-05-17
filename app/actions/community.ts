@@ -101,6 +101,8 @@ export async function createComment(
     .single();
 
   if (error) return { error: error.message };
+  revalidatePath(`/community/${postId}`);
+  revalidatePath("/community");
   revalidatePath(`/dashboard/community/${postId}`);
   revalidatePath("/dashboard/community");
   return { commentId: comment.id };

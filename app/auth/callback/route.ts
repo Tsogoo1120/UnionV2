@@ -153,6 +153,11 @@ export async function GET(request: Request) {
         const hasPhone =
           typeof profile?.phone === "string" && profile.phone.trim().length > 0;
         if (hasPhone) {
+          // Coaching clients coming from a booking link bypass the subscription
+          // payment flow — coaching is a separate service from subscription.
+          if (safeNext.startsWith("/coaching/")) {
+            return NextResponse.redirect(`${origin}${safeNext}`);
+          }
           return NextResponse.redirect(`${origin}/payment`);
         }
         return response;

@@ -27,6 +27,7 @@ export type ArticleInput = {
   slug: string;
   title: string;
   excerpt?: string | null;
+  description?: string | null;
   body: string;
   cover_image_path?: string | null;
   hero_image_path?: string | null;
@@ -47,6 +48,7 @@ export async function createArticle(
         slug: input.slug,
         title: input.title,
         excerpt: input.excerpt ?? null,
+        description: input.description ?? null,
         body: input.body,
         cover_image_path: input.cover_image_path ?? null,
         author_id: input.author_id ?? adminId,

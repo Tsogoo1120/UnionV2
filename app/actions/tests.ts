@@ -14,7 +14,12 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { canAccessSubscriberContent } from "@/lib/subscription";
 import { sendPsychologyTestPublishedEmail } from "@/lib/email/send";
-import type { TestQuestion, TestScoringRules } from "@/lib/types";
+import type {
+  TestQuestion,
+  TestScoringRules,
+  SimpleTestScoringRules,
+  BigFiveTestScoringRules,
+} from "@/lib/types";
 
 export type PsychologyTestInput = {
   slug: string;
@@ -125,15 +130,15 @@ export async function toggleTestPublished(
 
 // ─── Subscriber: submit a test attempt ──────────────────────────────────────
 
-/**
- * Computes the result for a set of answers using the test's scoring rules.
- * Sum all option values, then map the total into a `result` bucket.
- */
 function scoreAnswers(
   questions: TestQuestion[],
   scoringRules: TestScoringRules,
   answers: Record<string, string>,
-): { total: number; summary: string | null } {
+): { scoreData: Record<string, number>; summary: string | null } {
+  if (scoringRules.type === "big_five") {
+    return scoreBigFive(questions, scoringRules, answers);
+  }
+  const simple = scoringRules as SimpleTestScoringRules;
   let total = 0;
   for (const q of questions) {
     const chosenOptionId = answers[q.id];
@@ -141,10 +146,45 @@ function scoreAnswers(
     const opt = q.options.find((o) => o.id === chosenOptionId);
     if (opt) total += opt.value;
   }
-  const bucket = scoringRules.ranges.find(
-    (r) => total >= r.min && total <= r.max,
-  );
-  return { total, summary: bucket?.result ?? null };
+  const bucket = simple.ranges.find((r) => total >= r.min && total <= r.max);
+  return { scoreData: { value: total }, summary: bucket?.result ?? null };
+}
+
+function scoreBigFive(
+  questions: TestQuestion[],
+  rules: BigFiveTestScoringRules,
+  answers: Record<string, string>,
+): { scoreData: Record<string, number>; summary: string | null } {
+  const questionMap = new Map(questions.map((q) => [q.id, q]));
+  const traitScores: Record<string, number> = {};
+
+  for (const [traitKey, traitDef] of Object.entries(rules.traits)) {
+    let score = traitDef.base;
+    for (const item of traitDef.items) {
+      const q = questionMap.get(item.id);
+      if (!q) continue;
+      const chosenOptionId = answers[item.id];
+      if (!chosenOptionId) continue;
+      const opt = q.options.find((o) => o.id === chosenOptionId);
+      if (!opt) continue;
+      if (item.operation === "add") score += opt.value;
+      else score -= opt.value;
+    }
+    traitScores[traitKey] = score;
+  }
+
+  const summaryParts: string[] = [];
+  for (const traitKey of Object.keys(rules.traits)) {
+    const s = traitScores[traitKey] ?? 0;
+    const key = s >= 20 ? `high${traitKey}` : `low${traitKey}`;
+    const text = rules.resultSummaryTemplate[key];
+    if (text) summaryParts.push(text);
+  }
+
+  return {
+    scoreData: traitScores,
+    summary: summaryParts.length > 0 ? summaryParts.join(" ") : null,
+  };
 }
 
 export async function submitTestResult(
@@ -176,7 +216,7 @@ export async function submitTestResult(
 
     if (!test || !test.is_published) return { error: "Test not found." };
 
-    const { total, summary } = scoreAnswers(
+    const { scoreData, summary } = scoreAnswers(
       test.questions as TestQuestion[],
       test.scoring_rules as TestScoringRules,
       answers,
@@ -189,7 +229,7 @@ export async function submitTestResult(
         test_id: testId,
         answers,
         result_summary: summary,
-        score: { value: total },
+        score: scoreData,
       })
       .select("id")
       .single();

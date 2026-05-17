@@ -72,6 +72,7 @@ export default async function AdminDashboardPage({
     tabParam === "tests" ||
     tabParam === "community" ||
     tabParam === "users" ||
+    tabParam === "email" ||
     tabParam === "settings" ||
     tabParam === "overview"
       ? tabParam

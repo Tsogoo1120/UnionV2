@@ -19,6 +19,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import {
   sendPaymentApprovedEmail,
   sendPaymentDeniedEmail,
+  sendBroadcastEmail,
 } from "@/lib/email/send";
 import type { UserRole } from "@/lib/types";
 import { SUBSCRIPTION_DURATION_DAYS } from "@/lib/constants";
@@ -187,6 +188,23 @@ export async function denyPayment(
     return {};
   } catch (err) {
     return { error: err instanceof Error ? err.message : "Unexpected error." };
+  }
+}
+
+// ─── broadcastEmail ─────────────────────────────────────────────────────────
+
+export async function broadcastEmail(
+  subject: string,
+  body: string,
+): Promise<{ ok: true; sent: number } | { ok: false; error: string }> {
+  try {
+    await verifyAdmin();
+    if (!subject.trim()) return { ok: false, error: "Subject required." };
+    if (!body.trim()) return { ok: false, error: "Body required." };
+    const { sent } = await sendBroadcastEmail({ subject: subject.trim(), body: body.trim() });
+    return { ok: true, sent };
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : "Unexpected error." };
   }
 }
 

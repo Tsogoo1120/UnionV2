@@ -2,11 +2,24 @@ import { redirect } from "next/navigation";
 import { OnboardingForm } from "@/components/auth/OnboardingForm";
 import { requireSession } from "@/lib/auth/requireSession";
 
-export default async function OnboardingPage() {
+export default async function OnboardingPage({
+  searchParams,
+}: {
+  searchParams: { next?: string };
+}) {
   const profile = await requireSession();
 
-  // Already onboarded — skip straight to the payment step.
+  // Validate next param — only allow same-origin paths.
+  const rawNext = searchParams.next ?? "";
+  const safeNext =
+    rawNext.startsWith("/") && !rawNext.startsWith("//") ? rawNext : "";
+
+  // Already onboarded — send them on their way.
   if (profile.phone && profile.phone.trim().length > 0) {
+    // Coaching clients bypass the subscription payment flow.
+    if (safeNext.startsWith("/coaching/")) {
+      redirect(safeNext);
+    }
     redirect("/payment");
   }
 
@@ -50,6 +63,7 @@ export default async function OnboardingPage() {
           <OnboardingForm
             defaultFullName={profile.full_name}
             defaultPhone={profile.phone}
+            redirectTo={safeNext || undefined}
           />
         </div>
       </div>
