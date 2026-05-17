@@ -5,6 +5,11 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback";
 
+function fmtDate(iso: string) {
+  const d = new Date(iso);
+  return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, "0")}.${String(d.getDate()).padStart(2, "0")}`;
+}
+
 export type CommunityFeedPost = {
   id: string;
   title: string;
@@ -58,7 +63,7 @@ export function CommunityFeed({ posts }: { posts: CommunityFeedPost[] }) {
             <div style={{ display: "flex", justifyContent: "space-between", gap: 12, marginBottom: 8 }}>
               <span style={{ font: "var(--u-body-s)", color: "var(--u-ink-3)" }}>{p.authorLabel}</span>
               <span style={{ font: "var(--u-mono)", fontSize: 11, color: "var(--u-ink-4)" }}>
-                {new Date(p.created_at).toLocaleDateString("mn-MN")}
+                {fmtDate(p.created_at)}
               </span>
             </div>
             <h2 style={{ font: "var(--u-h3)", margin: "0 0 10px", color: "var(--u-ink)" }}>{p.title}</h2>

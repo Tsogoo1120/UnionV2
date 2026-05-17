@@ -13,5 +13,6 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     "/(dashboard|payment|transactions|admin|lessons|readings|articles|tests|community|status|dev)(/.*)?",
+    "/coaching/book(/.*)?"
   ],
 };

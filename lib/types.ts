@@ -104,6 +104,7 @@ export interface Article {
   slug: string;
   title: string;
   excerpt: string | null;
+  description: string | null;
   body: string;
   cover_image_path: string | null;
   hero_image_path: string | null;
@@ -136,11 +137,36 @@ export interface TestQuestion {
   id: string;
   text: string;
   options: { id: string; text: string; value: number }[];
+  meta?: { trait?: string; reverse?: boolean };
 }
 
-export interface TestScoringRules {
+export interface SimpleTestScoringRules {
+  type?: "simple";
   ranges: { min: number; max: number; result: string }[];
 }
+
+export interface BigFiveTraitDef {
+  name: string;
+  base: number;
+  items: { id: string; operation: "add" | "subtract" }[];
+}
+
+export interface BigFiveTraitInfo {
+  title: string;
+  shortDescription: string;
+  highScoreMeaning: string;
+  lowScoreMeaning: string;
+}
+
+export interface BigFiveTestScoringRules {
+  type: "big_five";
+  traits: Record<string, BigFiveTraitDef>;
+  traitInfo: Record<string, BigFiveTraitInfo>;
+  resultLevels: { min: number; max: number; level: string; meaning: string }[];
+  resultSummaryTemplate: Record<string, string>;
+}
+
+export type TestScoringRules = SimpleTestScoringRules | BigFiveTestScoringRules;
 
 export interface TestResult {
   id: string;
@@ -148,7 +174,7 @@ export interface TestResult {
   test_id: string;
   answers: Record<string, string | number>;
   result_summary: string | null;
-  score: { value: number } | null;
+  score: Record<string, number> | null;
   created_at: string;
 }
 

@@ -94,10 +94,9 @@ function DashNav({
   showDesktop: boolean;
 }) {
   const tabs: { id: Tab; label: string }[] = [
-    { id: "hub", label: "Хяналт" },
-    { id: "lessons", label: "Видео хичээл" },
-    { id: "coaching", label: "Коучинг" },
-    { id: "profile", label: "Профайл" },
+    { id: "hub", label: "dashboard" },
+    { id: "coaching", label: "1vs1 meeting" },
+    { id: "profile", label: "profile" },
   ];
 
   const eff = getEffectiveStatus(profile);
@@ -157,7 +156,6 @@ function DashNav({
               paddingLeft: 16,
             }}
           >
-            Хяналтын самбар
           </span>
           <nav style={{ display: "flex", gap: 4, marginLeft: 16, flexWrap: "wrap" }}>
             {tabs.map((t) => (
@@ -348,7 +346,7 @@ function ServiceHub({
     },
     {
       n: "03",
-      title: "Нийгэмлэг",
+      title: "Community",
       meta: `7 хоногт ${hubStats.communityPostsWeek} пост`,
       emberMeta: true,
       href: "/community",

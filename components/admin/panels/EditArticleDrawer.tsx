@@ -40,10 +40,12 @@ export function EditArticleDrawer({ open, item, onClose }: Props) {
   const [slug, setSlug] = useState("");
   const [slugTouched, setSlugTouched] = useState(false);
   const [excerpt, setExcerpt] = useState("");
+  const [description, setDescription] = useState("");
   const [body, setBody] = useState("");
   const [readingMinutes, setReadingMinutes] = useState("1");
   const [readingTouched, setReadingTouched] = useState(false);
   const [cardFile, setCardFile] = useState<File | null>(null);
+  const [cardTouched, setCardTouched] = useState(false);
   const [heroFile, setHeroFile] = useState<File | null>(null);
   const [descriptionFile, setDescriptionFile] = useState<File | null>(null);
   const [uploadStatus, setUploadStatus] = useState("");
@@ -64,16 +66,28 @@ export function EditArticleDrawer({ open, item, onClose }: Props) {
       setSlug(item.slug);
       setSlugTouched(false);
       setExcerpt(item.excerpt ?? "");
+      setDescription(item.description ?? "");
       setBody(item.body);
       setReadingMinutes(String(item.reading_minutes ?? 1));
       setReadingTouched(false);
       setCardFile(null);
+      setCardTouched(false);
       setHeroFile(null);
       setDescriptionFile(null);
       setUploadStatus("");
       setErr(null);
     }
   }, [open, item]);
+
+  function handleHeroFile(file: File | null) {
+    setHeroFile(file);
+    if (!cardTouched && !item?.cover_image_path) setCardFile(file);
+  }
+
+  function handleCardFile(file: File | null) {
+    setCardTouched(true);
+    setCardFile(file);
+  }
 
   function submit(e: FormEvent) {
     e.preventDefault();
@@ -104,6 +118,7 @@ export function EditArticleDrawer({ open, item, onClose }: Props) {
         title,
         slug: s,
         excerpt,
+        description: description || null,
         body,
         reading_minutes: Number.parseInt(readingMinutes, 10) || autoMinutes,
       };
@@ -181,6 +196,17 @@ export function EditArticleDrawer({ open, item, onClose }: Props) {
         />
       </AdminFieldLabel>
 
+      <AdminFieldLabel htmlFor="ear-description">
+        Тайлбар
+        <textarea
+          id="ear-description"
+          rows={4}
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          style={{ ...adminInputStyle, resize: "vertical" }}
+        />
+      </AdminFieldLabel>
+
       <AdminFieldLabel htmlFor="ear-body">
         Агуулга (Markdown) *
         <textarea
@@ -220,8 +246,8 @@ export function EditArticleDrawer({ open, item, onClose }: Props) {
         cardPath={item?.cover_image_path}
         heroPath={item?.hero_image_path}
         descriptionPath={item?.description_image_path}
-        onCardFile={setCardFile}
-        onHeroFile={setHeroFile}
+        onCardFile={handleCardFile}
+        onHeroFile={handleHeroFile}
         onDescriptionFile={setDescriptionFile}
       />
 

@@ -11,9 +11,10 @@ import { parseOnboardingFormData } from "@/lib/validation/client-forms";
 type Props = {
   defaultFullName?: string | null;
   defaultPhone?: string | null;
+  redirectTo?: string;
 };
 
-export function OnboardingForm({ defaultFullName, defaultPhone }: Props) {
+export function OnboardingForm({ defaultFullName, defaultPhone, redirectTo }: Props) {
   const router = useRouter();
   const toast = useToast();
   const [pending, setPending] = useState(false);
@@ -47,7 +48,11 @@ export function OnboardingForm({ defaultFullName, defaultPhone }: Props) {
       return;
     }
     toast("Хадгалагдлаа", "success");
-    window.setTimeout(() => router.push("/payment"), 250);
+    const destination =
+      redirectTo && redirectTo.startsWith("/coaching/")
+        ? redirectTo
+        : "/payment";
+    window.setTimeout(() => router.push(destination), 250);
   }
 
   return (

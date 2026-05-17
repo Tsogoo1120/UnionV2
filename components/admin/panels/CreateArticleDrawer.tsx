@@ -38,11 +38,13 @@ export function CreateArticleDrawer({ open, onClose }: Props) {
   const [slug, setSlug] = useState("");
   const [slugTouched, setSlugTouched] = useState(false);
   const [excerpt, setExcerpt] = useState("");
+  const [description, setDescription] = useState("");
   const [body, setBody] = useState("");
   const [readingMinutes, setReadingMinutes] = useState("1");
   const [readingTouched, setReadingTouched] = useState(false);
   const [publish, setPublish] = useState(false);
   const [cardFile, setCardFile] = useState<File | null>(null);
+  const [cardTouched, setCardTouched] = useState(false);
   const [heroFile, setHeroFile] = useState<File | null>(null);
   const [descriptionFile, setDescriptionFile] = useState<File | null>(null);
   const [uploadStatus, setUploadStatus] = useState("");
@@ -63,17 +65,29 @@ export function CreateArticleDrawer({ open, onClose }: Props) {
       setSlug("");
       setSlugTouched(false);
       setExcerpt("");
+      setDescription("");
       setBody("");
       setReadingMinutes("1");
       setReadingTouched(false);
       setPublish(false);
       setCardFile(null);
+      setCardTouched(false);
       setHeroFile(null);
       setDescriptionFile(null);
       setUploadStatus("");
       setErr(null);
     }
   }, [open]);
+
+  function handleHeroFile(file: File | null) {
+    setHeroFile(file);
+    if (!cardTouched) setCardFile(file);
+  }
+
+  function handleCardFile(file: File | null) {
+    setCardTouched(true);
+    setCardFile(file);
+  }
 
   function submit(e: FormEvent) {
     e.preventDefault();
@@ -103,6 +117,7 @@ export function CreateArticleDrawer({ open, onClose }: Props) {
       fd.set("title", title);
       fd.set("slug", s);
       fd.set("excerpt", excerpt);
+      fd.set("description", description);
       fd.set("body", body);
       fd.set("cover_image_path", imgs.cardPath ?? "");
       fd.set("hero_image_path", imgs.heroPath ?? "");
@@ -180,6 +195,17 @@ export function CreateArticleDrawer({ open, onClose }: Props) {
         />
       </AdminFieldLabel>
 
+      <AdminFieldLabel htmlFor="ar-description">
+        Тайлбар
+        <textarea
+          id="ar-description"
+          rows={4}
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          style={{ ...adminInputStyle, resize: "vertical" }}
+        />
+      </AdminFieldLabel>
+
       <AdminFieldLabel htmlFor="ar-body">
         Агуулга (Markdown) *
         <textarea
@@ -216,8 +242,8 @@ export function CreateArticleDrawer({ open, onClose }: Props) {
 
       <AdminContentImageFields
         prefix="ar"
-        onCardFile={setCardFile}
-        onHeroFile={setHeroFile}
+        onCardFile={handleCardFile}
+        onHeroFile={handleHeroFile}
         onDescriptionFile={setDescriptionFile}
       />
 

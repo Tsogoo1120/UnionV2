@@ -116,11 +116,27 @@ export function parseScoringRulesJson(raw: string): { data?: TestScoringRules; e
     return { error: "Оноолтын JSON буруу форматтай байна." };
   }
 
-  if (!isRecord(parsed) || !Array.isArray(parsed.ranges) || parsed.ranges.length === 0) {
+  if (!isRecord(parsed)) {
+    return { error: "Оноолтын JSON объект байх ёстой." };
+  }
+
+  // Big Five format
+  if (parsed.type === "big_five") {
+    if (!isRecord(parsed.traits)) {
+      return { error: "big_five: traits объект шаардлагатай." };
+    }
+    if (!Array.isArray(parsed.resultLevels) || parsed.resultLevels.length === 0) {
+      return { error: "big_five: resultLevels массив шаардлагатай." };
+    }
+    return { data: parsed as unknown as TestScoringRules };
+  }
+
+  // Simple range format
+  if (!Array.isArray(parsed.ranges) || parsed.ranges.length === 0) {
     return { error: "scoring_rules.ranges хоосон биш массив байх ёстой." };
   }
 
-  const ranges: TestScoringRules["ranges"] = [];
+  const ranges: { min: number; max: number; result: string }[] = [];
   for (let i = 0; i < parsed.ranges.length; i++) {
     const r = parsed.ranges[i];
     if (!isRecord(r)) return { error: `Оноолт ${i + 1}: объект байх ёстой.` };

@@ -28,6 +28,7 @@ import { EditArticleDrawer } from "@/components/admin/panels/EditArticleDrawer";
 import { EditCollectiveReadingDrawer } from "@/components/admin/panels/EditCollectiveReadingDrawer";
 import { EditPsychologyTestDrawer } from "@/components/admin/panels/EditPsychologyTestDrawer";
 import { EditVideoLessonDrawer } from "@/components/admin/panels/EditVideoLessonDrawer";
+import { BroadcastEmailPanel } from "@/components/admin/panels/BroadcastEmailPanel";
 import { SiteSettingsPanel } from "@/components/admin/panels/SiteSettingsPanel";
 import { UsersPanel } from "@/components/admin/panels/UsersPanel";
 import { useToast } from "@/components/shell/Toast";
@@ -45,6 +46,7 @@ type AdminTab =
   | "tests"
   | "community"
   | "users"
+  | "email"
   | "settings";
 
 const meta: Record<AdminTab, { title: string; sub: string }> = {
@@ -58,6 +60,7 @@ const meta: Record<AdminTab, { title: string; sub: string }> = {
   tests: { title: "Тест", sub: "Контент · 04" },
   community: { title: "Нийгэмлэг", sub: "Модерац" },
   users: { title: "Хэрэглэгчид", sub: "Систем" },
+  email: { title: "Имэйл", sub: "Бүх хэрэглэгчдэд" },
   settings: { title: "Тохиргоо", sub: "Сайтын тохиргоо" },
 };
 
@@ -138,6 +141,7 @@ function AdminNav({
     ]},
     { h: "Систем", items: [
       { id: "users", label: "Хэрэглэгчид", n: 0 },
+      { id: "email", label: "Имэйл", n: 0 },
       { id: "settings", label: "Тохиргоо", n: 0 },
     ]},
   ];
@@ -916,6 +920,7 @@ export function AdminExperience(props: AdminExperienceProps) {
           {tab === "users" && (
             <UsersPanel users={props.users} total={props.usersTotal} page={props.usersPage} query={props.usersQuery} />
           )}
+          {tab === "email" && <BroadcastEmailPanel />}
           {tab === "settings" && <SiteSettingsPanel />}
         </main>
       </div>

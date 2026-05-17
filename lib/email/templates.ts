@@ -258,27 +258,26 @@ export function paymentApprovedTemplate(opts: {
   const expiresHuman = formatMongolianDate(opts.expiresAt);
 
   return {
-    subject: "Таны төлбөр төлөлт амжилттай боллоо",
+    subject: "Таны төлбөр баталгаажлаа",
     html: layout({
       title: "Төлбөр баталгаажлаа",
       greeting,
       bodyHtml: `
         <p style="margin:0 0 16px;color:#5c564d;">
-          Таны төлбөр төлөлт амжилттай боллоо — таны эрх идэвхжсэн байна.
-          Багцын хүчинтэй хугацаа: <strong>${expiresHuman}</strong> хүртэл.
+          Таны төлбөр баталгаажлаа. Таны эрх нээгдсэн тул та нэвтэрч орж болно.
         </p>
         <p style="margin:0 0 16px;color:#5c564d;">
-          Та одоо бүх төлбөртэй агуулгыг ашиглах боломжтой.
+          Багцын хүчинтэй хугацаа: <strong>${expiresHuman}</strong> хүртэл.
         </p>
       `,
-      ctaLabel: "Хяналтын самбар руу орох",
+      ctaLabel: "Нэвтрэх",
       ctaHref: `${opts.siteUrl}/dashboard`,
     }),
     text:
       `${greeting}\n\n` +
-      `Таны төлбөр төлөлт амжилттай боллоо. Таны эрх идэвхжсэн.\n` +
+      `Таны төлбөр баталгаажлаа. Таны эрх нээгдсэн тул та нэвтэрч орж болно.\n` +
       `Хүчинтэй хугацаа: ${expiresHuman} хүртэл.\n\n` +
-      `Хяналтын самбар: ${opts.siteUrl}/dashboard\n\n` +
+      `Нэвтрэх: ${opts.siteUrl}/dashboard\n\n` +
       `— Union`,
   };
 }
@@ -590,17 +589,18 @@ export function coachingApprovedTemplate(opts: {
     : "";
 
   return {
-    subject: "Таны коучингын цаг баталгаажлаа",
+    subject: "Таны цаг баталгаажлаа",
     html: layout({
       title: "Коучингын цаг баталгаажлаа",
       greeting,
       bodyHtml: `
         <p style="margin:0 0 16px;color:#5c564d;">
-          Таны хувийн коучингын захиалга баталгаажлаа.
+          Таны цаг баталгаажлаа.
           <br />Хуваарь: <strong>${startHuman}</strong> – ${endHuman}
         </p>
         <p style="margin:0 0 16px;color:#5c564d;">
-          Удахгүй админ тань тантай шууд холбогдох болно (мессеж эсвэл утсаар).
+          Бүртгүүлсэн email хаяг луу нь Google Meet линк явуулах болно.
+          Эсвэл та өөрөө <strong>Tsogoo_1120</strong> миний инста хаяглуу бичээд шууд ярьж болно.
         </p>
         ${noteBlock}
       `,
@@ -609,9 +609,10 @@ export function coachingApprovedTemplate(opts: {
     }),
     text:
       `${greeting}\n\n` +
-      `Таны коучингын захиалга баталгаажлаа.\n` +
+      `Таны цаг баталгаажлаа.\n` +
       `Хуваарь: ${startHuman} – ${endHuman}\n\n` +
-      `Удахгүй админ тантай шууд холбогдох болно.\n\n` +
+      `Бүртгүүлсэн email хаяг луу нь Google Meet линк явуулах болно.\n` +
+      `Эсвэл та өөрөө Tsogoo_1120 миний инста хаяглуу бичээд шууд ярьж болно.\n\n` +
       (opts.adminNote ? `Тэмдэглэл:\n${opts.adminNote}\n\n` : "") +
       `— Union`,
   };
@@ -656,5 +657,24 @@ export function coachingDeniedTemplate(opts: {
       (opts.adminNote ? `Тайлбар:\n${opts.adminNote}\n\n` : "") +
       `Бусад цаг: ${opts.siteUrl}/dashboard/coaching\n\n` +
       `— Union`,
+  };
+}
+
+// ─── 12. Admin broadcast ─────────────────────────────────────────────────────
+
+export function broadcastEmailTemplate(opts: {
+  subject: string;
+  body: string;
+}): EmailTemplate {
+  return {
+    subject: opts.subject,
+    html: layout({
+      title: opts.subject,
+      greeting: "",
+      bodyHtml: `
+        <div style="color:#5c564d;white-space:pre-wrap;">${escapeHtml(opts.body)}</div>
+      `,
+    }),
+    text: opts.body + "\n\n— Union",
   };
 }

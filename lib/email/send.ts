@@ -15,6 +15,7 @@ import { EMAIL_FROM, SITE_URL, getResendClient } from "./client";
 import {
   adminNewPaymentTemplate,
   articlePublishedTemplate,
+  broadcastEmailTemplate,
   coachingApprovedTemplate,
   coachingDeniedTemplate,
   collectiveReadingPublishedTemplate,
@@ -586,4 +587,49 @@ export async function sendCoachingDeniedEmail(opts: {
   } catch (err) {
     console.error("[email] sendCoachingDeniedEmail failed:", err);
   }
+}
+
+// ─── 12. Admin broadcast (fan-out to all users) ──────────────────────────────
+
+export async function sendBroadcastEmail(opts: {
+  subject: string;
+  body: string;
+}): Promise<{ sent: number; errors: number }> {
+  let sent = 0;
+  let errors = 0;
+  try {
+    const admin = createAdminClient();
+    const { data } = await admin
+      .from("profiles")
+      .select("email, full_name")
+      .eq("email_notifications", true)
+      .not("email", "is", null);
+
+    const recipients = (data ?? []).filter(
+      (r): r is Recipient => typeof r?.email === "string" && r.email.length > 0,
+    );
+
+    if (recipients.length === 0) return { sent: 0, errors: 0 };
+
+    const template = broadcastEmailTemplate({ subject: opts.subject, body: opts.body });
+
+    const BATCH = 8;
+    for (let i = 0; i < recipients.length; i += BATCH) {
+      const slice = recipients.slice(i, i + BATCH);
+      const results = await Promise.allSettled(
+        slice.map((r) => sendOne({ to: r.email, template })),
+      );
+      for (const r of results) {
+        if (r.status === "fulfilled") sent++;
+        else errors++;
+      }
+      if (i + BATCH < recipients.length) {
+        await new Promise((r) => setTimeout(r, 1100));
+      }
+    }
+  } catch (err) {
+    console.error("[email] sendBroadcastEmail failed:", err);
+    errors++;
+  }
+  return { sent, errors };
 }
