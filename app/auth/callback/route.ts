@@ -53,7 +53,17 @@ export async function GET(request: Request) {
         ? next
         : "/auth/onboarding";
 
-    const response = NextResponse.redirect(`${origin}${safeNext}`);
+    // Collect cookies here so every returned response carries the session.
+    const pendingCookies: Array<{ name: string; value: string; options?: Record<string, unknown> }> = [];
+
+    const redirect = (path: string): NextResponse => {
+      const r = NextResponse.redirect(`${origin}${path}`);
+      pendingCookies.forEach(({ name, value, options }) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        r.cookies.set(name, value, options as any);
+      });
+      return r;
+    };
 
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -72,9 +82,7 @@ export async function GET(request: Request) {
             );
           },
           setAll(cookiesToSet) {
-            cookiesToSet.forEach(({ name, value, options }) => {
-              response.cookies.set(name, value, options);
-            });
+            cookiesToSet.forEach((c) => pendingCookies.push(c));
           },
         },
       },
@@ -91,7 +99,7 @@ export async function GET(request: Request) {
       } = await supabase.auth.getUser();
 
       if (!user) {
-        return NextResponse.redirect(`${origin}/login?error=auth_user_missing`);
+        return redirect("/login?error=auth_user_missing");
       }
 
       // Defensively ensure a profile row exists. The handle_new_user() trigger
@@ -156,13 +164,13 @@ export async function GET(request: Request) {
           // Coaching clients coming from a booking link bypass the subscription
           // payment flow — coaching is a separate service from subscription.
           if (safeNext.startsWith("/coaching/")) {
-            return NextResponse.redirect(`${origin}${safeNext}`);
+            return redirect(safeNext);
           }
-          return NextResponse.redirect(`${origin}/payment`);
+          return redirect("/payment");
         }
-        return response;
+        return redirect(safeNext);
       }
-      return NextResponse.redirect(`${origin}${pathForEffectiveStatus(status)}`);
+      return redirect(pathForEffectiveStatus(status));
     }
   }
 
