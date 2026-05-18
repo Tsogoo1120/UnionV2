@@ -1,13 +1,8 @@
-﻿import Image from "next/image";
+import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { MarketingReveal } from "./MarketingReveal";
-
-const articles = [
-  { date: "Бямба, 5/10", min: "7 мин", title: "Зорилго — тэвчээрийн уртын асуудал", cat: "Эссэ" },
-  { date: "Мяг., 5/06", min: "4 мин", title: "Өглөөний 20 минут — өдрийн архитектур", cat: "Дадал" },
-  { date: "Пүр., 5/01", min: "9 мин", title: "Уур уцаар, мэдрэлийн систем, амьсгал", cat: "Сэтгэл судлал" },
-];
+import type { ServicePreviewItem } from "@/lib/queries/service-previews";
 
 const cardClass =
   "group flex flex-col overflow-hidden rounded-[var(--u-r-3)] border border-[var(--u-rule)] bg-[var(--u-surface-2)] text-inherit no-underline shadow-[var(--u-shadow-1)] transition-[transform,box-shadow] duration-[var(--u-dur-2)] ease-[var(--u-ease)] hover:-translate-y-px hover:shadow-[var(--u-shadow-3)] motion-reduce:transition-none motion-reduce:hover:translate-y-0";
@@ -18,7 +13,13 @@ const gradients = [
   "bg-[linear-gradient(135deg,var(--u-ink-2),var(--u-dark))]",
 ] as const;
 
-export function MarketingArticleRow() {
+type Props = {
+  items?: ServicePreviewItem[];
+};
+
+export function MarketingArticleRow({ items = [] }: Props) {
+  if (items.length === 0) return null;
+
   return (
     <MarketingReveal
       id="articles"
@@ -38,32 +39,36 @@ export function MarketingArticleRow() {
       </div>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-[var(--u-s-6)]">
-        {articles.map((a, i) => (
-          <Link key={a.title} href="/dashboard" className={cardClass}>
+        {items.map((a, i) => (
+          <Link key={a.id} href="/dashboard" className={cardClass}>
             <div
               className={cn(
                 "relative",
                 i === 0 ? "aspect-[16/10]" : "aspect-video",
-                gradients[i]
+                !a.imageUrl && gradients[i % gradients.length]
               )}
             >
-              <Image
-                src="/union-monogram.svg"
-                alt="Union — нийтлэлийн зураг"
-                fill
-                sizes="(max-width: 768px) 100vw, 33vw"
-                loading="lazy"
-                className="object-contain p-[14%_18%] opacity-[0.14]"
-              />
+              {a.imageUrl ? (
+                <Image
+                  src={a.imageUrl}
+                  alt=""
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  loading="lazy"
+                  className="object-cover"
+                />
+              ) : (
+                <Image
+                  src="/union-monogram.svg"
+                  alt="Union — нийтлэлийн зураг"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  loading="lazy"
+                  className="object-contain p-[14%_18%] opacity-[0.14]"
+                />
+              )}
             </div>
             <div className="flex flex-1 flex-col gap-2.5 p-5 pb-6 sm:p-6">
-              <div className="flex flex-wrap gap-2.5 font-[var(--u-body-s)] text-[var(--u-ink-3)]">
-                <span className="font-medium text-[var(--u-ember)]">{a.cat}</span>
-                <span aria-hidden>·</span>
-                <span>{a.date}</span>
-                <span aria-hidden>·</span>
-                <span>{a.min}</span>
-              </div>
               <div
                 className={cn(
                   "font-[family-name:var(--u-display)] font-bold leading-[1.05] tracking-[-0.015em]",
@@ -72,6 +77,11 @@ export function MarketingArticleRow() {
               >
                 {a.title}
               </div>
+              {a.description ? (
+                <p className="font-[var(--u-body-s)] leading-[1.5] text-[var(--u-ink-2)]">
+                  {a.description}
+                </p>
+              ) : null}
             </div>
           </Link>
         ))}

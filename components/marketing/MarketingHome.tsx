@@ -45,7 +45,7 @@ export function MarketingHome({
       <MarketingIntroVideo introVideoUrl={introVideoUrl} posterUrl={introPosterUrl} />
       <MarketingServiceList previews={servicePreviews} />
       <MarketingCoachingStrip slots={coachingSlots} signedIn={signedIn} />
-      <MarketingArticleRow />
+      <MarketingArticleRow items={servicePreviews?.articles} />
       <MarketingFooter />
     </>
   );
