@@ -3,6 +3,7 @@ import {
   ALLOWED_SCREENSHOT_TYPES,
   MAX_COMMUNITY_IMAGE_BYTES,
   MAX_SCREENSHOT_BYTES,
+  PAYMENT_INFO,
 } from "@/lib/constants";
 
 const allowedMime = new Set<string>(ALLOWED_SCREENSHOT_TYPES as unknown as string[]);
@@ -55,8 +56,9 @@ export const paymentFormClientSchema = z.object({
 
 export function parsePaymentFormData(fd: FormData) {
   const shot = fd.get("screenshot");
+  const rawAmount = fd.get("amount");
   return paymentFormClientSchema.safeParse({
-    amount: fd.get("amount"),
+    amount: rawAmount !== null ? rawAmount : String(PAYMENT_INFO.amount),
     bank_reference: String(fd.get("bank_reference") ?? ""),
     screenshot: shot,
   });
