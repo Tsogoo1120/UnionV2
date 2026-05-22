@@ -5,7 +5,7 @@ import { MarketingReveal } from "./MarketingReveal";
 import type { ServicePreviewItem } from "@/lib/queries/service-previews";
 
 const cardClass =
-  "group flex flex-col overflow-hidden rounded-[var(--u-r-3)] border border-[var(--u-rule)] bg-[var(--u-surface-2)] text-inherit no-underline shadow-[var(--u-shadow-1)] transition-[transform,box-shadow] duration-[var(--u-dur-2)] ease-[var(--u-ease)] hover:-translate-y-px hover:shadow-[var(--u-shadow-3)] motion-reduce:transition-none motion-reduce:hover:translate-y-0";
+  "u-card-lift group flex flex-col overflow-hidden rounded-[var(--u-r-3)] border border-[var(--u-rule)] bg-[var(--u-surface-2)] text-inherit no-underline shadow-[var(--u-shadow-1)]";
 
 const gradients = [
   "bg-[linear-gradient(135deg,var(--u-ember),var(--u-danger))]",

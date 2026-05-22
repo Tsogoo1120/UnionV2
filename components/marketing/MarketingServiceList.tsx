@@ -55,7 +55,7 @@ const items: ServiceItem[] = [
 ];
 
 const rowClass =
-  "group grid w-full gap-4 border-t border-[var(--u-rule)] py-6 text-left text-inherit no-underline transition-[background-color,box-shadow] duration-[var(--u-dur-2)] ease-[var(--u-ease)] first:border-t-0 hover:bg-[var(--u-surface)] sm:grid-cols-[64px_1fr] sm:gap-6 sm:py-8 md:grid-cols-[80px_1.2fr_2fr_40px] md:gap-8 md:items-baseline motion-reduce:transition-none";
+  "u-card-lift group grid w-full gap-4 border-t border-[var(--u-rule)] py-6 text-left text-inherit first:border-t-0 hover:bg-[var(--u-surface)] sm:grid-cols-[64px_1fr] sm:gap-6 sm:py-8 md:grid-cols-[80px_1.2fr_2fr_40px] md:gap-8 md:items-baseline";
 
 type MarketingServiceListProps = {
   previews?: Record<ServiceId, ServicePreviewItem[]>;
@@ -77,8 +77,33 @@ export function MarketingServiceList({ previews }: MarketingServiceListProps = {
       style={{ containIntrinsicSize: "auto 900px" }}
     >
       <div className="mx-auto max-w-container px-[var(--u-gutter)] pb-5 pt-[var(--u-s-12)] sm:pt-[var(--u-s-16)]">
-        <div className="flex flex-wrap items-baseline justify-between gap-3">
-          <div className="u-eyebrow">Үйлчилгээ — 5</div>
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <div className="u-eyebrow mb-2">Гишүүнчлэл — 5 үйлчилгээ бүгд орно</div>
+            <p className="m-0 font-[var(--u-body)] text-[var(--u-ink-2)]">
+              Сарын <strong className="text-[var(--u-ink)]">50,000₮</strong> төлснөөр доорх бүх үйлчилгээнд нэвтрэх боломжтой.
+            </p>
+          </div>
+          <span
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              padding: "6px 14px",
+              borderRadius: 999,
+              border: "1px solid var(--u-rule-2)",
+              font: "var(--u-body-s)",
+              fontWeight: 600,
+              color: "var(--u-ink-2)",
+              background: "var(--u-surface)",
+              whiteSpace: "nowrap",
+            }}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+              <path d="M20 6L9 17l-5-5" />
+            </svg>
+            Нэг дор нэвтрэх
+          </span>
         </div>
       </div>
       <div className="mx-auto max-w-container px-[var(--u-gutter)] pb-[var(--u-s-10)]">
