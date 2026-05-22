@@ -4,7 +4,6 @@ import { useState, useTransition, type FormEvent } from "react";
 import { bookCoachingSlot } from "@/app/actions/coaching";
 import { useToast } from "@/components/shell/Toast";
 import type { CoachingSlot } from "@/lib/types";
-import { formatDate, formatMNT } from "@/lib/format";
 import { mapServerErrorToMn } from "@/lib/i18n/action-feedback";
 import { parseCoachingBookFormData } from "@/lib/validation/client-forms";
 
@@ -19,6 +18,7 @@ export function CoachingSlotBookForm({
   const [pending, startTransition] = useTransition();
   const [msg, setMsg] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [fileName, setFileName] = useState<string | null>(null);
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -50,72 +50,122 @@ export function CoachingSlotBookForm({
     });
   }
 
-  return (
-    <div style={{ maxWidth: 480, margin: "0 auto", padding: "24px 16px" }}>
-      <h1 style={{ fontFamily: "var(--u-display)", fontWeight: 700, fontSize: 32, margin: "0 0 8px" }}>
-        Коучинг захиалах
-      </h1>
-      <p style={{ font: "var(--u-body)", color: "var(--u-ink-2)" }}>
-        {formatDate(slot.start_at, { withTime: true })} — {formatDate(slot.end_at, { withTime: true })}
-      </p>
-      <p style={{ font: "var(--u-h4)", marginTop: 12 }}>{formatMNT(slot.price)}</p>
+  const isSuccess = msg && (msg.includes("хүлээгдэж") || msg.includes("Амжилттай"));
 
-      <form onSubmit={handleSubmit} style={{ marginTop: 28, display: "flex", flexDirection: "column", gap: 14 }}>
-        <label className="u-eyebrow" style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-          Дансны дэлгэцийн зураг
+  return (
+    <form
+      onSubmit={handleSubmit}
+      style={{ display: "flex", flexDirection: "column", gap: 16, width: "100%" }}
+    >
+      {/* Screenshot upload zone */}
+      <div>
+        <div className="u-eyebrow" style={{ marginBottom: 8 }}>Дансны баримтын зураг</div>
+        <label
+          htmlFor="coaching-screenshot"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 10,
+            padding: "28px 16px",
+            borderRadius: "var(--u-r-2)",
+            border: `2px dashed ${fieldErrors.screenshot ? "var(--u-danger)" : "var(--u-rule-2)"}`,
+            background: "var(--u-surface)",
+            cursor: "pointer",
+            textAlign: "center",
+            transition: "border-color 0.15s, background 0.15s",
+          }}
+        >
+          <svg
+            width="28"
+            height="28"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            style={{ color: fileName ? "var(--u-ember)" : "var(--u-ink-3)" }}
+            aria-hidden
+          >
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <path d="M3 9h18M9 21V9" />
+          </svg>
+          <div>
+            <div style={{ font: "var(--u-body-s)", fontWeight: 600, color: "var(--u-ink)" }}>
+              {fileName ?? "Зураг сонгох"}
+            </div>
+            <div style={{ marginTop: 4, fontSize: 12, color: "var(--u-ink-3)" }}>
+              PNG, JPG, WEBP · 5 MB хүртэл
+            </div>
+          </div>
           <input
+            id="coaching-screenshot"
             name="screenshot"
             type="file"
             accept="image/png,image/jpeg,image/webp"
             required
             aria-invalid={Boolean(fieldErrors.screenshot)}
-            style={{ minHeight: 44 }}
+            onChange={(e) => setFileName(e.target.files?.[0]?.name ?? null)}
+            style={{ position: "absolute", opacity: 0, width: 0, height: 0 }}
           />
         </label>
         {fieldErrors.screenshot ? (
-          <p style={{ color: "var(--u-danger)", font: "var(--u-body-s)", margin: 0 }}>{fieldErrors.screenshot}</p>
+          <p style={{ color: "var(--u-danger)", font: "var(--u-body-s)", margin: "8px 0 0" }}>
+            {fieldErrors.screenshot}
+          </p>
         ) : null}
-        <label className="u-eyebrow" style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-          Лавлагаа (заавал биш)
-          <input
-            name="bank_reference"
-            type="text"
-            aria-invalid={Boolean(fieldErrors.bank_reference)}
-            style={{ padding: 10, borderRadius: "var(--u-r-2)", border: "1px solid var(--u-rule-2)", minHeight: 44 }}
-          />
-        </label>
-        {fieldErrors.bank_reference ? (
-          <p style={{ color: "var(--u-danger)", font: "var(--u-body-s)", margin: 0 }}>{fieldErrors.bank_reference}</p>
-        ) : null}
-        <button
-          type="submit"
-          disabled={pending}
-          style={{
-            marginTop: 8,
-            padding: "14px 18px",
-            borderRadius: "var(--u-r-2)",
-            border: "none",
-            background: "var(--u-ink)",
-            color: "var(--u-bg)",
-            fontWeight: 600,
-            cursor: pending ? "wait" : "pointer",
-            minHeight: 48,
-          }}
+      </div>
+
+      {/* Bank reference */}
+      <div>
+        <label
+          htmlFor="coaching-ref"
+          className="u-eyebrow"
+          style={{ display: "block", marginBottom: 8 }}
         >
-          {pending ? "Илгээж байна…" : "Илгээх"}
-        </button>
-      </form>
+          Лавлагаа (заавал биш)
+        </label>
+        <input
+          id="coaching-ref"
+          name="bank_reference"
+          type="text"
+          aria-invalid={Boolean(fieldErrors.bank_reference)}
+          placeholder="Банкны гүйлгээний дугаар"
+          className={fieldErrors.bank_reference ? "u-field u-field--error" : "u-field"}
+        />
+        {fieldErrors.bank_reference ? (
+          <p className="u-field-error">{fieldErrors.bank_reference}</p>
+        ) : null}
+      </div>
+
+      <button type="submit" disabled={pending} className="u-btn-submit" style={{ marginTop: 4, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+        {pending ? (
+          <>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ animation: "spin 1s linear infinite" }} aria-hidden>
+              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+            </svg>
+            Илгээж байна…
+          </>
+        ) : "Захиалга илгээх"}
+      </button>
+
       {msg ? (
-        <p
+        <div
+          role="status"
           style={{
-            marginTop: 16,
+            padding: 12,
+            borderRadius: "var(--u-r-2)",
+            background: isSuccess ? "var(--u-success-soft, #e6f4ea)" : "var(--u-danger-soft)",
+            color: isSuccess ? "var(--u-success, #1a7f3c)" : "var(--u-danger)",
             font: "var(--u-body-s)",
-            color: msg.includes("хүлээгдэж") || msg.includes("Амжилттай") ? "var(--u-success)" : "var(--u-danger)",
+            fontWeight: 500,
           }}
         >
           {msg}
-        </p>
+        </div>
       ) : null}
-    </div>
+
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+    </form>
   );
 }

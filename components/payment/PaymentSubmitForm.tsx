@@ -17,6 +17,7 @@ export function PaymentSubmitForm() {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [fileName, setFileName] = useState<string | null>(null);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -51,34 +52,65 @@ export function PaymentSubmitForm() {
   return (
     <form
       onSubmit={onSubmit}
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 20,
-        maxWidth: 480,
-        width: "100%",
-        margin: "0 auto",
-      }}
+      style={{ display: "flex", flexDirection: "column", gap: 16, width: "100%" }}
     >
-    
-
-
+      {/* File upload zone */}
       <div>
         <div className="u-eyebrow" style={{ marginBottom: 8 }}>
-          Төлбөрийн баримтын зураг
+          Төлбөрийн баримт
         </div>
-        <input
-          name="screenshot"
-          type="file"
-          accept={acceptAttr}
-          required
-          aria-invalid={Boolean(fieldErrors.screenshot)}
-          aria-describedby={fieldErrors.screenshot ? "err-shot" : "hint-shot"}
-          style={{ font: "var(--u-body-s)", width: "100%", minHeight: 44 }}
-        />
-
+        <label
+          htmlFor="pay-screenshot"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 10,
+            padding: "28px 16px",
+            borderRadius: "var(--u-r-2)",
+            border: `2px dashed ${fieldErrors.screenshot ? "var(--u-danger)" : "var(--u-rule-2)"}`,
+            background: "var(--u-surface)",
+            cursor: "pointer",
+            textAlign: "center",
+            transition: "border-color 0.15s, background 0.15s",
+          }}
+        >
+          <svg
+            width="28"
+            height="28"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            style={{ color: fileName ? "var(--u-ember)" : "var(--u-ink-3)" }}
+            aria-hidden
+          >
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <path d="M3 9h18M9 21V9" />
+          </svg>
+          <div>
+            <div style={{ font: "var(--u-body-s)", fontWeight: 600, color: "var(--u-ink)" }}>
+              {fileName ?? "Зураг сонгох"}
+            </div>
+            <div style={{ marginTop: 4, fontSize: 12, color: "var(--u-ink-3)" }}>
+              PNG, JPG, WEBP · 5 MB хүртэл
+            </div>
+          </div>
+          <input
+            id="pay-screenshot"
+            name="screenshot"
+            type="file"
+            accept={acceptAttr}
+            required
+            aria-invalid={Boolean(fieldErrors.screenshot)}
+            aria-describedby={fieldErrors.screenshot ? "err-shot" : undefined}
+            onChange={(e) => setFileName(e.target.files?.[0]?.name ?? null)}
+            style={{ position: "absolute", opacity: 0, width: 0, height: 0 }}
+          />
+        </label>
         {fieldErrors.screenshot ? (
-          <p id="err-shot" style={{ color: "var(--u-danger)", font: "var(--u-body-s)", margin: "8px 0 0" }}>
+          <p id="err-shot" className="u-field-error">
             {fieldErrors.screenshot}
           </p>
         ) : null}
@@ -102,21 +134,20 @@ export function PaymentSubmitForm() {
       <button
         type="submit"
         disabled={pending}
-        style={{
-          width: "100%",
-          minHeight: 52,
-          border: "none",
-          borderRadius: "var(--u-r-2)",
-          background: "var(--u-ember)",
-          color: "var(--u-ember-ink)",
-          font: "var(--u-body)",
-          fontWeight: 600,
-          cursor: pending ? "wait" : "pointer",
-          opacity: pending ? 0.85 : 1,
-        }}
+        className="u-btn-submit"
+        style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}
       >
-        {pending ? "Илгээж байна…" : "Илгээх"}
+        {pending ? (
+          <>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ animation: "spin 1s linear infinite" }} aria-hidden>
+              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+            </svg>
+            Илгээж байна…
+          </>
+        ) : "Илгээх"}
       </button>
+
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </form>
   );
 }

@@ -79,26 +79,10 @@ export function OnboardingForm({ defaultFullName, defaultPhone, redirectTo }: Pr
           required
           aria-invalid={Boolean(fieldErrors.full_name)}
           aria-describedby={fieldErrors.full_name ? "err-full-name" : undefined}
-          style={{
-            width: "100%",
-            minHeight: 48,
-            boxSizing: "border-box",
-            borderRadius: "var(--u-r-2)",
-            border: `1px solid ${fieldErrors.full_name ? "var(--u-danger)" : "var(--u-rule-2)"}`,
-            padding: "0 14px",
-            font: "var(--u-body)",
-            background: "var(--u-surface-2)",
-          }}
+          className={fieldErrors.full_name ? "u-field u-field--error" : "u-field"}
         />
         {fieldErrors.full_name ? (
-          <p
-            id="err-full-name"
-            style={{
-              color: "var(--u-danger)",
-              font: "var(--u-body-s)",
-              margin: "8px 0 0",
-            }}
-          >
+          <p id="err-full-name" className="u-field-error">
             {fieldErrors.full_name}
           </p>
         ) : null}
@@ -118,27 +102,11 @@ export function OnboardingForm({ defaultFullName, defaultPhone, redirectTo }: Pr
           required
           aria-invalid={Boolean(fieldErrors.phone)}
           aria-describedby={fieldErrors.phone ? "err-phone" : undefined}
-          style={{
-            width: "100%",
-            minHeight: 48,
-            boxSizing: "border-box",
-            borderRadius: "var(--u-r-2)",
-            border: `1px solid ${fieldErrors.phone ? "var(--u-danger)" : "var(--u-rule-2)"}`,
-            padding: "0 14px",
-            font: "var(--u-body)",
-            fontFamily: "var(--u-mono)",
-            background: "var(--u-surface-2)",
-          }}
+          className={fieldErrors.phone ? "u-field u-field--error" : "u-field"}
+          style={{ fontFamily: "var(--u-mono)" }}
         />
         {fieldErrors.phone ? (
-          <p
-            id="err-phone"
-            style={{
-              color: "var(--u-danger)",
-              font: "var(--u-body-s)",
-              margin: "8px 0 0",
-            }}
-          >
+          <p id="err-phone" className="u-field-error">
             {fieldErrors.phone}
           </p>
         ) : null}
@@ -159,22 +127,7 @@ export function OnboardingForm({ defaultFullName, defaultPhone, redirectTo }: Pr
         </div>
       ) : null}
 
-      <button
-        type="submit"
-        disabled={pending}
-        style={{
-          width: "100%",
-          minHeight: 52,
-          border: "none",
-          borderRadius: "var(--u-r-2)",
-          background: "var(--u-ember)",
-          color: "var(--u-ember-ink)",
-          font: "var(--u-body)",
-          fontWeight: 600,
-          cursor: pending ? "wait" : "pointer",
-          opacity: pending ? 0.85 : 1,
-        }}
-      >
+      <button type="submit" disabled={pending} className="u-btn-submit">
         {pending ? "Хадгалж байна…" : "Үргэлжлүүлэх"}
       </button>
     </form>
