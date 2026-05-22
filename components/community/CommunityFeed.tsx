@@ -28,10 +28,13 @@ export function CommunityFeed({ posts }: { posts: CommunityFeedPost[] }) {
           padding: "40px 24px",
           textAlign: "center",
           background: "var(--u-surface-2)",
-          border: "1px solid var(--u-rule)",
+          border: "1px dashed var(--u-rule-2)",
           borderRadius: "var(--u-r-3)",
         }}
       >
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--u-ink-3)" strokeWidth="1.4" aria-hidden style={{ margin: "0 auto 16px", display: "block" }}>
+          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+        </svg>
         <div style={{ font: "var(--u-h3)", fontWeight: 600, marginBottom: 10 }}>Одоогоор пост байхгүй</div>
         <p style={{ font: "var(--u-body)", color: "var(--u-ink-2)", margin: "0 0 22px", lineHeight: 1.55 }}>
           Та эхний постоо бичиж, нийгэмлэгийг эхлүүлээрэй.
@@ -73,6 +76,7 @@ export function CommunityFeed({ posts }: { posts: CommunityFeedPost[] }) {
                   src={p.imageUrl}
                   alt={p.title ? `${p.title} — зураг` : "Постын зураг"}
                   loading="lazy"
+                  gradientKey={p.id}
                   style={{ width: "100%", height: "auto", display: "block", maxHeight: 280, objectFit: "cover" }}
                 />
               </div>
