@@ -22,6 +22,7 @@ import { getEffectiveStatus } from "@/lib/auth/getEffectiveStatus";
 import { canAccessSubscriberContent } from "@/lib/subscription";
 import { LockedContentLink } from "@/components/dashboard/LockedContentLink";
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
+import { gradForKey } from "@/lib/ui-gradients";
 import {
   toneToBadgeStyle,
   transactionKindShort,
@@ -49,21 +50,6 @@ function DashBackToHub({ label = "← Хяналт" }: { label?: string }) {
       {label}
     </Link>
   );
-}
-
-const GRADS = [
-  "linear-gradient(135deg,#3A352E,#262220)",
-  "linear-gradient(135deg,#1F2B4C,#262220)",
-  "linear-gradient(135deg,#E84A1F,#B8341A)",
-  "linear-gradient(135deg,#4A453E,#262220)",
-  "linear-gradient(135deg,#3D2A1A,#262220)",
-  "linear-gradient(135deg,#1F2B4C,#3A352E)",
-];
-
-function gradForKey(key: string): string {
-  let h = 0;
-  for (let i = 0; i < key.length; i++) h = (h + key.charCodeAt(i) * (i + 3)) % GRADS.length;
-  return GRADS[h] ?? GRADS[0];
 }
 
 function thumbUrl(path: string | null | undefined): string | null {
@@ -233,6 +219,70 @@ function StatusCard({
     ? formatDate(profile.subscription_expires_at)
     : "—";
 
+  const renewCta = (
+    <Link
+      href="/payment"
+      style={{
+        background: "var(--u-ink)",
+        color: "var(--u-bg)",
+        padding: "12px 18px",
+        textAlign: "center",
+        borderRadius: "var(--u-r-2)",
+        textDecoration: "none",
+        font: "var(--u-body-s)",
+        fontWeight: 500,
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        minHeight: 48,
+        width: isWide ? undefined : "100%",
+        boxSizing: "border-box",
+      }}
+    >
+      Сунгах
+    </Link>
+  );
+
+  const statusHeadline = (
+    <div>
+      <div className="u-eyebrow">Гишүүнчлэл</div>
+      <div
+        style={{
+          fontFamily: "var(--u-display)",
+          fontWeight: 700,
+          fontSize: isWide ? 32 : 26,
+          letterSpacing: "-0.015em",
+          marginTop: 6,
+        }}
+      >
+        {subLbl.label}
+        {days != null ? (
+          <>
+            {" "}
+            ·{" "}
+            <span style={{ fontWeight: 300, color: "var(--u-ink-2)" }}>{days} өдөр үлдсэн</span>
+          </>
+        ) : null}
+      </div>
+    </div>
+  );
+
+  const metaNext = (
+    <div>
+      <div className="u-eyebrow">Дараагийн төлбөр</div>
+      <div style={{ font: "var(--u-h3)", marginTop: 6 }}>{nextPay}</div>
+    </div>
+  );
+
+  const metaAmount = (
+    <div>
+      <div className="u-eyebrow">Дүн</div>
+      <div style={{ font: "var(--u-h3)", marginTop: 6, fontFamily: "var(--u-mono)" }}>
+        {formatMNT(PAYMENT_INFO.amount)}
+      </div>
+    </div>
+  );
+
   return (
     <section
       style={{
@@ -240,58 +290,27 @@ function StatusCard({
         border: "1px solid var(--u-rule)",
         borderRadius: "var(--u-r-3)",
         padding: isWide ? "28px 32px" : "22px 20px",
-        display: "grid",
-        gridTemplateColumns: isWide ? "1.4fr 1fr 1fr 180px" : "minmax(0,1fr)",
-        gap: isWide ? 32 : 18,
-        alignItems: "center",
+        display: isWide ? "grid" : "flex",
+        flexDirection: isWide ? undefined : "column",
+        gridTemplateColumns: isWide ? "1.4fr 1fr 1fr 180px" : undefined,
+        gap: isWide ? 32 : 14,
+        alignItems: isWide ? "center" : "stretch",
       }}
     >
-      <div>
-        <div className="u-eyebrow">Гишүүнчлэл</div>
-        <div
-          style={{
-            fontFamily: "var(--u-display)",
-            fontWeight: 700,
-            fontSize: isWide ? 32 : 26,
-            letterSpacing: "-0.015em",
-            marginTop: 6,
-          }}
-        >
-          {subLbl.label}
-          {days != null ? (
-            <>
-              {" "}
-              ·{" "}
-              <span style={{ fontWeight: 300, color: "var(--u-ink-2)" }}>{days} өдөр үлдсэн</span>
-            </>
-          ) : null}
-        </div>
-      </div>
-      <div>
-        <div className="u-eyebrow">Дараагийн төлбөр</div>
-        <div style={{ font: "var(--u-h3)", marginTop: 6 }}>{nextPay}</div>
-      </div>
-      <div>
-        <div className="u-eyebrow">Дүн</div>
-        <div style={{ font: "var(--u-h3)", marginTop: 6, fontFamily: "var(--u-mono)" }}>
-          {formatMNT(PAYMENT_INFO.amount)}
-        </div>
-      </div>
-      <Link
-        href="/payment"
-        style={{
-          background: "var(--u-ink)",
-          color: "var(--u-bg)",
-          padding: "12px 18px",
-          textAlign: "center",
-          borderRadius: "var(--u-r-2)",
-          textDecoration: "none",
-          font: "var(--u-body-s)",
-          fontWeight: 500,
-        }}
-      >
-        Сунгах
-      </Link>
+      {isWide ? (
+        <>
+          {statusHeadline}
+          {metaNext}
+          {metaAmount}
+          {renewCta}
+        </>
+      ) : (
+        <>
+          {statusHeadline}
+          {renewCta}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>{metaNext}{metaAmount}</div>
+        </>
+      )}
     </section>
   );
 }
@@ -320,7 +339,17 @@ function ServiceHub({
   contentLocked: boolean;
 }) {
   const displayName = profile.full_name?.trim() || "Хэрэглэгч";
-  const isWide = useMediaQuery("(min-width: 1100px)");
+  const isDesktop = useMediaQuery("(min-width: 1100px)");
+  const isTabletWide = useMediaQuery("(min-width: 900px)");
+  const isTablet = useMediaQuery("(min-width: 641px)") && !isDesktop;
+  const cardMinHeight = isDesktop ? 160 : 140;
+  const gridCols = isDesktop
+    ? "repeat(5, 1fr)"
+    : isTablet
+      ? isTabletWide
+        ? "repeat(3, 1fr)"
+        : "repeat(2, 1fr)"
+      : "repeat(2, 1fr)";
   const today = formatMongolianLongDate(new Date());
 
   const services: {
@@ -395,15 +424,16 @@ function ServiceHub({
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: isWide ? "repeat(5, 1fr)" : "minmax(0,1fr)",
+          gridTemplateColumns: gridCols,
           gap: 12,
         }}
       >
-        {services.map((s) => (
+        {services.map((s, idx) => (
           <LockedContentLink
             key={s.n}
             href={s.href}
             locked={contentLocked}
+            className="u-card-lift"
             style={{
               textDecoration: "none",
               color: "inherit",
@@ -414,7 +444,11 @@ function ServiceHub({
               display: "flex",
               flexDirection: "column",
               gap: 12,
-              minHeight: 160,
+              minHeight: cardMinHeight,
+              gridColumn:
+                !isDesktop && !isTablet && services.length % 2 !== 0 && idx === services.length - 1
+                  ? "1 / -1"
+                  : undefined,
             }}
           >
             <div
@@ -490,6 +524,7 @@ function ContinueRow({
             key={it.id}
             href={`/lessons/${it.slug}`}
             locked={contentLocked}
+            className="u-card-lift"
             style={{
               textDecoration: "none",
               color: "inherit",
@@ -499,6 +534,7 @@ function ContinueRow({
               background: "var(--u-surface-2)",
               display: "flex",
               flexDirection: "column",
+              minHeight: 220,
             }}
           >
             <div
@@ -515,6 +551,7 @@ function ContinueRow({
                 <img
                   src={thumbUrl(it.thumbnail_path)!}
                   alt=""
+                  loading="lazy"
                   style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
                 />
               ) : null}
@@ -644,6 +681,10 @@ function LessonGridSection({
               borderRadius: "var(--u-r-3)",
             }}
           >
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--u-ink-3)" strokeWidth="1.4" aria-hidden style={{ margin: "0 auto 16px", display: "block" }}>
+              <rect x="3" y="5" width="14" height="12" rx="1" />
+              <path d="M17 9l4-2v10l-4-2" />
+            </svg>
             <div style={{ font: "var(--u-h3)", fontWeight: 600, marginBottom: 10 }}>Энэ шүүлтээр хичээл алга</div>
             <p style={{ font: "var(--u-body)", color: "var(--u-ink-2)", margin: "0 0 18px", lineHeight: 1.55 }}>
               Ангилал өөрчлөх эсвэл дараа дахин шалгана уу.
@@ -673,6 +714,7 @@ function LessonGridSection({
             key={l.id}
             href={`/lessons/${l.slug}`}
             locked={contentLocked}
+            className="u-card-lift"
             style={{
               textDecoration: "none",
               color: "inherit",
@@ -682,6 +724,7 @@ function LessonGridSection({
               overflow: "hidden",
               display: "flex",
               flexDirection: "column",
+              minHeight: 260,
             }}
           >
             <div
@@ -698,6 +741,7 @@ function LessonGridSection({
                 <img
                   src={thumbUrl(l.thumbnail_path)!}
                   alt=""
+                  loading="lazy"
                   style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
                 />
               ) : null}
@@ -810,8 +854,19 @@ function CoachingSection({
 
       <div style={{ border: "1px solid var(--u-rule)", borderRadius: "var(--u-r-3)", background: "var(--u-surface-2)", overflow: "hidden" }}>
         {upcomingSlots.length === 0 ? (
-          <div style={{ padding: "32px 22px", textAlign: "center" }}>
-            <div style={{ font: "var(--u-h4)", fontWeight: 600, marginBottom: 8 }}>Нээлттэй цаг алга</div>
+          <div
+            style={{
+              padding: "36px 24px",
+              textAlign: "center",
+              border: "1px dashed var(--u-rule-2)",
+              borderRadius: "var(--u-r-3)",
+            }}
+          >
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--u-ink-3)" strokeWidth="1.4" aria-hidden style={{ margin: "0 auto 16px", display: "block" }}>
+              <circle cx="12" cy="12" r="9" />
+              <path d="M12 7v5l3 2" />
+            </svg>
+            <div style={{ font: "var(--u-h3)", fontWeight: 600, marginBottom: 10 }}>Нээлттэй цаг алга</div>
             <p style={{ font: "var(--u-body)", color: "var(--u-ink-2)", margin: "0 0 18px", lineHeight: 1.55 }}>
               Шинэ цаг нэмэгдмэгц энд харагдана. Хяналтын хэсгээс үргэлжлүүлнэ үү.
             </p>
@@ -834,12 +889,11 @@ function CoachingSection({
               Хяналт руу буцах
             </Link>
           </div>
-        ) : (
+        ) : isWide ? (
           upcomingSlots.map((slot, i) => {
             const start = new Date(slot.start_at);
             const end = new Date(slot.end_at);
             const s = {
-              id: slot.id,
               date: String(start.getDate()),
               month: `${start.getMonth() + 1}-р сар`,
               day: formatMongolianShortWeekday(start),
@@ -852,10 +906,10 @@ function CoachingSection({
                 key={slot.id}
                 style={{
                   display: "grid",
-                  gridTemplateColumns: isWide ? "80px 1.5fr 1.4fr 1fr 160px" : "minmax(0,1fr)",
-                  gap: isWide ? 16 : 10,
+                  gridTemplateColumns: "80px 1.5fr 1.4fr 1fr 160px",
+                  gap: 16,
                   alignItems: "center",
-                  padding: isWide ? "20px 28px" : "16px 18px",
+                  padding: "20px 28px",
                   borderTop: i === 0 ? "none" : "1px solid var(--u-rule)",
                   opacity: s.state === "booked" ? 0.55 : 1,
                 }}
@@ -869,13 +923,14 @@ function CoachingSection({
                 </div>
                 <div style={{ font: "var(--u-body)", color: "var(--u-ink-2)" }}>1 цагийн уулзалт · онлайн</div>
                 <div style={{ font: "var(--u-mono)", color: "var(--u-ink-2)" }}>{formatMNT(slot.price)}</div>
-                <div style={{ textAlign: isWide ? "right" : "left" }}>
+                <div style={{ textAlign: "right" }}>
                   {s.state === "available" ? (
                     <Link
                       href={`/coaching/book/${slot.id}`}
                       style={{
                         display: "inline-flex",
                         alignItems: "center",
+                        minHeight: 44,
                         background: c.bg,
                         color: c.fg,
                         font: "var(--u-body-s)",
@@ -909,6 +964,105 @@ function CoachingSection({
               </div>
             );
           })
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", gap: 12, padding: 16 }}>
+            {upcomingSlots.map((slot) => {
+              const start = new Date(slot.start_at);
+              const end = new Date(slot.end_at);
+              const state = slotRowState(slot, myPendingSlotIds);
+              const c = stateChip[state];
+              return (
+                <div
+                  key={slot.id}
+                  style={{
+                    background: "var(--u-surface)",
+                    border: "1px solid var(--u-rule)",
+                    borderRadius: "var(--u-r-3)",
+                    padding: "18px 16px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 12,
+                    opacity: state === "booked" ? 0.55 : 1,
+                  }}
+                >
+                  <div style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
+                    <div
+                      style={{
+                        fontFamily: "var(--u-display)",
+                        fontWeight: 700,
+                        fontSize: 44,
+                        lineHeight: 1,
+                        letterSpacing: "-0.02em",
+                        color: "var(--u-ink)",
+                        minWidth: 48,
+                      }}
+                    >
+                      {String(start.getDate())}
+                    </div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ font: "var(--u-body-s)", color: "var(--u-ink-3)" }}>
+                        {`${start.getMonth() + 1}-р сар`} · {formatMongolianShortWeekday(start)}
+                      </div>
+                      <div style={{ font: "var(--u-h4)", marginTop: 4 }}>{`${formatHM(start)} — ${formatHM(end)}`}</div>
+                      <div style={{ font: "var(--u-body)", color: "var(--u-ink-2)", marginTop: 8 }}>
+                        1 цагийн уулзалт · онлайн
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      gap: 12,
+                      paddingTop: 4,
+                      borderTop: "1px solid var(--u-rule)",
+                    }}
+                  >
+                    <span style={{ font: "var(--u-mono)", color: "var(--u-ink-2)", fontWeight: 600 }}>
+                      {formatMNT(slot.price)}
+                    </span>
+                    {state === "available" ? (
+                      <Link
+                        href={`/coaching/book/${slot.id}`}
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          minHeight: 48,
+                          padding: "0 18px",
+                          background: "var(--u-ember)",
+                          color: "var(--u-ember-ink)",
+                          font: "var(--u-body-s)",
+                          fontWeight: 600,
+                          borderRadius: "var(--u-r-2)",
+                          textDecoration: "none",
+                        }}
+                      >
+                        {c.txt}
+                      </Link>
+                    ) : (
+                      <span
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          minHeight: 48,
+                          padding: "0 14px",
+                          background: c.bg,
+                          color: c.fg,
+                          font: "var(--u-body-s)",
+                          fontWeight: 500,
+                          borderRadius: "var(--u-r-pill)",
+                        }}
+                      >
+                        {c.txt}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         )}
       </div>
     </section>
@@ -1022,8 +1176,11 @@ function ProfileScreen({
             </Link>
           </div>
           {recentTransactions.length === 0 ? (
-            <div style={{ padding: "28px 24px", textAlign: "center" }}>
-              <div style={{ font: "var(--u-h4)", fontWeight: 600, marginBottom: 8 }}>Гүйлгээ байхгүй</div>
+            <div style={{ padding: "36px 24px", textAlign: "center" }}>
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--u-ink-3)" strokeWidth="1.4" aria-hidden style={{ margin: "0 auto 16px", display: "block" }}>
+                <path d="M4 6h16v12H4zM8 10h8M8 14h5" />
+              </svg>
+              <div style={{ font: "var(--u-h3)", fontWeight: 600, marginBottom: 10 }}>Гүйлгээ байхгүй</div>
               <p style={{ font: "var(--u-body)", color: "var(--u-ink-2)", margin: "0 0 18px", lineHeight: 1.55 }}>
                 Төлбөр төлөх эсвэл гүйлгээний түүхээ эндээс харна.
               </p>
