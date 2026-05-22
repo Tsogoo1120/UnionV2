@@ -1,15 +1,18 @@
 "use client";
 
-import type { FormEvent, ReactNode } from "react";
+import { useEffect, useState, type CSSProperties, type FormEvent, type ReactNode } from "react";
+import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 
-export const adminInputStyle: React.CSSProperties = {
-  padding: 10,
-  borderRadius: 8,
+export const adminInputStyle: CSSProperties = {
+  padding: "10px 14px",
+  borderRadius: "var(--u-r-2)",
   border: "1px solid var(--u-rule-2)",
-  background: "var(--u-surface)",
+  background: "var(--u-surface-2)",
   color: "var(--u-ink)",
   font: "var(--u-body)",
   width: "100%",
+  minHeight: 48,
+  boxSizing: "border-box",
 };
 
 export function AdminFieldLabel({
@@ -49,9 +52,30 @@ export function AdminDrawer({
   children,
   footer,
 }: AdminDrawerProps) {
+  const [entered, setEntered] = useState(false);
+  const isMobile = useMediaQuery("(max-width: 480px)");
+
+  useEffect(() => {
+    if (!open) {
+      setEntered(false);
+      return;
+    }
+    const t = requestAnimationFrame(() => setEntered(true));
+    return () => cancelAnimationFrame(t);
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, onClose]);
+
   if (!open) return null;
 
-  const w = typeof width === "number" ? `${width}px` : width;
+  const w = isMobile ? "100%" : typeof width === "number" ? `${width}px` : width;
 
   return (
     <DrawerBackdrop onClose={onClose}>
@@ -60,6 +84,7 @@ export function AdminDrawer({
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
+        aria-labelledby="admin-drawer-title"
         style={{
           position: "absolute",
           top: 0,
@@ -67,19 +92,45 @@ export function AdminDrawer({
           height: "100%",
           width: `min(${w}, 100%)`,
           background: "var(--u-surface)",
-          borderLeft: "1px solid var(--u-rule)",
+          borderLeft: isMobile ? "none" : "1px solid var(--u-rule)",
           boxShadow: "var(--u-shadow-3)",
-          padding: 24,
+          padding: "24px 24px calc(24px + env(safe-area-inset-bottom, 0px))",
           display: "flex",
           flexDirection: "column",
           gap: 12,
           overflow: "hidden",
+          transform: entered ? "translateX(0)" : "translateX(100%)",
+          transition: `transform var(--u-dur-3) var(--u-ease-out)`,
         }}
       >
-        <div className="u-eyebrow">{title}</div>
-        <div style={{ flex: 1, overflow: "auto", display: "flex", flexDirection: "column", gap: 12 }}>
-          {children}
+        <button
+          type="button"
+          aria-label="Хаах"
+          onClick={onClose}
+          style={{
+            position: "absolute",
+            top: 16,
+            right: 16,
+            width: 36,
+            height: 36,
+            borderRadius: "var(--u-r-pill)",
+            background: "var(--u-surface)",
+            border: "1px solid var(--u-rule-2)",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: 18,
+            color: "var(--u-ink-2)",
+            zIndex: 1,
+          }}
+        >
+          ✕
+        </button>
+        <div id="admin-drawer-title" style={{ font: "var(--u-h3)", fontWeight: 600, paddingRight: 40 }}>
+          {title}
         </div>
+        <div style={{ flex: 1, overflow: "auto", display: "flex", flexDirection: "column", gap: 12 }}>{children}</div>
         <div
           style={{
             flexShrink: 0,
@@ -133,8 +184,9 @@ export function DrawerCancelButton({
       disabled={disabled}
       style={{
         flex: 1,
+        minHeight: 52,
         padding: 12,
-        borderRadius: 8,
+        borderRadius: "var(--u-r-2)",
         border: "1px solid var(--u-rule-2)",
         background: "transparent",
         cursor: "pointer",
@@ -159,14 +211,15 @@ export function DrawerSubmitButton({
       disabled={pending}
       style={{
         flex: 1,
+        minHeight: 52,
         padding: 12,
-        borderRadius: 8,
+        borderRadius: "var(--u-r-2)",
         border: "none",
-        background: "var(--u-ink)",
-        color: "var(--u-bg)",
+        background: "var(--u-ember)",
+        color: "var(--u-ember-ink)",
         cursor: pending ? "wait" : "pointer",
         font: "var(--u-body-s)",
-        fontWeight: 500,
+        fontWeight: 600,
       }}
     >
       {pending ? "Хадгалж байна…" : label}
