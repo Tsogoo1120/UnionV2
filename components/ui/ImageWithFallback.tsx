@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { CSSProperties } from "react";
+import { gradForKey } from "@/lib/ui-gradients";
 
 export type ImageWithFallbackProps = {
   src: string;
@@ -10,10 +11,12 @@ export type ImageWithFallbackProps = {
   style?: CSSProperties;
   /** Use lazy for below-the-fold images */
   loading?: "lazy" | "eager";
+  /** Deterministic gradient when image fails (e.g. lesson slug or post id) */
+  gradientKey?: string;
 };
 
 /**
- * `<img>` with meaningful alt text and a broken-image placeholder using `var(--u-mute)`.
+ * `<img>` with meaningful alt text and a gradient placeholder on load error.
  */
 export function ImageWithFallback({
   src,
@@ -21,8 +24,10 @@ export function ImageWithFallback({
   className,
   style,
   loading = "lazy",
+  gradientKey,
 }: ImageWithFallbackProps) {
   const [broken, setBroken] = useState(false);
+  const grad = gradForKey(gradientKey ?? src);
 
   if (broken) {
     return (
@@ -31,8 +36,8 @@ export function ImageWithFallback({
         aria-label={alt ? `${alt} — ачааллахад алдаа гарлаа` : "Зураг ачааллахад алдаа гарлаа"}
         className={className}
         style={{
-          background: "var(--u-mute)",
-          color: "var(--u-ink-3)",
+          background: grad,
+          color: "var(--u-dark-ink-2)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
