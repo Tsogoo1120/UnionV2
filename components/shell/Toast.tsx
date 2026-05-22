@@ -46,7 +46,7 @@ function ToastViewport({ items }: { items: ToastItem[] }) {
       id={rid}
       style={{
         position: "fixed",
-        zIndex: 50,
+        zIndex: 60,
         display: "flex",
         flexDirection: "column",
         gap: 10,
@@ -55,7 +55,7 @@ function ToastViewport({ items }: { items: ToastItem[] }) {
           ? {
               left: 16,
               right: 16,
-              bottom: "calc(64px + env(safe-area-inset-bottom, 0px) + 16px)",
+              bottom: "calc(64px + env(safe-area-inset-bottom, 0px) + 12px)",
               alignItems: "stretch",
               maxWidth: 420,
               margin: "0 auto",
