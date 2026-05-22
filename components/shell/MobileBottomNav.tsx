@@ -35,14 +35,19 @@ function NavCell({ item }: { item: MobileBottomNavItem }) {
     padding: "4px 4px 0",
     margin: 0,
     border: "none",
+    borderTop: active ? "2px solid var(--u-ember)" : "2px solid transparent",
     background: "transparent",
     color,
     font: "var(--u-label)",
+    fontSize: 10,
+    letterSpacing: "0.04em",
     fontWeight: 500,
     textDecoration: "none",
     cursor: "pointer",
     WebkitTapHighlightColor: "transparent",
-    transition: `color ${DUR} ${EASE}`,
+    transition: `color ${DUR} ${EASE}, border-color ${DUR} ${EASE}`,
+    position: "relative",
+    boxSizing: "border-box",
   };
 
   const iconWrap = (
@@ -55,8 +60,23 @@ function NavCell({ item }: { item: MobileBottomNavItem }) {
         width: 44,
         height: 44,
         color: "inherit",
+        position: "relative",
       }}
     >
+      {active ? (
+        <span
+          style={{
+            position: "absolute",
+            top: 2,
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: 4,
+            height: 4,
+            borderRadius: 999,
+            background: "var(--u-ember)",
+          }}
+        />
+      ) : null}
       {item.icon}
     </span>
   );
