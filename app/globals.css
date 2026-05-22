@@ -199,7 +199,7 @@ select:focus-visible,
     box-shadow var(--u-dur-2) var(--u-ease);
 }
 .u-card-lift:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   box-shadow: var(--u-shadow-3);
 }
 .u-card-lift:active {
@@ -245,7 +245,7 @@ select:focus-visible,
 .u-field:focus-visible {
   outline: none;
   box-shadow: var(--u-focus);
-  border-color: var(--u-ink-3);
+  border-color: var(--u-ember);
 }
 .u-field--error {
   border-color: var(--u-danger);
