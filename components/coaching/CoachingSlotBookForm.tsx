@@ -110,9 +110,7 @@ export function CoachingSlotBookForm({
           />
         </label>
         {fieldErrors.screenshot ? (
-          <p style={{ color: "var(--u-danger)", font: "var(--u-body-s)", margin: "8px 0 0" }}>
-            {fieldErrors.screenshot}
-          </p>
+          <p className="u-field-error">{fieldErrors.screenshot}</p>
         ) : null}
       </div>
 
