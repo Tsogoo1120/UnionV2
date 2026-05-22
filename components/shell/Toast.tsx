@@ -10,6 +10,7 @@ import {
   useState,
 } from "react";
 import { createPortal } from "react-dom";
+import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 
 export type ToastKind = "success" | "error" | "info";
 
@@ -33,6 +34,7 @@ export function useToast(): ShowToast {
 
 function ToastViewport({ items }: { items: ToastItem[] }) {
   const rid = useId();
+  const isMobile = useMediaQuery("(max-width: 640px)");
   if (items.length === 0) return null;
 
   return createPortal(
@@ -44,17 +46,26 @@ function ToastViewport({ items }: { items: ToastItem[] }) {
       id={rid}
       style={{
         position: "fixed",
-        left: 16,
-        right: 16,
-        bottom: "calc(24px + env(safe-area-inset-bottom, 0px))",
-        zIndex: 9999,
+        zIndex: 50,
         display: "flex",
         flexDirection: "column",
-        alignItems: "stretch",
         gap: 10,
         pointerEvents: "none",
-        maxWidth: 420,
-        margin: "0 auto",
+        ...(isMobile
+          ? {
+              left: 16,
+              right: 16,
+              bottom: "calc(64px + env(safe-area-inset-bottom, 0px) + 16px)",
+              alignItems: "stretch",
+              maxWidth: 420,
+              margin: "0 auto",
+            }
+          : {
+              right: 24,
+              bottom: 24,
+              alignItems: "flex-end",
+              maxWidth: 420,
+            }),
       }}
     >
       {items.map((t) => (
