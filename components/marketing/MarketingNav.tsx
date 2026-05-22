@@ -24,7 +24,10 @@ type MarketingNavProps = {
 };
 
 const navLinkClass =
-  "flex min-h-11 items-center rounded-[var(--u-r-2)] px-1 py-2.5 font-[var(--u-body)] font-medium text-inherit no-underline transition-[color,background-color] duration-[var(--u-dur-2)] ease-[var(--u-ease)] hover:text-[var(--u-ink)] focus-visible:outline-none";
+  "flex min-h-11 items-center rounded-[var(--u-r-2)] px-1 py-2.5 font-[var(--u-body)] font-medium text-inherit no-underline transition-[color,background-color] duration-[var(--u-dur-2)] ease-[var(--u-ease)] hover:text-[var(--u-ink)]";
+
+const mobileCtaClass =
+  "inline-flex min-h-11 shrink-0 items-center justify-center rounded-[var(--u-r-2)] bg-[var(--u-ember)] px-3 py-2 text-center font-[var(--u-body-s)] font-semibold text-[var(--u-ember-ink)] no-underline transition-[transform,box-shadow,background-color] duration-[var(--u-dur-2)] ease-[var(--u-ease)] hover:-translate-y-px hover:shadow-[var(--u-shadow-2)] active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0";
 
 const memberCtaClass =
   "inline-flex min-h-11 items-center justify-center rounded-[var(--u-r-2)] bg-[var(--u-ink)] px-4 py-2.5 text-center font-[var(--u-body-s)] font-medium text-[var(--u-bg)] no-underline transition-[transform,box-shadow,background-color] duration-[var(--u-dur-2)] ease-[var(--u-ease)] hover:-translate-y-px hover:shadow-[var(--u-shadow-2)] active:translate-y-0 active:shadow-[var(--u-shadow-press)] motion-reduce:transition-none motion-reduce:hover:translate-y-0";
@@ -73,15 +76,20 @@ export function MarketingNav({ signInHref, memberHref }: MarketingNavProps) {
       {isMobile ? (
         <div className="mx-auto flex max-w-container items-center justify-between gap-3 px-[var(--u-gutter)] py-3">
           {logo}
-          <button
-            type="button"
-            aria-label="Цэс нээх"
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen(true)}
-            className="grid h-11 w-11 min-h-11 min-w-11 place-items-center rounded-[var(--u-r-2)] border-0 bg-transparent p-0 text-[var(--u-ink)] cursor-pointer"
-          >
-            <HamburgerIcon />
-          </button>
+          <div className="flex shrink-0 items-center gap-2">
+            <Link href={memberHref} className={mobileCtaClass}>
+              Гишүүн болох →
+            </Link>
+            <button
+              type="button"
+              aria-label="Цэс нээх"
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen(true)}
+              className="grid h-11 w-11 min-h-11 min-w-11 place-items-center rounded-[var(--u-r-2)] border-0 bg-transparent p-0 text-[var(--u-ink)] cursor-pointer"
+            >
+              <HamburgerIcon />
+            </button>
+          </div>
           <MobileDrawer open={menuOpen} onClose={() => setMenuOpen(false)} side="right">
             {drawerLinks}
           </MobileDrawer>
