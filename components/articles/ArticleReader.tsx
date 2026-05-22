@@ -16,10 +16,11 @@ export function ArticleReader({ title, bodyMd, readingMinutes, heroImageUrl, des
     <article
       style={{
         width: "100%",
-        maxWidth: 720,
+        maxWidth: "68ch",
         margin: "0 auto",
         padding: "24px 16px 80px",
         boxSizing: "border-box",
+        overflowX: "hidden",
       }}
     >
       {heroImageUrl ? (
@@ -28,26 +29,24 @@ export function ArticleReader({ title, bodyMd, readingMinutes, heroImageUrl, des
             width: "100%",
             borderRadius: "var(--u-r-3)",
             overflow: "hidden",
-            marginBottom: 28,
+            marginBottom: "var(--u-s-8)",
             aspectRatio: "21 / 9",
           }}
         >
           <img
             src={heroImageUrl}
             alt=""
+            loading="lazy"
             style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
           />
         </div>
       ) : null}
-      <header style={{ marginBottom: 28 }}>
+      <header style={{ marginBottom: "var(--u-s-8)" }}>
         <h1
           style={{
-            fontFamily: "var(--u-display)",
-            fontWeight: 700,
-            fontSize: "clamp(28px, 4.5vw, 44px)",
+            font: "var(--u-h1)",
             letterSpacing: "-0.02em",
-            lineHeight: 1.08,
-            margin: "0 0 12px",
+            margin: "0 0 var(--u-s-4)",
             color: "var(--u-ink)",
           }}
         >
@@ -70,22 +69,16 @@ export function ArticleReader({ title, bodyMd, readingMinutes, heroImageUrl, des
         ) : null}
       </header>
       {descriptionImageUrl ? (
-        <div style={{ marginBottom: 28, borderRadius: "var(--u-r-3)", overflow: "hidden" }}>
+        <div style={{ marginBottom: "var(--u-s-8)", borderRadius: "var(--u-r-3)", overflow: "hidden" }}>
           <img
             src={descriptionImageUrl}
             alt=""
+            loading="lazy"
             style={{ width: "100%", display: "block" }}
           />
         </div>
       ) : null}
-      <div
-        className="u-prose u-article-body"
-        style={{
-          fontSize: "clamp(16px, 2.2vw, 18px)",
-          lineHeight: 1.7,
-          color: "var(--u-ink)",
-        }}
-      >
+      <div className="u-prose u-article-body">
         <ReactMarkdown remarkPlugins={[remarkGfm]}>{bodyMd}</ReactMarkdown>
       </div>
     </article>
