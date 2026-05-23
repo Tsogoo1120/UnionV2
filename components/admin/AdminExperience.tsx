@@ -206,6 +206,7 @@ function AdminNav({
                   key={it.id}
                   type="button"
                   onClick={() => setTab(it.id)}
+                  className={active ? "u-admin-nav-btn u-admin-nav-btn--active" : "u-admin-nav-btn"}
                   style={{
                     width: "100%",
                     textAlign: "left",
@@ -221,13 +222,6 @@ function AdminNav({
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
-                    transition: "background-color var(--u-dur-2) var(--u-ease)",
-                  }}
-                  onMouseEnter={(e) => {
-                    if (!active) e.currentTarget.style.background = "rgba(255,255,255,.06)";
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!active) e.currentTarget.style.background = "transparent";
                   }}
                 >
                   <span>{it.label}</span>
@@ -438,6 +432,7 @@ function OverviewQuickActions({
             key={a.tab}
             type="button"
             onClick={() => onTab(a.tab)}
+            className="u-quick-action"
             style={{
               textAlign: "left",
               border: "1px solid var(--u-rule)",
@@ -568,17 +563,8 @@ function PaymentDetailPanel({
           type="button"
           disabled={pending}
           onClick={onDeny}
-          style={{
-            background: "transparent",
-            border: "1px solid var(--u-danger-soft)",
-            color: "var(--u-danger)",
-            font: "var(--u-body-s)",
-            fontWeight: 500,
-            padding: "12px",
-            borderRadius: "var(--u-r-2)",
-            cursor: "pointer",
-            minHeight: 48,
-          }}
+          className="u-btn-danger-ghost"
+          style={{ padding: "12px", minHeight: 48, width: "100%" }}
         >
           Татгалзах
         </button>
@@ -873,16 +859,8 @@ function ContentActionsTable({
         type="button"
         disabled={busy}
         onClick={() => onDelete(r.id)}
-        style={{
-          padding: "6px 12px",
-          borderRadius: "var(--u-r-2)",
-          border: "1px solid var(--u-danger-soft)",
-          background: "transparent",
-          color: "var(--u-danger)",
-          font: "var(--u-body-s)",
-          cursor: busy ? "not-allowed" : "pointer",
-          minHeight: btnMinH,
-        }}
+        className="u-btn-danger-ghost"
+        style={{ padding: "6px 12px", minHeight: btnMinH }}
       >
         Устгах
       </button>

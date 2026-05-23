@@ -68,6 +68,22 @@ export default async function TestPage({
             </div>
           ) : null}
 
+          <Link
+            href="/tests"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              minHeight: 44,
+              font: "var(--u-body-s)",
+              fontWeight: 600,
+              color: "var(--u-ember)",
+              textDecoration: "none",
+              marginBottom: 16,
+            }}
+          >
+            ← Тестүүд
+          </Link>
+
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             <Link
               href={`/tests/${params.slug}/result`}

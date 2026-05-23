@@ -35,16 +35,44 @@ export function MarketingCoachingStrip({ slots, signedIn = false }: Props) {
       <div className="mx-auto max-w-container px-[var(--u-gutter)] py-[var(--u-s-12)] sm:py-[var(--u-s-20)]">
         <div className="mb-[var(--u-s-10)] grid items-end gap-[var(--u-s-8)] md:grid-cols-2 md:gap-[var(--u-s-16)]">
           <div>
-            <div className="u-eyebrow text-[var(--u-dark-ink-2)]">1:1 online meeting</div>
-            <h2 className="mt-3 max-w-[16ch] text-balance font-[family-name:var(--u-display)] text-[clamp(2.25rem,5vw,4rem)] font-bold leading-[1.02] tracking-[-0.02em]">
+            <div className="mb-3 flex flex-wrap items-center gap-2">
+              <div className="u-eyebrow text-[var(--u-dark-ink-2)]">1:1 online meeting</div>
+              <span
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 5,
+                  padding: "3px 10px",
+                  borderRadius: 999,
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: "0.06em",
+                  textTransform: "uppercase",
+                  background: "rgba(255,255,255,0.12)",
+                  color: "var(--u-dark-ink-2)",
+                  border: "1px solid rgba(255,255,255,0.18)",
+                }}
+              >
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden>
+                  <circle cx="12" cy="12" r="10" /><path d="M12 8v4M12 16h.01" />
+                </svg>
+                Гишүүнчлэлд ороогүй
+              </span>
+            </div>
+            <h2 className="mt-1 max-w-[16ch] text-balance font-[family-name:var(--u-display)] text-[clamp(2.25rem,5vw,4rem)] font-bold leading-[1.02] tracking-[-0.02em]">
               Уулзалт хийх.
               <br />
               <span className="font-light text-[var(--u-dark-ink-2)]">Цагаа сонгоорой.</span>
             </h2>
           </div>
-          <p className="m-0 max-w-[26ch] font-[var(--u-body-l)] text-[var(--u-dark-ink-2)] text-pretty sm:max-w-[420px]">
-            1 цагийг хоёр хуваана. Эхний хагаст нь тарот хөзрөөр 3 хүссэн асуултанд нь хариулна.Дараагийн хагаст нөхцөл байдлын талаар дэлгэрэнгүй ярилцаж, зөвлөгөө өгнө.
-          </p>
+          <div>
+            <p className="m-0 max-w-[26ch] font-[var(--u-body-l)] text-[var(--u-dark-ink-2)] text-pretty sm:max-w-[420px]">
+              1 цагийг хоёр хуваана. Эхний хагаст нь тарот хөзрөөр 3 хүссэн асуултанд нь хариулна. Дараагийн хагаст нөхцөл байдлын талаар дэлгэрэнгүй ярилцаж, зөвлөгөө өгнө.
+            </p>
+            <p className="mt-4 m-0 font-[var(--u-body-s)] text-[var(--u-dark-ink-2)] opacity-75">
+              Энэ нь гишүүнчлэлээс тусдаа, нэг удаагийн захиалгатай үйлчилгээ юм.
+            </p>
+          </div>
         </div>
 
         {display.length === 0 ? (

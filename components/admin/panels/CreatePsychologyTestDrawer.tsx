@@ -131,6 +131,19 @@ export function parseScoringRulesJson(raw: string): { data?: TestScoringRules; e
     return { data: parsed as unknown as TestScoringRules };
   }
 
+  if (parsed.type === "category_count") {
+    if (!isRecord(parsed.optionValueToCategory)) {
+      return { error: "category_count: optionValueToCategory объект шаардлагатай." };
+    }
+    if (!Array.isArray(parsed.categoryOrder) || parsed.categoryOrder.length === 0) {
+      return { error: "category_count: categoryOrder массив шаардлагатай." };
+    }
+    if (!isRecord(parsed.categories)) {
+      return { error: "category_count: categories объект шаардлагатай." };
+    }
+    return { data: parsed as unknown as TestScoringRules };
+  }
+
   // Simple range format
   if (!Array.isArray(parsed.ranges) || parsed.ranges.length === 0) {
     return { error: "scoring_rules.ranges хоосон биш массив байх ёстой." };

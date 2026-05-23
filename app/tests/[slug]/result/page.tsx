@@ -5,6 +5,7 @@ import { requireActive } from "@/lib/auth/requireSession";
 import { getLatestTestResultForSlug } from "@/lib/queries/tests";
 import { createClient } from "@/lib/supabase/server";
 import { BigFiveResult } from "@/components/tests/BigFiveResult";
+import { AttachmentResult } from "@/components/tests/AttachmentResult";
 
 export default async function TestResultPage({
   params,
@@ -20,13 +21,21 @@ export default async function TestResultPage({
   }
 
   const { test, result } = bundle;
-  const isBigFive = test.scoring_rules?.type === "big_five";
+  const scoringType = test.scoring_rules?.type;
+  const isBigFive = scoringType === "big_five";
+  const isCategoryCount = scoringType === "category_count";
   const scoreVal =
-    !isBigFive && result.score && "value" in result.score
+    !isBigFive &&
+    !isCategoryCount &&
+    result.score &&
+    "value" in result.score
       ? Number(result.score.value)
       : null;
   const simpleRanges =
-    !isBigFive && test.scoring_rules && "ranges" in test.scoring_rules
+    !isBigFive &&
+    !isCategoryCount &&
+    test.scoring_rules &&
+    "ranges" in test.scoring_rules
       ? (test.scoring_rules.ranges ?? [])
       : [];
 
@@ -42,6 +51,10 @@ export default async function TestResultPage({
       {isBigFive ? (
         <section style={{ marginBottom: 24 }}>
           <BigFiveResult test={test} result={result} />
+        </section>
+      ) : isCategoryCount ? (
+        <section style={{ marginBottom: 24 }}>
+          <AttachmentResult test={test} result={result} />
         </section>
       ) : (
         <>
@@ -95,8 +108,68 @@ export default async function TestResultPage({
         </>
       )}
 
-      <Link href="/dashboard" style={{ font: "var(--u-body-s)", color: "var(--u-ember)", fontWeight: 600 }}>
-        ← Самбар руу
+      {test.questions.length > 0 ? (
+        <section style={{ marginBottom: 32 }}>
+          <div className="u-eyebrow" style={{ marginBottom: 12 }}>
+            Таны хариултууд
+          </div>
+          <div
+            style={{
+              border: "1px solid var(--u-rule)",
+              borderRadius: "var(--u-r-3)",
+              overflow: "hidden",
+            }}
+          >
+            {test.questions.map((q, qi) => {
+              const selectedOptionId = result.answers?.[q.id];
+              const selectedOption = q.options.find(
+                (o) => String(o.id) === String(selectedOptionId),
+              );
+              return (
+                <div
+                  key={q.id}
+                  style={{
+                    padding: "14px 18px",
+                    borderTop:
+                      qi === 0 ? "none" : "1px solid var(--u-rule)",
+                  }}
+                >
+                  <div
+                    style={{
+                      font: "var(--u-body-s)",
+                      color: "var(--u-ink-3)",
+                      marginBottom: 4,
+                    }}
+                  >
+                    {qi + 1}. {q.text}
+                  </div>
+                  <div
+                    style={{
+                      font: "var(--u-body-s)",
+                      fontWeight: 500,
+                      color: "var(--u-ink)",
+                      borderLeft: "3px solid var(--u-ember)",
+                      paddingLeft: 10,
+                    }}
+                  >
+                    {selectedOption?.text ?? "—"}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      ) : null}
+
+      <Link
+        href="/tests"
+        style={{
+          font: "var(--u-body-s)",
+          color: "var(--u-ember)",
+          fontWeight: 600,
+        }}
+      >
+        ← Тестүүд
       </Link>
     </div>
   );

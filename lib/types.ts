@@ -137,7 +137,7 @@ export interface TestQuestion {
   id: string;
   text: string;
   options: { id: string; text: string; value: number }[];
-  meta?: { trait?: string; reverse?: boolean };
+  meta?: { trait?: string; reverse?: boolean; section?: string };
 }
 
 export interface SimpleTestScoringRules {
@@ -166,7 +166,24 @@ export interface BigFiveTestScoringRules {
   resultSummaryTemplate: Record<string, string>;
 }
 
-export type TestScoringRules = SimpleTestScoringRules | BigFiveTestScoringRules;
+export interface CategoryInfo {
+  title: string;
+  subtitle: string;
+  shortLabel: string;
+  meaning: string;
+}
+
+export interface CategoryCountTestScoringRules {
+  type: "category_count";
+  optionValueToCategory: Record<string, string>;
+  categoryOrder: string[];
+  categories: Record<string, CategoryInfo>;
+}
+
+export type TestScoringRules =
+  | SimpleTestScoringRules
+  | BigFiveTestScoringRules
+  | CategoryCountTestScoringRules;
 
 export interface TestResult {
   id: string;
@@ -215,6 +232,7 @@ export interface CoachingSlot {
   currency: string;
   description: string | null;
   status: CoachingSlotStatus;
+  service_type: string;
   created_by: string;
   created_at: string;
   updated_at: string;

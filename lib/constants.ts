@@ -25,6 +25,23 @@ export const SUBSCRIPTION_DURATION_DAYS = 30;
 export const DEFAULT_COACHING_PRICE = 150_000;
 export const DEFAULT_COACHING_CURRENCY = "MNT";
 
+export const COACHING_SERVICE_TYPES = {
+  "1vs1_coaching": {
+    label: "1 vs 1 Коучинг",
+    price: 150_000,
+    durationMinutes: 60,
+    currency: "MNT",
+  },
+  tarot_reading: {
+    label: "Хувийн таро уншлага",
+    price: 75_000,
+    durationMinutes: 30,
+    currency: "MNT",
+  },
+} as const;
+
+export type CoachingServiceType = keyof typeof COACHING_SERVICE_TYPES;
+
 // -----------------------------------------------------------------------------
 // 5-service hub metadata (used by the dashboard tile grid)
 // -----------------------------------------------------------------------------

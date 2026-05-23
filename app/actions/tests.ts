@@ -19,6 +19,7 @@ import type {
   TestScoringRules,
   SimpleTestScoringRules,
   BigFiveTestScoringRules,
+  CategoryCountTestScoringRules,
 } from "@/lib/types";
 
 export type PsychologyTestInput = {
@@ -138,6 +139,9 @@ function scoreAnswers(
   if (scoringRules.type === "big_five") {
     return scoreBigFive(questions, scoringRules, answers);
   }
+  if (scoringRules.type === "category_count") {
+    return scoreCategoryCount(questions, scoringRules, answers);
+  }
   const simple = scoringRules as SimpleTestScoringRules;
   let total = 0;
   for (const q of questions) {
@@ -185,6 +189,42 @@ function scoreBigFive(
     scoreData: traitScores,
     summary: summaryParts.length > 0 ? summaryParts.join(" ") : null,
   };
+}
+
+function scoreCategoryCount(
+  questions: TestQuestion[],
+  rules: CategoryCountTestScoringRules,
+  answers: Record<string, string>,
+): { scoreData: Record<string, number>; summary: string | null } {
+  const counts: Record<string, number> = {};
+  for (const key of rules.categoryOrder) counts[key] = 0;
+
+  const questionMap = new Map(questions.map((q) => [q.id, q]));
+  for (const [qid, optionId] of Object.entries(answers)) {
+    const q = questionMap.get(qid);
+    if (!q) continue;
+    const opt = q.options.find((o) => o.id === optionId);
+    if (!opt) continue;
+    const category = rules.optionValueToCategory[String(opt.value)];
+    if (!category) continue;
+    counts[category] = (counts[category] ?? 0) + 1;
+  }
+
+  let winner: string | null = null;
+  let max = -1;
+  for (const key of rules.categoryOrder) {
+    if ((counts[key] ?? 0) > max) {
+      max = counts[key] ?? 0;
+      winner = key;
+    }
+  }
+
+  const winnerInfo = winner ? rules.categories[winner] : null;
+  const summary = winnerInfo
+    ? `${winnerInfo.title} — ${winnerInfo.subtitle}`
+    : null;
+
+  return { scoreData: counts, summary };
 }
 
 export async function submitTestResult(

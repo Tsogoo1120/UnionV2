@@ -31,11 +31,6 @@ import { MobileBottomNav, type MobileBottomNavItem } from "@/components/shell/Mo
 import { EmptyState } from "@/components/ui/empty-state";
 import { signOut } from "@/app/actions/auth";
 
-const focusRing: CSSProperties = {
-  outline: "2px solid var(--u-ember)",
-  outlineOffset: "2px",
-};
-
 type Tab = "hub" | "lessons" | "coaching" | "profile";
 
 const dashBackLinkStyle: CSSProperties = {
@@ -157,31 +152,7 @@ function DashNav({
                   key={t.id}
                   type="button"
                   onClick={() => onTab(t.id)}
-                  style={{
-                    background: active ? "var(--u-ink)" : "transparent",
-                    color: active ? "var(--u-bg)" : "var(--u-ink-2)",
-                    border: "none",
-                    borderBottom: active ? "2px solid var(--u-ember)" : "2px solid transparent",
-                    cursor: "pointer",
-                    font: "var(--u-body-s)",
-                    fontWeight: 500,
-                    padding: "8px 14px 6px",
-                    minHeight: 44,
-                    borderRadius: "var(--u-r-pill)",
-                    transition:
-                      "background-color var(--u-dur-2) var(--u-ease), color var(--u-dur-2) var(--u-ease), border-color var(--u-dur-2) var(--u-ease)",
-                  }}
-                  onMouseEnter={(e) => {
-                    if (!active) e.currentTarget.style.background = "var(--u-surface-2)";
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!active) e.currentTarget.style.background = "transparent";
-                  }}
-                  onFocus={(e) => Object.assign(e.currentTarget.style, focusRing)}
-                  onBlur={(e) => {
-                    e.currentTarget.style.outline = "";
-                    e.currentTarget.style.outlineOffset = "";
-                  }}
+                  className={active ? "u-dash-tab u-dash-tab--active" : "u-dash-tab"}
                 >
                   {t.label}
                 </button>
@@ -399,7 +370,7 @@ function ServiceHub({
       n: "04",
       title: "Тест",
       meta: `${hubStats.tests} тест`,
-      href: firstTestSlug ? `/tests/${firstTestSlug}` : "#",
+      href: "/tests",
     },
     {
       n: "05",
@@ -660,17 +631,7 @@ function LessonGridSection({
               <Link
                 key={c}
                 href={href}
-                style={{
-                  border: "1px solid var(--u-rule-2)",
-                  background: active ? "var(--u-ink)" : "transparent",
-                  color: active ? "var(--u-bg)" : "var(--u-ink-2)",
-                  font: "var(--u-body-s)",
-                  fontWeight: 500,
-                  padding: "8px 14px",
-                  minHeight: 44,
-                  borderRadius: "var(--u-r-pill)",
-                  textDecoration: "none",
-                }}
+                className={active ? "u-filter-pill u-filter-pill--active" : "u-filter-pill"}
               >
                 {c}
               </Link>
@@ -1215,18 +1176,12 @@ function ProfileScreen({
           <form action={signOut}>
             <button
               type="submit"
+              className="u-btn-danger-ghost"
               style={{
                 marginTop: 12,
                 width: "100%",
-                background: "transparent",
-                border: "1px solid var(--u-rule-2)",
-                color: "var(--u-danger)",
-                font: "var(--u-body-s)",
-                fontWeight: 500,
                 padding: "12px 16px",
                 minHeight: 48,
-                borderRadius: "var(--u-r-2)",
-                cursor: "pointer",
                 display: "inline-flex",
                 alignItems: "center",
                 justifyContent: "center",

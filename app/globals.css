@@ -159,6 +159,104 @@ a:hover {
   color: var(--u-ember);
 }
 
+/* Button-styled controls — avoid global link hover color */
+a.u-filter-pill,
+a.u-filter-pill:hover,
+a.u-card-lift,
+a.u-card-lift:hover,
+a.u-unstyled-link,
+a.u-unstyled-link:hover {
+  text-decoration: none;
+}
+
+a.u-filter-pill {
+  border: 1px solid var(--u-rule-2);
+  background: transparent;
+  color: var(--u-ink-2);
+  font: var(--u-body-s);
+  font-weight: 500;
+  padding: 8px 14px;
+  min-height: 44px;
+  border-radius: var(--u-r-pill);
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  transition:
+    background-color var(--u-dur-2) var(--u-ease),
+    color var(--u-dur-2) var(--u-ease);
+}
+
+a.u-filter-pill:hover {
+  color: var(--u-ink);
+  background: var(--u-surface-2);
+}
+
+a.u-filter-pill--active {
+  background: var(--u-ink);
+  color: var(--u-bg);
+}
+
+a.u-filter-pill--active:hover {
+  color: var(--u-bg);
+  background: var(--u-ink);
+}
+
+a.u-card-lift:hover {
+  color: inherit;
+}
+
+.u-dash-tab {
+  background: transparent;
+  color: var(--u-ink-2);
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  font: var(--u-body-s);
+  font-weight: 500;
+  padding: 8px 14px 6px;
+  min-height: 44px;
+  border-radius: var(--u-r-pill);
+  transition:
+    background-color var(--u-dur-2) var(--u-ease),
+    color var(--u-dur-2) var(--u-ease),
+    border-color var(--u-dur-2) var(--u-ease);
+}
+
+.u-dash-tab:hover {
+  background: var(--u-surface-2);
+  color: var(--u-ink);
+}
+
+.u-dash-tab--active,
+.u-dash-tab--active:hover {
+  background: var(--u-ink);
+  color: var(--u-bg);
+  border-bottom-color: var(--u-ember);
+}
+
+.u-btn-submit:hover:not(:disabled) {
+  filter: brightness(0.94);
+}
+
+.u-admin-nav-btn {
+  transition: background-color var(--u-dur-2) var(--u-ease);
+}
+
+.u-admin-nav-btn:hover:not(.u-admin-nav-btn--active) {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.u-quick-action {
+  transition:
+    background-color var(--u-dur-2) var(--u-ease),
+    border-color var(--u-dur-2) var(--u-ease);
+}
+
+.u-quick-action:hover {
+  background: var(--u-surface);
+  border-color: var(--u-rule-2);
+}
+
 code,
 pre {
   font: var(--u-mono);
@@ -272,6 +370,36 @@ select:focus-visible,
   cursor: not-allowed;
 }
 .u-btn-submit:focus-visible {
+  outline: none;
+  box-shadow: var(--u-focus);
+}
+
+/* Ghost destructive — danger text, neutral border (not pink danger-soft) */
+.u-btn-danger-ghost {
+  background: transparent;
+  border: 1px solid var(--u-rule-2);
+  color: var(--u-danger);
+  font: var(--u-body-s);
+  font-weight: 500;
+  border-radius: var(--u-r-2);
+  cursor: pointer;
+  transition:
+    background-color var(--u-dur-2) var(--u-ease),
+    border-color var(--u-dur-2) var(--u-ease);
+}
+
+.u-btn-danger-ghost:hover:not(:disabled) {
+  background: var(--u-surface);
+  border-color: var(--u-rule-2);
+  color: var(--u-danger);
+}
+
+.u-btn-danger-ghost:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.u-btn-danger-ghost:focus-visible {
   outline: none;
   box-shadow: var(--u-focus);
 }

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { listAvailableSlots } from "@/lib/queries/coaching";
 import { formatDate, formatMNT } from "@/lib/format";
+import { COACHING_SERVICE_TYPES, type CoachingServiceType } from "@/lib/constants";
 
 export const revalidate = 60;
 
@@ -62,6 +63,12 @@ export default async function CoachingLandingPage() {
                 }}
               >
                 <div>
+                  <div
+                    className="u-eyebrow"
+                    style={{ marginBottom: 4 }}
+                  >
+                    {COACHING_SERVICE_TYPES[slot.service_type as CoachingServiceType]?.label ?? slot.service_type}
+                  </div>
                   <div
                     style={{
                       font: "var(--u-body)",

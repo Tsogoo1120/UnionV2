@@ -23,6 +23,8 @@ import {
   DEFAULT_COACHING_CURRENCY,
   MAX_SCREENSHOT_BYTES,
   ALLOWED_SCREENSHOT_TYPES,
+  COACHING_SERVICE_TYPES,
+  type CoachingServiceType,
 } from "@/lib/constants";
 
 // ─── Admin: slot CRUD ───────────────────────────────────────────────────────
@@ -33,6 +35,7 @@ export type CoachingSlotInput = {
   price?: number;
   currency?: string;
   description?: string | null;
+  serviceType?: CoachingServiceType;
 };
 
 export async function createCoachingSlot(
@@ -61,6 +64,7 @@ export async function createCoachingSlot(
         price: input.price ?? DEFAULT_COACHING_PRICE,
         currency: input.currency ?? DEFAULT_COACHING_CURRENCY,
         description: input.description ?? null,
+        service_type: input.serviceType ?? "1vs1_coaching",
         status: "available",
         created_by: adminId,
       })
@@ -103,6 +107,90 @@ export async function deleteCoachingSlot(
     return {};
   } catch (err) {
     return { error: err instanceof Error ? err.message : "Unexpected error." };
+  }
+}
+
+// ─── Admin: bulk slot creation ──────────────────────────────────────────────
+
+/**
+ * Creates multiple coaching slots at once.
+ * Input: a service type + arrays of dates (YYYY-MM-DD) and start times (HH:MM).
+ * Every date × time combination becomes one slot. Price and duration are
+ * derived from the service type config — no manual entry needed.
+ */
+export async function createCoachingSlots(input: {
+  serviceType: CoachingServiceType;
+  dates: string[]; // ['YYYY-MM-DD', ...]
+  startTimes: string[]; // ['HH:MM', ...]
+}): Promise<{ count?: number; errors?: string[] }> {
+  try {
+    const adminId = await verifyAdmin();
+    const svc = COACHING_SERVICE_TYPES[input.serviceType];
+
+    const validDates = input.dates.filter(Boolean);
+    const validTimes = input.startTimes.filter(Boolean);
+    if (validDates.length === 0) return { errors: ["Огноо сонгоно уу."] };
+    if (validTimes.length === 0) return { errors: ["Цаг оруулна уу."] };
+    if (validDates.length * validTimes.length > 50) {
+      return { errors: ["Нэг удаад хамгийн ихдээ 50 цаг үүсгэх боломжтой."] };
+    }
+
+    const now = new Date();
+    const rows: {
+      start_at: string;
+      end_at: string;
+      price: number;
+      currency: string;
+      service_type: string;
+      status: string;
+      created_by: string;
+    }[] = [];
+    const skipped: string[] = [];
+
+    for (const date of validDates) {
+      for (const time of validTimes) {
+        const startAt = new Date(`${date}T${time}:00`);
+        if (Number.isNaN(startAt.getTime())) {
+          skipped.push(`Буруу огноо/цаг: ${date} ${time}`);
+          continue;
+        }
+        if (startAt <= now) {
+          skipped.push(`Өнгөрсөн цаг алгасав: ${date} ${time}`);
+          continue;
+        }
+        const endAt = new Date(startAt.getTime() + svc.durationMinutes * 60_000);
+        rows.push({
+          start_at: startAt.toISOString(),
+          end_at: endAt.toISOString(),
+          price: svc.price,
+          currency: svc.currency,
+          service_type: input.serviceType,
+          status: "available",
+          created_by: adminId,
+        });
+      }
+    }
+
+    if (rows.length === 0) {
+      return {
+        errors: [
+          "Үүсгэх боломжтой цаг олдсонгүй.",
+          ...skipped,
+        ],
+      };
+    }
+
+    const admin = createAdminClient();
+    const { error } = await admin.from("coaching_slots").insert(rows);
+    if (error) return { errors: [error.message] };
+
+    revalidatePath("/admin/dashboard");
+    revalidatePath("/coaching");
+    revalidatePath("/dashboard/coaching");
+
+    return { count: rows.length, errors: skipped.length ? skipped : undefined };
+  } catch (err) {
+    return { errors: [err instanceof Error ? err.message : "Unexpected error."] };
   }
 }
 

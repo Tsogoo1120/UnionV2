@@ -80,12 +80,8 @@ function BookingRowActions({
           type="button"
           disabled={pending}
           onClick={() => setDenyOpen(!denyOpen)}
-          style={{
-            ...btnBase,
-            border: "1px solid var(--u-danger-soft)",
-            background: "transparent",
-            color: "var(--u-danger)",
-          }}
+          className="u-btn-danger-ghost"
+          style={{ ...btnBase, padding: "10px 14px" }}
         >
           Татгалзах
         </button>

@@ -180,3 +180,17 @@ export const adminCoachingSlotClientSchema = z
       ctx.addIssue({ code: "custom", message: "Үнэ зөв тоо байх ёстой.", path: ["price"] });
     }
   });
+
+export const adminCoachingSlotsMultiClientSchema = z.object({
+  serviceType: z.enum(["1vs1_coaching", "tarot_reading"], {
+    message: "Үйлчилгээний төрөл сонгоно уу.",
+  }),
+  dates: z
+    .array(z.string().min(1, "Огноо хоосон байна."))
+    .min(1, "Огноо сонгоно уу.")
+    .max(30, "Хамгийн ихдээ 30 огноо сонгох боломжтой."),
+  startTimes: z
+    .array(z.string().min(1, "Цаг хоосон байна."))
+    .min(1, "Цаг оруулна уу.")
+    .max(20, "Хамгийн ихдээ 20 цаг оруулах боломжтой."),
+});

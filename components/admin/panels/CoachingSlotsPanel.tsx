@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo, useState, useTransition, type FormEvent } from "react";
-import { createCoachingSlot, deleteCoachingSlot } from "@/app/actions/coaching";
+import { useMemo, useState, useTransition } from "react";
+import { createCoachingSlots, deleteCoachingSlot } from "@/app/actions/coaching";
 import {
   AdminDrawer,
   AdminFieldLabel,
@@ -13,7 +13,7 @@ import { useToast } from "@/components/shell/Toast";
 import { formatDate, formatMNT, statusLabel } from "@/lib/format";
 import { mapServerErrorToMn } from "@/lib/i18n/action-feedback";
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
-import { adminCoachingSlotClientSchema } from "@/lib/validation/client-forms";
+import { COACHING_SERVICE_TYPES, type CoachingServiceType } from "@/lib/constants";
 import type { CoachingSlot } from "@/lib/types";
 
 type Props = {
@@ -38,6 +38,29 @@ function StatBadge({ label, value }: { label: string; value: number }) {
   );
 }
 
+function ServiceTypeBadge({ serviceType }: { serviceType: string }) {
+  const cfg = COACHING_SERVICE_TYPES[serviceType as CoachingServiceType];
+  const label = cfg?.label ?? serviceType;
+  const isTarot = serviceType === "tarot_reading";
+  return (
+    <span
+      style={{
+        display: "inline-block",
+        font: "var(--u-body-s)",
+        fontWeight: 500,
+        padding: "2px 8px",
+        borderRadius: "var(--u-r-pill)",
+        background: isTarot ? "var(--u-surface-3, #f3eeff)" : "var(--u-surface-2)",
+        color: isTarot ? "var(--u-ember)" : "var(--u-ink-2)",
+        border: "1px solid var(--u-rule)",
+        whiteSpace: "nowrap",
+      }}
+    >
+      {label}
+    </span>
+  );
+}
+
 function SlotRow({
   slot,
   isWide,
@@ -55,7 +78,7 @@ function SlotRow({
     <div
       style={{
         display: "grid",
-        gridTemplateColumns: isWide ? "100px 1.4fr 1fr 1fr 120px" : "minmax(0,1fr)",
+        gridTemplateColumns: isWide ? "100px 1.4fr 140px 1fr 1fr 120px" : "minmax(0,1fr)",
         padding: "16px 22px",
         borderTop: isFirst ? "none" : "1px solid var(--u-rule)",
         alignItems: "center",
@@ -85,6 +108,9 @@ function SlotRow({
         </div>
         <div style={{ font: "var(--u-body-s)", color: "var(--u-ink-3)" }}>{formatDate(slot.start_at)}</div>
       </div>
+      <div>
+        <ServiceTypeBadge serviceType={slot.service_type} />
+      </div>
       <div style={{ fontFamily: "var(--u-mono)" }}>{formatMNT(slot.price)}</div>
       <div>{statusLabel(slot.status, "slot").label}</div>
       <div style={{ textAlign: "right" }}>
@@ -109,16 +135,40 @@ function SlotRow({
   );
 }
 
+const addBtnStyle: React.CSSProperties = {
+  background: "transparent",
+  border: "1px dashed var(--u-rule-2)",
+  padding: "6px 12px",
+  borderRadius: "var(--u-r-1)",
+  font: "var(--u-body-s)",
+  color: "var(--u-ink-2)",
+  cursor: "pointer",
+  marginTop: 6,
+};
+
+const removeBtnStyle: React.CSSProperties = {
+  background: "transparent",
+  border: "none",
+  padding: "0 6px",
+  font: "var(--u-body-s)",
+  color: "var(--u-ink-3)",
+  cursor: "pointer",
+  lineHeight: 1,
+};
+
 export function CoachingSlotsPanel({ slots }: Props) {
   const toast = useToast();
   const isWide = useMediaQuery("(min-width: 900px)");
   const [draw, setDraw] = useState(false);
-  const [start, setStart] = useState("");
-  const [end, setEnd] = useState("");
-  const [price, setPrice] = useState("150000");
-  const [desc, setDesc] = useState("1:1 уулзалт · онлайн");
+
+  const [serviceType, setServiceType] = useState<CoachingServiceType>("1vs1_coaching");
+  const [dates, setDates] = useState<string[]>([""]);
+  const [times, setTimes] = useState<string[]>([""]);
   const [pending, startTransition] = useTransition();
   const [err, setErr] = useState<string | null>(null);
+
+  const svcCfg = COACHING_SERVICE_TYPES[serviceType];
+  const previewCount = dates.filter(Boolean).length * times.filter(Boolean).length;
 
   const stats = useMemo(() => {
     const available = slots.filter((s) => s.status === "available").length;
@@ -127,42 +177,60 @@ export function CoachingSlotsPanel({ slots }: Props) {
     return { available, booked, expired };
   }, [slots]);
 
-  function create(e: FormEvent) {
+  function resetForm() {
+    setServiceType("1vs1_coaching");
+    setDates([""]);
+    setTimes([""]);
+    setErr(null);
+  }
+
+  function handleCreate(e: React.FormEvent) {
     e.preventDefault();
     setErr(null);
-    const parsed = adminCoachingSlotClientSchema.safeParse({
-      start,
-      end,
-      price,
-      description: desc,
-    });
-    if (!parsed.success) {
-      const first = parsed.error.issues[0]?.message ?? "Мэдээллээ шалгана уу.";
-      setErr(first);
-      toast(first, "error");
-      return;
-    }
-    if (new Date(start) <= new Date()) {
-      const m = "Эхлэх цаг ирээдүйд байх ёстой.";
+
+    const validDates = dates.filter(Boolean);
+    const validTimes = times.filter(Boolean);
+    if (validDates.length === 0) {
+      const m = "Огноо сонгоно уу.";
       setErr(m);
       toast(m, "error");
       return;
     }
+    if (validTimes.length === 0) {
+      const m = "Цаг оруулна уу.";
+      setErr(m);
+      toast(m, "error");
+      return;
+    }
+    if (validDates.length * validTimes.length > 50) {
+      const m = "Нэг удаад хамгийн ихдээ 50 цаг үүсгэх боломжтой.";
+      setErr(m);
+      toast(m, "error");
+      return;
+    }
+
     startTransition(async () => {
-      const res = await createCoachingSlot({
-        startAt: new Date(start).toISOString(),
-        endAt: new Date(end).toISOString(),
-        price: Number(price.replace(/\s/g, "")) || undefined,
-        description: desc || null,
+      const res = await createCoachingSlots({
+        serviceType,
+        dates: validDates,
+        startTimes: validTimes,
       });
-      if (res.error) {
-        const m = mapServerErrorToMn(res.error);
+
+      if (res.errors && !res.count) {
+        const m = res.errors[0] ?? "Алдаа гарлаа.";
         setErr(m);
         toast(m, "error");
         return;
       }
-      toast("Цаг нэмэгдлээ", "success");
+
+      const skipped = res.errors?.length ?? 0;
+      const msg =
+        skipped > 0
+          ? `${res.count} цаг нэмэгдлээ (${skipped} алгасав)`
+          : `${res.count} цаг нэмэгдлээ`;
+      toast(msg, "success");
       setDraw(false);
+      resetForm();
       window.location.reload();
     });
   }
@@ -176,7 +244,7 @@ export function CoachingSlotsPanel({ slots }: Props) {
         <div style={{ flex: 1 }} />
         <button
           type="button"
-          onClick={() => setDraw(true)}
+          onClick={() => { resetForm(); setDraw(true); }}
           style={{
             background: "var(--u-ink)",
             color: "var(--u-bg)",
@@ -226,62 +294,147 @@ export function CoachingSlotsPanel({ slots }: Props) {
 
       <AdminDrawer
         open={draw}
-        onClose={() => setDraw(false)}
-        title="Шинэ коучингын цаг"
-        onSubmit={create}
+        onClose={() => { setDraw(false); resetForm(); }}
+        title="Шинэ цаг нэмэх"
+        onSubmit={handleCreate}
         footer={
           <>
-            <DrawerCancelButton onClick={() => setDraw(false)} disabled={pending} />
+            <DrawerCancelButton onClick={() => { setDraw(false); resetForm(); }} disabled={pending} />
             <DrawerSubmitButton pending={pending} label="Үүсгэх" />
           </>
         }
       >
-        <AdminFieldLabel htmlFor="cs-start">
-          Эхлэх *
-          <input
-            id="cs-start"
-            type="datetime-local"
-            required
-            value={start}
-            onChange={(e) => setStart(e.target.value)}
+        {/* ── Service type ── */}
+        <AdminFieldLabel htmlFor="cs-svc">
+          Үйлчилгээний төрөл *
+          <select
+            id="cs-svc"
+            value={serviceType}
+            onChange={(e) => setServiceType(e.target.value as CoachingServiceType)}
             style={adminInputStyle}
-          />
+          >
+            {(Object.keys(COACHING_SERVICE_TYPES) as CoachingServiceType[]).map((k) => (
+              <option key={k} value={k}>
+                {COACHING_SERVICE_TYPES[k].label}
+              </option>
+            ))}
+          </select>
         </AdminFieldLabel>
-        <AdminFieldLabel htmlFor="cs-end">
-          Дуусах *
-          <input
-            id="cs-end"
-            type="datetime-local"
-            required
-            value={end}
-            onChange={(e) => setEnd(e.target.value)}
-            style={adminInputStyle}
-          />
+
+        {/* ── Auto-derived price + duration info ── */}
+        <div
+          style={{
+            display: "flex",
+            gap: 16,
+            padding: "10px 14px",
+            borderRadius: "var(--u-r-2)",
+            background: "var(--u-surface-3, #f7f7f8)",
+            border: "1px solid var(--u-rule)",
+            font: "var(--u-body-s)",
+            color: "var(--u-ink-2)",
+            marginBottom: 4,
+          }}
+        >
+          <span>
+            <span style={{ color: "var(--u-ink-3)" }}>Үнэ: </span>
+            <span style={{ fontFamily: "var(--u-mono)", fontWeight: 600, color: "var(--u-ink)" }}>
+              {formatMNT(svcCfg.price)}
+            </span>
+          </span>
+          <span>
+            <span style={{ color: "var(--u-ink-3)" }}>Үргэлжлэх хугацаа: </span>
+            <span style={{ fontWeight: 600, color: "var(--u-ink)" }}>{svcCfg.durationMinutes} мин</span>
+          </span>
+        </div>
+
+        {/* ── Dates ── */}
+        <AdminFieldLabel htmlFor="cs-date-0">
+          Огноо *
+          {dates.map((d, i) => (
+            <div key={i} style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 6 }}>
+              <input
+                id={i === 0 ? "cs-date-0" : undefined}
+                type="date"
+                required={i === 0}
+                value={d}
+                onChange={(e) => {
+                  const next = [...dates];
+                  next[i] = e.target.value;
+                  setDates(next);
+                }}
+                style={{ ...adminInputStyle, flex: 1, marginBottom: 0 }}
+              />
+              {dates.length > 1 && (
+                <button
+                  type="button"
+                  style={removeBtnStyle}
+                  onClick={() => setDates(dates.filter((_, j) => j !== i))}
+                >
+                  ✕
+                </button>
+              )}
+            </div>
+          ))}
+          {dates.length < 30 && (
+            <button type="button" style={addBtnStyle} onClick={() => setDates([...dates, ""])}>
+              + Огноо нэмэх
+            </button>
+          )}
         </AdminFieldLabel>
-        <AdminFieldLabel htmlFor="cs-price">
-          Үнэ (MNT) *
-          <input
-            id="cs-price"
-            type="number"
-            min={1}
-            required
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            style={adminInputStyle}
-          />
+
+        {/* ── Start times ── */}
+        <AdminFieldLabel htmlFor="cs-time-0">
+          Эхлэх цаг *
+          {times.map((t, i) => (
+            <div key={i} style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 6 }}>
+              <input
+                id={i === 0 ? "cs-time-0" : undefined}
+                type="time"
+                required={i === 0}
+                value={t}
+                onChange={(e) => {
+                  const next = [...times];
+                  next[i] = e.target.value;
+                  setTimes(next);
+                }}
+                style={{ ...adminInputStyle, flex: 1, marginBottom: 0 }}
+              />
+              {times.length > 1 && (
+                <button
+                  type="button"
+                  style={removeBtnStyle}
+                  onClick={() => setTimes(times.filter((_, j) => j !== i))}
+                >
+                  ✕
+                </button>
+              )}
+            </div>
+          ))}
+          {times.length < 20 && (
+            <button type="button" style={addBtnStyle} onClick={() => setTimes([...times, ""])}>
+              + Цаг нэмэх
+            </button>
+          )}
         </AdminFieldLabel>
-        <AdminFieldLabel htmlFor="cs-desc">
-          Тайлбар
-          <textarea
-            id="cs-desc"
-            maxLength={500}
-            rows={2}
-            value={desc}
-            onChange={(e) => setDesc(e.target.value)}
-            style={{ ...adminInputStyle, resize: "vertical" }}
-          />
-        </AdminFieldLabel>
-        {err ? <p style={{ color: "var(--u-danger)", font: "var(--u-body-s)" }}>{err}</p> : null}
+
+        {/* ── Preview count ── */}
+        {previewCount > 0 && (
+          <div
+            style={{
+              padding: "8px 14px",
+              borderRadius: "var(--u-r-2)",
+              background: "var(--u-surface-2)",
+              border: "1px solid var(--u-rule)",
+              font: "var(--u-body-s)",
+              color: "var(--u-ink-2)",
+            }}
+          >
+            Нийт{" "}
+            <strong style={{ color: "var(--u-ink)" }}>{previewCount} цаг</strong> үүсгэгдэнэ
+          </div>
+        )}
+
+        {err && <p style={{ color: "var(--u-danger)", font: "var(--u-body-s)" }}>{err}</p>}
       </AdminDrawer>
     </div>
   );
