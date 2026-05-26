@@ -1,13 +1,17 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
+import { getVideoStreamUrl } from "@/app/actions/video-lessons";
+import { getCollectiveReadingStreamUrl } from "@/app/actions/collective-readings";
 
 export type LessonPlayerProps = {
   title: string;
-  streamUrl: string;
+  lessonId: string;
+  kind: "video" | "collective";
   posterUrl: string | null;
   heroImageUrl?: string | null;
   descriptionImageUrl?: string | null;
@@ -34,7 +38,8 @@ const navBtnStyle = {
 
 export function LessonPlayer({
   title,
-  streamUrl,
+  lessonId,
+  kind,
   posterUrl,
   heroImageUrl,
   descriptionImageUrl,
@@ -43,6 +48,28 @@ export function LessonPlayer({
   nextLessonHref,
 }: LessonPlayerProps) {
   const isMobile = useMediaQuery("(max-width: 640px)");
+  const [streamUrl, setStreamUrl] = useState<string | null>(null);
+  const [streamError, setStreamError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    setStreamUrl(null);
+    setStreamError(null);
+    const fetcher =
+      kind === "video" ? getVideoStreamUrl : getCollectiveReadingStreamUrl;
+    fetcher(lessonId)
+      .then((res) => {
+        if (cancelled) return;
+        if (res.url) setStreamUrl(res.url);
+        else setStreamError(res.error ?? "Видео ачаалж чадсангүй.");
+      })
+      .catch(() => {
+        if (!cancelled) setStreamError("Видео ачаалж чадсангүй.");
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [lessonId, kind]);
 
   return (
     <div
@@ -108,18 +135,52 @@ export function LessonPlayer({
           border: isMobile ? "none" : "1px solid var(--u-rule)",
           background: "#000",
           aspectRatio: "16 / 9",
+          position: "relative",
         }}
       >
-        <video
-          controls
-          playsInline
-          preload="metadata"
-          poster={posterUrl ?? undefined}
-          src={streamUrl}
-          style={{ width: "100%", height: "100%", display: "block" }}
-        >
-          <track kind="captions" />
-        </video>
+        {streamUrl ? (
+          <video
+            controls
+            playsInline
+            preload="metadata"
+            poster={posterUrl ?? undefined}
+            src={streamUrl}
+            style={{ width: "100%", height: "100%", display: "block" }}
+          >
+            <track kind="captions" />
+          </video>
+        ) : (
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "var(--u-ink-on-dark, #fff)",
+              font: "var(--u-body-s)",
+              textAlign: "center",
+              padding: 16,
+              ...(posterUrl
+                ? {
+                    backgroundImage: `url(${posterUrl})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }
+                : {}),
+            }}
+          >
+            <span
+              style={{
+                background: "rgba(0,0,0,0.55)",
+                padding: "8px 14px",
+                borderRadius: 8,
+              }}
+            >
+              {streamError ?? "Видео бэлдэж байна…"}
+            </span>
+          </div>
+        )}
       </div>
       {descriptionMd?.trim() ? (
         <div

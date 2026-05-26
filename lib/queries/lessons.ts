@@ -1,6 +1,5 @@
-import { cookies } from "next/headers";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import type { CollectiveReading, VideoLesson } from "@/lib/types";
+import type { CollectiveReading, ShortsFeedCursor, VideoLesson } from "@/lib/types";
 
 export async function listPublishedLessons(
   supabase: SupabaseClient,
@@ -69,45 +68,42 @@ export async function getLessonBySlug(
   return data;
 }
 
-/**
- * Resolves a short-lived stream URL via `GET /api/r2/presign-download`.
- * Forwards the request session cookie so the route handler can authorize.
- *
- * `supabase` is part of the public API for consistency with other query helpers.
- */
-export async function getLessonStreamUrl(
-  _supabase: SupabaseClient,
-  lessonId: string,
-  kind: "video" | "collective",
-): Promise<string> {
-  const kindParam = kind === "video" ? "video-lessons" : "collective-readings";
-  const cookieStore = cookies();
-  const url = new URL(
-    "/api/r2/presign-download",
-    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
-  );
+export async function listPublishedShorts(
+  supabase: SupabaseClient,
+  opts: { limit?: number; cursor?: ShortsFeedCursor } = {},
+): Promise<VideoLesson[]> {
+  let q = supabase
+    .from("video_lessons")
+    .select("*")
+    .eq("is_published", true)
+    .eq("format", "short")
+    .order("published_at", { ascending: false })
+    .order("id", { ascending: false });
 
-  url.searchParams.set("kind", kindParam);
-  url.searchParams.set("lessonId", lessonId);
-
-  const cookieHeader = cookieStore
-    .getAll()
-    .map((cookie) => `${cookie.name}=${cookie.value}`)
-    .join("; ");
-
-  const response = await fetch(url.toString(), {
-    method: "GET",
-    headers: {
-      cookie: cookieHeader,
-    },
-    cache: "no-store",
-  });
-
-  const payload = (await response.json()) as { url?: string; error?: string };
-
-  if (!response.ok || !payload?.url) {
-    throw new Error(payload?.error ?? "Unable to get lesson stream URL.");
+  if (opts.cursor) {
+    q = q.or(
+      `published_at.lt.${opts.cursor.published_at},and(published_at.eq.${opts.cursor.published_at},id.lt.${opts.cursor.id})`,
+    );
   }
 
-  return payload.url;
+  const { data, error } = await q.limit(opts.limit ?? 10);
+  if (error) throw new Error(error.message);
+  return (data ?? []) as VideoLesson[];
 }
+
+export async function getShortByIdForFeed(
+  supabase: SupabaseClient,
+  id: string,
+): Promise<VideoLesson | null> {
+  const { data, error } = await supabase
+    .from("video_lessons")
+    .select("*")
+    .eq("id", id)
+    .eq("is_published", true)
+    .eq("format", "short")
+    .maybeSingle();
+
+  if (error) throw new Error(error.message);
+  return data as VideoLesson | null;
+}
+

@@ -1,6 +1,6 @@
 import { LessonPlayer } from "@/components/lessons/LessonPlayer";
 import { requireActive } from "@/lib/auth/requireSession";
-import { getLessonBySlug, getLessonStreamUrl } from "@/lib/queries/lessons";
+import { getLessonBySlug } from "@/lib/queries/lessons";
 import { createClient } from "@/lib/supabase/server";
 import type { VideoLesson } from "@/lib/types";
 import { redirect } from "next/navigation";
@@ -19,14 +19,14 @@ export default async function LessonPage({
   }
   const lesson = lessonRow as VideoLesson;
 
-  const streamUrl = await getLessonStreamUrl(supabase, lesson.id, "video");
   const getUrl = (p: string | null) =>
     p ? supabase.storage.from("media-thumbnails").getPublicUrl(p).data.publicUrl : null;
 
   return (
     <LessonPlayer
       title={lesson.title}
-      streamUrl={streamUrl}
+      lessonId={lesson.id}
+      kind="video"
       posterUrl={getUrl(lesson.thumbnail_path)}
       heroImageUrl={getUrl(lesson.hero_image_path)}
       descriptionImageUrl={getUrl(lesson.description_image_path)}

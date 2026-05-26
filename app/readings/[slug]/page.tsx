@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { LessonPlayer } from "@/components/lessons/LessonPlayer";
 import { requireActive } from "@/lib/auth/requireSession";
-import { getLessonBySlug, getLessonStreamUrl } from "@/lib/queries/lessons";
+import { getLessonBySlug } from "@/lib/queries/lessons";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function ReadingLessonPage({
@@ -17,7 +17,6 @@ export default async function ReadingLessonPage({
     redirect("/status/inactive");
   }
 
-  const streamUrl = await getLessonStreamUrl(supabase, lesson.id, "collective");
   const getUrl = (p: string | null | undefined) =>
     p ? supabase.storage.from("media-thumbnails").getPublicUrl(p).data.publicUrl : null;
 
@@ -28,7 +27,8 @@ export default async function ReadingLessonPage({
   return (
     <LessonPlayer
       title={lesson.title}
-      streamUrl={streamUrl}
+      lessonId={lesson.id}
+      kind="collective"
       posterUrl={getUrl(cover)}
       heroImageUrl={getUrl(hero)}
       descriptionImageUrl={getUrl(descImg)}
