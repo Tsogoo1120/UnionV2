@@ -95,7 +95,7 @@ export default async function DashboardPage({
   const collectiveArr = collectiveFirst as import("@/lib/types").CollectiveReading[];
   const firstReadingSlug = collectiveArr[0]?.slug ?? null;
   const firstArticleSlug = articlesFirst[0]?.slug ?? null;
-  const firstTestSlug = testsFirst[0]?.slug ?? null;
+  void testsFirst;
 
   return (
     <DashboardExperience
@@ -117,7 +117,6 @@ export default async function DashboardPage({
       }}
       firstReadingSlug={firstReadingSlug}
       firstArticleSlug={firstArticleSlug}
-      firstTestSlug={firstTestSlug}
     />
   );
 }

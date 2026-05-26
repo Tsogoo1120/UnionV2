@@ -321,14 +321,12 @@ function ServiceHub({
   hubStats,
   firstReadingSlug,
   firstArticleSlug,
-  firstTestSlug,
   contentLocked,
 }: {
   profile: CurrentProfile;
   hubStats: HubStats;
   firstReadingSlug: string | null;
   firstArticleSlug: string | null;
-  firstTestSlug: string | null;
   contentLocked: boolean;
 }) {
   const displayName = profile.full_name?.trim() || "Хэрэглэгч";
@@ -1213,7 +1211,6 @@ export type DashboardExperienceProps = {
   hubStats: HubStats;
   firstReadingSlug: string | null;
   firstArticleSlug: string | null;
-  firstTestSlug: string | null;
 };
 
 export function DashboardExperience({
@@ -1229,7 +1226,6 @@ export function DashboardExperience({
   hubStats,
   firstReadingSlug,
   firstArticleSlug,
-  firstTestSlug,
 }: DashboardExperienceProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -1319,7 +1315,6 @@ export function DashboardExperience({
               hubStats={hubStats}
               firstReadingSlug={firstReadingSlug}
               firstArticleSlug={firstArticleSlug}
-              firstTestSlug={firstTestSlug}
               contentLocked={contentLocked}
             />
             <ContinueRow lessons={continueLessons} contentLocked={contentLocked} />
