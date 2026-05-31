@@ -4,44 +4,54 @@ export default function InactiveStatusPage() {
   return (
     <div
       style={{
-        minHeight: "60vh",
+        minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        padding: 32,
+        padding: 24,
+        background: "var(--u-bg)",
         textAlign: "center",
-        gap: 16,
       }}
     >
-      <h1
+      <div
+        aria-hidden
         style={{
-          fontFamily: "var(--u-display)",
-          fontWeight: 700,
+          width: 72,
+          height: 72,
+          borderRadius: "50%",
+          border: "3px solid var(--u-indigo)",
+          marginBottom: 24,
+          display: "grid",
+          placeItems: "center",
           fontSize: 32,
-          letterSpacing: "-0.02em",
-          margin: 0,
+          color: "var(--u-indigo)",
         }}
       >
-        Гишүүнчлэл шаардлагатай
+        ★
+      </div>
+      <h1 style={{ font: "var(--u-display-xs)", margin: "0 0 12px" }}>
+        Membership required
       </h1>
-      <p style={{ font: "var(--u-body)", color: "var(--u-ink-2)", maxWidth: 420, margin: 0 }}>
-        Энэ контентыг үзэхийн тулд идэвхтэй гишүүнчлэлтэй байх эсвэл төлбөрөө баталгаажуулах шаардлагатай.
+      <p style={{ font: "var(--u-body)", color: "var(--u-ink-2)", maxWidth: 420, margin: "0 0 28px" }}>
+        You need an active membership — or a confirmed payment — to view this content.
       </p>
       <Link
         href="/payment"
         style={{
-          marginTop: 8,
-          background: "var(--u-ink)",
-          color: "var(--u-bg)",
-          padding: "12px 22px",
+          display: "inline-flex",
+          minHeight: 48,
+          padding: "0 22px",
+          alignItems: "center",
           borderRadius: "var(--u-r-2)",
-          textDecoration: "none",
+          background: "var(--u-ember)",
+          color: "var(--u-ember-ink)",
           font: "var(--u-body-s)",
           fontWeight: 600,
+          textDecoration: "none",
         }}
       >
-        Төлбөр төлөх →
+        Make a payment
       </Link>
     </div>
   );

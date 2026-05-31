@@ -35,12 +35,12 @@ export function CommunityFeed({ posts }: { posts: CommunityFeedPost[] }) {
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--u-ink-3)" strokeWidth="1.4" aria-hidden style={{ margin: "0 auto 16px", display: "block" }}>
           <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
         </svg>
-        <div style={{ font: "var(--u-h3)", fontWeight: 600, marginBottom: 10 }}>Одоогоор пост байхгүй</div>
+        <div style={{ font: "var(--u-h3)", fontWeight: 600, marginBottom: 10 }}>No posts yet</div>
         <p style={{ font: "var(--u-body)", color: "var(--u-ink-2)", margin: "0 0 22px", lineHeight: 1.55 }}>
-          Та эхний постоо бичиж, нийгэмлэгийг эхлүүлээрэй.
+          Be the first to post and start the community.
         </p>
         <p style={{ font: "var(--u-body-s)", color: "var(--u-ink-3)", margin: 0 }}>
-          Доорх товчоор шинэ пост нээнэ үү.
+          Use the button below to create a new post.
         </p>
       </div>
     );
@@ -74,7 +74,7 @@ export function CommunityFeed({ posts }: { posts: CommunityFeedPost[] }) {
               <div style={{ width: "100%", marginBottom: 12, borderRadius: "var(--u-r-2)", overflow: "hidden" }}>
                 <ImageWithFallback
                   src={p.imageUrl}
-                  alt={p.title ? `${p.title} — зураг` : "Постын зураг"}
+                  alt={p.title ? `${p.title} image` : "Post image"}
                   loading="lazy"
                   gradientKey={p.id}
                   style={{ width: "100%", height: "auto", display: "block", maxHeight: 280, objectFit: "cover" }}
@@ -97,7 +97,7 @@ export function CommunityFeed({ posts }: { posts: CommunityFeedPost[] }) {
               </ReactMarkdown>
             </div>
             <div style={{ marginTop: 12, font: "var(--u-body-s)", color: "var(--u-ember)" }}>
-              Сэтгэгдэл · {p.commentCount}
+              Comments · {p.commentCount}
             </div>
           </div>
         </Link>

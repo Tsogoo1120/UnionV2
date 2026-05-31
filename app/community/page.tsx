@@ -23,8 +23,8 @@ export default async function CommunityPage() {
       }
       const authorLabel =
         p.user_id === profile.id
-          ? profile.full_name?.trim() || profile.email || "Та"
-          : "Гишүүн";
+          ? profile.full_name?.trim() || profile.email || "You"
+          : "Member";
       return {
         id: p.id,
         title: p.title,
@@ -40,7 +40,7 @@ export default async function CommunityPage() {
   return (
     <div style={{ maxWidth: 720, margin: "0 auto", padding: "24px 16px 48px" }}>
       <h1 style={{ fontFamily: "var(--u-display)", fontWeight: 700, fontSize: 36, margin: "0 0 20px" }}>
-        Нийгэмлэг
+        Community
       </h1>
       <CommunityFeed posts={enriched} />
       <CommunityComposerFab />

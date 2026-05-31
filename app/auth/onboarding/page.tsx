@@ -32,7 +32,7 @@ export default async function OnboardingPage({
       }}
     >
       <div style={{ maxWidth: 560, margin: "0 auto" }}>
-        <div className="u-eyebrow">Бүртгэл</div>
+        <div className="u-eyebrow">Registration</div>
         <h1
           style={{
             font: "var(--u-display-s)",
@@ -40,7 +40,7 @@ export default async function OnboardingPage({
             letterSpacing: "-0.02em",
           }}
         >
-          Бүртгэлээ дуусгана уу
+          Complete your registration
         </h1>
         <p
           style={{
@@ -49,8 +49,7 @@ export default async function OnboardingPage({
             margin: "0 0 28px",
           }}
         >
-          Үргэлжлүүлэхийн тулд овог нэр болон холбоо барих утасны дугаараа
-          бөглөнө үү.
+          To continue, please fill in your full name and contact phone number.
         </p>
         <div
           style={{

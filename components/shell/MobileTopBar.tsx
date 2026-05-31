@@ -31,7 +31,7 @@ export function MobileTopBar({ title, onMenuClick, rightSlot }: MobileTopBarProp
     >
       <button
         type="button"
-        aria-label="Цэс нээх"
+        aria-label="Open menu"
         onClick={onMenuClick}
         style={{
           flex: "0 0 auto",

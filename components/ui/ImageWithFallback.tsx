@@ -33,7 +33,7 @@ export function ImageWithFallback({
     return (
       <div
         role="img"
-        aria-label={alt ? `${alt} — ачааллахад алдаа гарлаа` : "Зураг ачааллахад алдаа гарлаа"}
+        aria-label={alt ? `${alt} — couldn't load image` : "Couldn't load image"}
         className={className}
         style={{
           background: grad,
@@ -48,7 +48,7 @@ export function ImageWithFallback({
           ...style,
         }}
       >
-        Зураг ачааллахгүй байна
+        Couldn&apos;t load image
       </div>
     );
   }

@@ -67,11 +67,11 @@ export default async function TestResultPage({
               marginBottom: 20,
             }}
           >
-            <div className="u-eyebrow">Үр дүн</div>
-            <div style={{ font: "var(--u-h2)", marginTop: 8 }}>{result.result_summary ?? "—"}</div>
+            <div className="u-eyebrow">Result</div>
+            <div style={{ font: "var(--u-h2)", marginTop: 8 }}>{result.result_summary ?? "\u2014"}</div>
             {scoreVal != null && !Number.isNaN(scoreVal) ? (
               <div style={{ font: "var(--u-body)", color: "var(--u-ink-2)", marginTop: 8 }}>
-                Нийт оноо:{" "}
+                Total score:{" "}
                 <span style={{ fontFamily: "var(--u-mono)", fontWeight: 600 }}>{scoreVal}</span>
               </div>
             ) : null}
@@ -80,7 +80,7 @@ export default async function TestResultPage({
           {simpleRanges.length > 0 ? (
             <section style={{ marginBottom: 24 }}>
               <div className="u-eyebrow" style={{ marginBottom: 10 }}>
-                Онооны завсар
+                Score ranges
               </div>
               <div style={{ border: "1px solid var(--u-rule)", borderRadius: "var(--u-r-2)", overflow: "hidden" }}>
                 {simpleRanges.map((r, i) => (
@@ -96,9 +96,9 @@ export default async function TestResultPage({
                     }}
                   >
                     <span style={{ fontFamily: "var(--u-mono)" }}>
-                      {r.min}–{r.max}
+                      {r.min}&ndash;{r.max}
                     </span>
-                    <span style={{ color: "var(--u-ink-2)" }}>оноо</span>
+                    <span style={{ color: "var(--u-ink-2)" }}>points</span>
                     <span style={{ fontWeight: 500 }}>{r.result}</span>
                   </div>
                 ))}
@@ -111,7 +111,7 @@ export default async function TestResultPage({
       {test.questions.length > 0 ? (
         <section style={{ marginBottom: 32 }}>
           <div className="u-eyebrow" style={{ marginBottom: 12 }}>
-            Таны хариултууд
+            Your answers
           </div>
           <div
             style={{
@@ -152,7 +152,7 @@ export default async function TestResultPage({
                       paddingLeft: 10,
                     }}
                   >
-                    {selectedOption?.text ?? "—"}
+                    {selectedOption?.text ?? "\u2014"}
                   </div>
                 </div>
               );
@@ -169,7 +169,7 @@ export default async function TestResultPage({
           fontWeight: 600,
         }}
       >
-        ← Тестүүд
+        &larr; Tests
       </Link>
     </div>
   );

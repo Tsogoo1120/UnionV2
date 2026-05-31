@@ -7,7 +7,7 @@ export function CommunityPostImage({ src, title }: { src: string; title: string 
     <div style={{ marginBottom: 20, borderRadius: "var(--u-r-3)", overflow: "hidden" }}>
       <ImageWithFallback
         src={src}
-        alt={title ? `${title} — зураг` : "Постын зураг"}
+        alt={title ? `${title} image` : "Post image"}
         loading="lazy"
         style={{ width: "100%", height: "auto", display: "block" }}
       />

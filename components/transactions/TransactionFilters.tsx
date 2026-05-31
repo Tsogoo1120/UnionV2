@@ -19,9 +19,9 @@ function buildPath(filters: ExportFilters, page = 1): string {
 const STATUS_KEYS = ["pending", "approved", "denied"] as const;
 
 const STATUS_LABEL: Record<(typeof STATUS_KEYS)[number], string> = {
-  pending: "Хүлээгдэж буй",
-  approved: "Зөвшөөрөгдсөн",
-  denied: "Татгалзсан",
+  pending: "Pending",
+  approved: "Approved",
+  denied: "Denied",
 };
 
 export function TransactionFilters({ filters }: { filters: ExportFilters }) {
@@ -69,7 +69,7 @@ export function TransactionFilters({ filters }: { filters: ExportFilters }) {
     >
       <div>
         <div className="u-eyebrow" style={{ marginBottom: 8 }}>
-          Огнооны завсар
+          Date range
         </div>
         <div
           style={{
@@ -80,10 +80,10 @@ export function TransactionFilters({ filters }: { filters: ExportFilters }) {
           }}
         >
           <label style={{ display: "flex", flexDirection: "column", gap: 4, flex: "1 1 140px" }}>
-            <span style={{ font: "var(--u-label)", color: "var(--u-ink-3)" }}>Эхлэл</span>
+            <span style={{ font: "var(--u-label)", color: "var(--u-ink-3)" }}>From</span>
             <input
               type="date"
-              lang="mn-MN"
+              lang="en"
               value={filters.from ?? ""}
               onChange={(e) =>
                 navigate({ from: e.target.value || undefined }, 1)
@@ -100,10 +100,10 @@ export function TransactionFilters({ filters }: { filters: ExportFilters }) {
             />
           </label>
           <label style={{ display: "flex", flexDirection: "column", gap: 4, flex: "1 1 140px" }}>
-            <span style={{ font: "var(--u-label)", color: "var(--u-ink-3)" }}>Төгсгөл</span>
+            <span style={{ font: "var(--u-label)", color: "var(--u-ink-3)" }}>To</span>
             <input
               type="date"
-              lang="mn-MN"
+              lang="en"
               value={filters.to ?? ""}
               onChange={(e) =>
                 navigate({ to: e.target.value || undefined }, 1)
@@ -124,7 +124,7 @@ export function TransactionFilters({ filters }: { filters: ExportFilters }) {
 
       <div>
         <div className="u-eyebrow" style={{ marginBottom: 8 }}>
-          Төлөв
+          Status
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
           <button
@@ -132,7 +132,7 @@ export function TransactionFilters({ filters }: { filters: ExportFilters }) {
             onClick={() => navigate({ statuses: [] }, 1)}
             style={pillStyle(filters.statuses.length === 0)}
           >
-            Бүх
+            All
           </button>
           {STATUS_KEYS.map((key) => {
             const active = filters.statuses.includes(key);
@@ -152,14 +152,14 @@ export function TransactionFilters({ filters }: { filters: ExportFilters }) {
 
       <div>
         <div className="u-eyebrow" style={{ marginBottom: 8 }}>
-          Төрөл
+          Type
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
           {(
             [
-              ["all", "Бүх"],
-              ["subscription", "Гишүүнчлэл"],
-              ["coaching", "Зөвлөгөө"],
+              ["all", "All"],
+              ["subscription", "Membership"],
+              ["coaching", "Coaching"],
             ] as const
           ).map(([k, label]) => (
             <button
@@ -197,7 +197,7 @@ export function TransactionFilters({ filters }: { filters: ExportFilters }) {
           minHeight: 44,
         }}
       >
-        Шүүлт цэвэрлэх
+        Clear filters
       </button>
     </div>
   );

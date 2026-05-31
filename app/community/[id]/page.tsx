@@ -35,13 +35,13 @@ export default async function CommunityPostPage({
 
   const authorLabel =
     post.user_id === profile.id
-      ? profile.full_name?.trim() || profile.email || "Та"
-      : "Гишүүн";
+      ? profile.full_name?.trim() || profile.email || "You"
+      : "Member";
 
   return (
     <article style={{ maxWidth: 720, margin: "0 auto", padding: "24px 16px 64px" }}>
       <Link href="/community" style={{ font: "var(--u-body-s)", color: "var(--u-ember)", fontWeight: 600 }}>
-        ← Нийгэмлэг
+        ← Community
       </Link>
       <header style={{ marginTop: 16 }}>
         <p style={{ font: "var(--u-body-s)", color: "var(--u-ink-3)" }}>

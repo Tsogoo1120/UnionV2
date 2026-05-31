@@ -31,10 +31,10 @@ export default function StatusDeniedPage() {
         ×
       </div>
       <h1 style={{ font: "var(--u-display-xs)", margin: "0 0 12px" }}>
-        Татгалзсан
+        Payment denied
       </h1>
       <p style={{ font: "var(--u-body)", color: "var(--u-ink-2)", maxWidth: 420, margin: "0 0 28px" }}>
-        Уг төлбөрийг баталгаажуулах боломжгүй байна. Зөв шилжүүлгийн дэлгэцийн зурагтай дахин илгээнэ үү, эсвэл бидэнтэй холбогдоно уу.
+        We couldn&apos;t verify this payment. Please resubmit with a correct transfer screenshot, or contact us.
       </p>
       <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%", maxWidth: 320 }}>
         <Link
@@ -53,7 +53,7 @@ export default function StatusDeniedPage() {
             textDecoration: "none",
           }}
         >
-          Дахин илгээх
+          Resubmit
         </Link>
         <Link
           href="/dashboard"
@@ -71,7 +71,7 @@ export default function StatusDeniedPage() {
             textDecoration: "none",
           }}
         >
-          Самбар руу
+          Back to dashboard
         </Link>
       </div>
     </div>

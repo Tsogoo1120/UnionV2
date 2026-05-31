@@ -79,7 +79,7 @@ export function AttachmentResult({
 
       <section>
         <div className="u-eyebrow" style={{ marginBottom: 12 }}>
-          Таны хариултын задаргаа
+          Your answer breakdown
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           {rules.categoryOrder.map((key) => {

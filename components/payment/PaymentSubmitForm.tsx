@@ -32,7 +32,7 @@ export function PaymentSubmitForm() {
         if (typeof key === "string" && !fe[key]) fe[key] = issue.message;
       }
       setFieldErrors(fe);
-      toast(Object.values(fe)[0] ?? "Мэдээллээ шалгана уу.", "error");
+      toast(Object.values(fe)[0] ?? "Please check your details.", "error");
       return;
     }
 
@@ -45,7 +45,7 @@ export function PaymentSubmitForm() {
       toast(msg, "error");
       return;
     }
-    toast("Хүсэлт хүлээн авлаа", "success");
+    toast("Request received", "success");
     window.setTimeout(() => router.push("/status/pending"), 250);
   }
 
@@ -57,7 +57,7 @@ export function PaymentSubmitForm() {
       {/* File upload zone */}
       <div>
         <div className="u-eyebrow" style={{ marginBottom: 8 }}>
-          Төлбөрийн баримт
+          Payment receipt
         </div>
         <label
           htmlFor="pay-screenshot"
@@ -91,10 +91,10 @@ export function PaymentSubmitForm() {
           </svg>
           <div>
             <div style={{ font: "var(--u-body-s)", fontWeight: 600, color: "var(--u-ink)" }}>
-              {fileName ?? "Зураг сонгох"}
+              {fileName ?? "Choose an image"}
             </div>
             <div style={{ marginTop: 4, fontSize: 12, color: "var(--u-ink-3)" }}>
-              PNG, JPG, WEBP · 5 MB хүртэл
+              PNG, JPG, WEBP · up to 5 MB
             </div>
           </div>
           <input
@@ -142,9 +142,9 @@ export function PaymentSubmitForm() {
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ animation: "spin 1s linear infinite" }} aria-hidden>
               <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
             </svg>
-            Илгээж байна…
+            Submitting…
           </>
-        ) : "Илгээх"}
+        ) : "Submit payment"}
       </button>
 
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>

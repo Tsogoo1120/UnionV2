@@ -16,7 +16,7 @@ export default async function CoachingLandingPage() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--u-bg)", padding: "40px 16px 80px" }}>
       <div style={{ maxWidth: 640, margin: "0 auto" }}>
-        <div className="u-eyebrow" style={{ marginBottom: 8 }}>1:1 Коучинг</div>
+        <div className="u-eyebrow" style={{ marginBottom: 8 }}>1:1 Coaching</div>
         <h1
           style={{
             font: "var(--u-display-s)",
@@ -24,11 +24,11 @@ export default async function CoachingLandingPage() {
             letterSpacing: "-0.02em",
           }}
         >
-          Хувийн коучинг
+          Personal coaching
         </h1>
         <p style={{ font: "var(--u-body)", color: "var(--u-ink-2)", margin: "0 0 40px", maxWidth: 480 }}>
-          Миний 1:1 коучинг нь гишүүнчлэлийн төлбөрөөс тусдаа үйлчилгээ юм.
-          Та доорх боломжтой цагуудаас сонгон захиалах боломжтой.
+          My 1:1 coaching is a service separate from the membership fee.
+          You can choose and book from the available slots below.
         </p>
 
         {slots.length === 0 ? (
@@ -43,7 +43,7 @@ export default async function CoachingLandingPage() {
               font: "var(--u-body)",
             }}
           >
-            Одоогоор боломжтой цаг байхгүй байна. Удахгүй шинэ цаг нэмэгдэнэ.
+            No available slots right now. New slots will be added soon.
           </div>
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -80,7 +80,7 @@ export default async function CoachingLandingPage() {
                     {formatDate(slot.start_at, { withTime: true })}
                   </div>
                   <div style={{ font: "var(--u-body-s)", color: "var(--u-ink-3)" }}>
-                    {formatDate(slot.end_at, { withTime: true })} хүртэл
+                    Until {formatDate(slot.end_at, { withTime: true })}
                   </div>
                 </div>
 
@@ -109,7 +109,7 @@ export default async function CoachingLandingPage() {
                       textDecoration: "none",
                     }}
                   >
-                    Захиалах
+                    Book
                   </Link>
                 </div>
               </div>
@@ -125,8 +125,8 @@ export default async function CoachingLandingPage() {
             textAlign: "center",
           }}
         >
-          Захиалга хийхийн өмнө та нэвтрэх шаардлагатай. Захиалга баталгаажсаны дараа
-          имэйлд Google Meet линк хүлээн авна.
+          You must sign in before booking. After your booking is confirmed, you&apos;ll
+          receive a Google Meet link by email.
         </p>
       </div>
     </div>

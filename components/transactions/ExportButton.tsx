@@ -68,7 +68,7 @@ export function ExportButton({
         minHeight: 44,
       }}
     >
-      {busy ? "Бэлтгэж байна…" : "CSV татах"}
+      {busy ? "Preparing…" : "Export CSV"}
     </button>
   );
 }

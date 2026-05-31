@@ -37,16 +37,16 @@ export default async function PaymentPage() {
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
             <path d="M19 12H5M12 19l-7-7 7-7" />
           </svg>
-          Самбар руу буцах
+          Back to dashboard
         </Link>
 
-        <div className="u-eyebrow" style={{ marginBottom: 8 }}>Гишүүнчлэл</div>
+        <div className="u-eyebrow" style={{ marginBottom: 8 }}>Membership</div>
         <h1 style={{ font: "var(--u-display-s)", margin: "0 0 8px", letterSpacing: "-0.02em" }}>
-          Төлбөр илгээх
+          Submit payment
         </h1>
         <p style={{ font: "var(--u-body)", color: "var(--u-ink-2)", margin: "0 0 32px" }}>
-          Доорх дансанд шилжүүлэг хийгээд дэлгэцийн зургийг илгээнэ үү.
-          Админ <strong style={{ color: "var(--u-ink)" }}>8 цагийн дотор</strong> шалгаад эрхийг нээх болно.
+          Transfer to the account below, then upload a screenshot of the receipt.
+          An admin will review it <strong style={{ color: "var(--u-ink)" }}>within 8 hours</strong> and unlock your access.
         </p>
 
         {/* Bank info card */}
@@ -71,7 +71,7 @@ export default async function PaymentPage() {
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ color: "var(--u-ember)", flexShrink: 0 }} aria-hidden>
               <rect x="2" y="5" width="20" height="14" rx="2" /><path d="M2 10h20" />
             </svg>
-            <span className="u-eyebrow">Банкны мэдээлэл</span>
+            <span className="u-eyebrow">Bank details</span>
           </div>
 
           {/* Account number — prominent */}
@@ -82,7 +82,7 @@ export default async function PaymentPage() {
               background: "var(--u-surface)",
             }}
           >
-            <div style={{ font: "var(--u-body-s)", color: "var(--u-ink-3)", marginBottom: 4 }}>Дансны дугаар</div>
+            <div style={{ font: "var(--u-body-s)", color: "var(--u-ink-3)", marginBottom: 4 }}>Account number</div>
             <div
               style={{
                 fontFamily: "var(--u-mono)",
@@ -115,10 +115,10 @@ export default async function PaymentPage() {
             <dt style={{ color: "var(--u-ink-3)" }}>IBAN</dt>
             <dd style={{ margin: 0, fontFamily: "var(--u-mono)", fontWeight: 600 }}>{PAYMENT_INFO.iban}</dd>
 
-            <dt style={{ color: "var(--u-ink-3)" }}>Эзэмшигч</dt>
+            <dt style={{ color: "var(--u-ink-3)" }}>Account holder</dt>
             <dd style={{ margin: 0, fontWeight: 600 }}>{PAYMENT_INFO.accountName}</dd>
 
-            <dt style={{ color: "var(--u-ink-3)" }}>Дүн</dt>
+            <dt style={{ color: "var(--u-ink-3)" }}>Amount</dt>
             <dd
               style={{
                 margin: 0,
@@ -128,7 +128,7 @@ export default async function PaymentPage() {
                 fontSize: "1.05em",
               }}
             >
-              {PAYMENT_INFO.amount.toLocaleString("mn-MN")} {PAYMENT_INFO.currency}
+              {PAYMENT_INFO.amount.toLocaleString("en-US")} {PAYMENT_INFO.currency}
             </dd>
           </dl>
         </div>
@@ -154,7 +154,7 @@ export default async function PaymentPage() {
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ color: "var(--u-ember)", flexShrink: 0 }} aria-hidden>
               <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" />
             </svg>
-            <span className="u-eyebrow">Баримтын зураг оруулах</span>
+            <span className="u-eyebrow">Upload receipt image</span>
           </div>
           <div style={{ padding: 20 }}>
             <PaymentSubmitForm />

@@ -35,7 +35,7 @@ function slotTimeExportLabel(row: {
   const ms = new Date(end).getTime() - new Date(start).getTime();
   if (!Number.isFinite(ms) || ms <= 0) return startTxt;
   const mins = Math.round(ms / 60000);
-  return `${startTxt} (${mins} мин)`;
+  return `${startTxt} (${mins} min)`;
 }
 
 /**
@@ -48,7 +48,7 @@ export async function exportTransactionsCSV(
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return { error: "Нэвтэрнэ үү." };
+  if (!user) return { error: "Please sign in." };
 
   const listOpts: ListTransactionsOpts = {
     userId: user.id,
@@ -71,18 +71,18 @@ export async function exportTransactionsCSV(
   }
 
   const header = [
-    "Огноо",
-    "Төрөл",
-    "Дүн (₮)",
-    "Төлөв",
-    "Лавлагаа",
-    "Зөвлөгөөний цаг",
+    "Date",
+    "Type",
+    "Amount (₮)",
+    "Status",
+    "Reference",
+    "Coaching time",
   ];
   const lines = [header.join(",")];
 
   for (const row of rows) {
     const kindMn =
-      row.kind === "subscription" ? "Гишүүнчлэл" : "Зөвлөгөө";
+      row.kind === "subscription" ? "Membership" : "Coaching";
     const statusMn = statusLabel(row.status, "payment").label;
     const date = formatDate(row.submitted_at, { withTime: true });
     const ref = row.bank_reference ?? "";
@@ -117,7 +117,7 @@ export async function fetchTransactionDetail(
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return { error: "Нэвтэрнэ үү." as const };
+  if (!user) return { error: "Please sign in." as const };
 
   const { data: prof, error: pe } = await supabase
     .from("profiles")
@@ -131,7 +131,7 @@ export async function fetchTransactionDetail(
     viewerId: user.id,
     isAdmin: Boolean(isAdmin),
   });
-  if (!detail) return { error: "Олдсонгүй." as const };
+  if (!detail) return { error: "Not found." as const };
 
   let reviewerFullName: string | null = null;
   if (isAdmin && detail.reviewed_by) {

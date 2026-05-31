@@ -32,13 +32,13 @@ function addScreenshotIssues(
 
 const bankRefSchema = z
   .string()
-  .max(200, "Лавлагаа 200 тэмдэгтээс урт байж болохгүй.")
+  .max(200, "Reference can't be longer than 200 characters.")
   .transform((s) => s.trim());
 
 export const paymentFormClientSchema = z.object({
   amount: z.preprocess(
     (v) => (typeof v === "string" ? Number(v) : v),
-    z.number().refine((n) => Number.isFinite(n) && n >= 1, "Дүн 1-ээс багагүй байх ёстой."),
+    z.number().refine((n) => Number.isFinite(n) && n >= 1, "Amount must be at least 1."),
   ),
   bank_reference: bankRefSchema,
   screenshot: z.custom<File>().superRefine((file, ctx) => {
@@ -47,9 +47,9 @@ export const paymentFormClientSchema = z.object({
       MAX_SCREENSHOT_BYTES,
       ctx,
       ["screenshot"],
-      "Дансны дэлгэцийн зураг сонгоно уу.",
-      "Зөвхөн JPEG, PNG эсвэл WebP зураг сонгоно уу.",
-      `Зургийн хэмжээ ${Math.round(MAX_SCREENSHOT_BYTES / (1024 * 1024))} MB-аас хэтрэхгүй байх ёстой.`,
+      "Please choose a transfer screenshot.",
+      "Please choose a JPEG, PNG, or WebP image.",
+      `Image must be ${Math.round(MAX_SCREENSHOT_BYTES / (1024 * 1024))} MB or smaller.`,
     );
   }),
 });
@@ -68,13 +68,13 @@ export const communityPostClientSchema = z.object({
   title: z
     .string()
     .trim()
-    .min(1, "Гарчиг оруулна уу.")
-    .max(200, "Гарчиг хэт урт байна."),
+    .min(1, "Please enter a title.")
+    .max(200, "Title is too long."),
   body: z
     .string()
     .trim()
-    .min(1, "Текст бичнэ үү.")
-    .max(20000, "Текст хэт урт байна."),
+    .min(1, "Please enter some text.")
+    .max(20000, "Text is too long."),
   image: z.custom<File | null>().optional(),
 });
 
@@ -92,12 +92,12 @@ export function parseCommunityPostFormData(fd: FormData) {
 export function communityImageRefine(file: File | null | undefined) {
   if (!file || file.size === 0) return { ok: true as const };
   if (!allowedMime.has(file.type)) {
-    return { ok: false as const, message: "Зураг зөвхөн JPEG, PNG эсвэл WebP байх ёстой." };
+    return { ok: false as const, message: "Image must be JPEG, PNG, or WebP." };
   }
   if (file.size > MAX_COMMUNITY_IMAGE_BYTES) {
     return {
       ok: false as const,
-      message: `Зургийн хэмжээ ${Math.round(MAX_COMMUNITY_IMAGE_BYTES / (1024 * 1024))} MB-аас хэтрэхгүй байх ёстой.`,
+      message: `Image must be ${Math.round(MAX_COMMUNITY_IMAGE_BYTES / (1024 * 1024))} MB or smaller.`,
     };
   }
   return { ok: true as const };
@@ -111,9 +111,9 @@ export const coachingBookClientSchema = z.object({
       MAX_SCREENSHOT_BYTES,
       ctx,
       ["screenshot"],
-      "Дансны дэлгэцийн зураг сонгоно уу.",
-      "Зөвхөн JPEG, PNG эсвэл WebP зураг сонгоно уу.",
-      `Зургийн хэмжээ ${Math.round(MAX_SCREENSHOT_BYTES / (1024 * 1024))} MB-аас хэтрэхгүй байх ёстой.`,
+      "Please choose a transfer screenshot.",
+      "Please choose a JPEG, PNG, or WebP image.",
+      `Image must be ${Math.round(MAX_SCREENSHOT_BYTES / (1024 * 1024))} MB or smaller.`,
     );
   }),
 });
@@ -131,7 +131,7 @@ export function validateAllTestAnswersAnswered(
 ): { ok: true } | { ok: false; message: string } {
   for (const id of questionIds) {
     const v = answers[id]?.trim();
-    if (!v) return { ok: false, message: "Бүх асуултад хариулсны дараа илгээнэ үү." };
+    if (!v) return { ok: false, message: "Please answer all questions before submitting." };
   }
   return { ok: true };
 }
@@ -140,13 +140,13 @@ export const onboardingFormClientSchema = z.object({
   full_name: z
     .string()
     .trim()
-    .min(1, "Нэрээ оруулна уу.")
-    .max(120, "Нэр хэт урт байна."),
+    .min(1, "Please enter your name.")
+    .max(120, "Name is too long."),
   phone: z
     .string()
     .trim()
-    .min(6, "Утасны дугаар буруу байна.")
-    .max(32, "Утасны дугаар хэт урт байна."),
+    .min(6, "Phone number is invalid.")
+    .max(32, "Phone number is too long."),
 });
 
 export function parseOnboardingFormData(fd: FormData) {

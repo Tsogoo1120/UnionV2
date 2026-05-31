@@ -42,7 +42,7 @@ function ToastViewport({ items }: { items: ToastItem[] }) {
       role="region"
       aria-live="polite"
       aria-relevant="additions text"
-      aria-label="Мэдэгдэл"
+      aria-label="Notifications"
       id={rid}
       style={{
         position: "fixed",

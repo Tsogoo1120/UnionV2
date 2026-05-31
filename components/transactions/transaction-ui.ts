@@ -26,16 +26,16 @@ export function toneToBadgeStyle(tone: StatusTone): CSSProperties {
 }
 
 export function transactionKindShort(kind: "subscription" | "coaching"): string {
-  return kind === "subscription" ? "Гишүүнчлэл" : "Зөвлөгөө";
+  return kind === "subscription" ? "Membership" : "Coaching";
 }
 
 export function transactionKindDetailTitle(
   kind: "subscription" | "coaching",
   slotDescription: string | null | undefined,
 ): string {
-  if (kind === "subscription") return "Гишүүнчлэлийн төлбөр";
+  if (kind === "subscription") return "Membership payment";
   const d = slotDescription?.trim();
   return d && d.length > 0
-    ? `Сэтгэл зүйн зөвлөгөө — ${d}`
-    : "Сэтгэл зүйн зөвлөгөө";
+    ? `Personal coaching — ${d}`
+    : "Personal coaching";
 }

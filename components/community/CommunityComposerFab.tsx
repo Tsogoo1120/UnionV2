@@ -31,7 +31,7 @@ export function CommunityComposerFab() {
         if (typeof key === "string" && !fe[key]) fe[key] = issue.message;
       }
       setFieldErrors(fe);
-      toast(Object.values(fe)[0] ?? "Мэдээллээ шалгана уу.", "error");
+      toast(Object.values(fe)[0] ?? "Please check your details.", "error");
       return;
     }
 
@@ -52,7 +52,7 @@ export function CommunityComposerFab() {
         toast(m, "error");
         return;
       }
-      toast("Пост нийтлэгдлээ", "success");
+      toast("Post published", "success");
       setOpen(false);
       window.setTimeout(() => window.location.reload(), 350);
     });
@@ -66,7 +66,7 @@ export function CommunityComposerFab() {
         style={{
           position: "fixed",
           right: 20,
-          bottom: 88,
+          bottom: 'calc(88px + env(safe-area-inset-bottom))',
           zIndex: 25,
           width: 56,
           height: 56,
@@ -79,7 +79,7 @@ export function CommunityComposerFab() {
           cursor: "pointer",
           boxShadow: "var(--u-shadow-2)",
         }}
-        aria-label="Шинэ пост нээх"
+        aria-label="Create new post"
       >
         +
       </button>
@@ -89,11 +89,11 @@ export function CommunityComposerFab() {
           onSubmit={handleSubmit}
           style={{ padding: "20px 20px 28px", display: "flex", flexDirection: "column", gap: 12, maxWidth: 560, margin: "0 auto" }}
         >
-          <div className="u-eyebrow">Шинэ пост</div>
+          <div className="u-eyebrow">New post</div>
           <input
             name="title"
             required
-            placeholder="Гарчиг"
+            placeholder="Title"
             aria-invalid={Boolean(fieldErrors.title)}
             style={{ padding: 12, borderRadius: "var(--u-r-2)", border: "1px solid var(--u-rule-2)", font: "var(--u-body)", minHeight: 44 }}
           />
@@ -104,7 +104,7 @@ export function CommunityComposerFab() {
             name="body"
             required
             rows={5}
-            placeholder="Текст (markdown дэмжинэ)"
+            placeholder="Text (markdown supported)"
             aria-invalid={Boolean(fieldErrors.body)}
             style={{ padding: 12, borderRadius: "var(--u-r-2)", border: "1px solid var(--u-rule-2)", font: "var(--u-body)", resize: "vertical" }}
           />
@@ -112,7 +112,7 @@ export function CommunityComposerFab() {
             <p style={{ color: "var(--u-danger)", font: "var(--u-body-s)", margin: 0 }}>{fieldErrors.body}</p>
           ) : null}
           <label className="u-eyebrow" style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-            Зураг (заавал биш)
+            Image (optional)
             <input name="image" type="file" accept="image/png,image/jpeg,image/webp" style={{ minHeight: 44 }} />
           </label>
           {err ? <p style={{ color: "var(--u-danger)", font: "var(--u-body-s)", margin: 0 }}>{err}</p> : null}
@@ -130,7 +130,7 @@ export function CommunityComposerFab() {
               minHeight: 48,
             }}
           >
-            {pending ? "Нийтэлж байна…" : "Нийтлэх"}
+            {pending ? "Publishing…" : "Publish"}
           </button>
         </form>
       </MobileDrawer>

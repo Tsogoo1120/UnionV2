@@ -1,20 +1,22 @@
 /**
- * Maps common English server-action messages to Mongolian for toasts / alerts.
+ * Normalizes common server-action messages for toasts / alerts.
+ * The UI is English, so known messages map to clear English copy and any
+ * unknown message is passed through unchanged.
  */
 export function mapServerErrorToMn(message: string): string {
   const table: Record<string, string> = {
-    "You must be logged in.": "Эхлээд нэвтэрнэ үү.",
-    "Not authenticated.": "Эхлээд нэвтэрнэ үү.",
-    "Please attach a screenshot of your bank transfer.": "Дансны дэлгэцийн зураг хавсаргана уу.",
-    "Only JPEG, PNG, or WebP images are allowed.": "Зөвхөн JPEG, PNG эсвэл WebP зураг хүлээн авна.",
-    "File must be under 5 MB.": "Файлын хэмжээ 5 MB-аас их байна.",
-    "Image must be JPEG, PNG, or WebP.": "Зураг зөвхөн JPEG, PNG эсвэл WebP байх ёстой.",
-    "Image must be under 3 MB.": "Зургийн хэмжээ 3 MB-аас их байна.",
-    "Title is required.": "Гарчиг оруулна уу.",
-    "Body is required.": "Текст бичнэ үү.",
-    "Subscription required.": "Идэвхтэй гишүүнчлэл шаардлагатай.",
-    "Test not found.": "Тест олдсонгүй.",
-    "Unexpected error.": "Тодорхойгүй алдаа гарлаа. Дахин оролдоно уу.",
+    "You must be logged in.": "Please sign in first.",
+    "Not authenticated.": "Please sign in first.",
+    "Please attach a screenshot of your bank transfer.": "Please attach a screenshot of your bank transfer.",
+    "Only JPEG, PNG, or WebP images are allowed.": "Only JPEG, PNG, or WebP images are allowed.",
+    "File must be under 5 MB.": "File must be under 5 MB.",
+    "Image must be JPEG, PNG, or WebP.": "Image must be JPEG, PNG, or WebP.",
+    "Image must be under 3 MB.": "Image must be under 3 MB.",
+    "Title is required.": "Title is required.",
+    "Body is required.": "Body is required.",
+    "Subscription required.": "An active membership is required.",
+    "Test not found.": "Test not found.",
+    "Unexpected error.": "Something went wrong. Please try again.",
   };
   return table[message] ?? message;
 }

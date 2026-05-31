@@ -34,7 +34,7 @@ export function OnboardingForm({ defaultFullName, defaultPhone, redirectTo }: Pr
         if (typeof key === "string" && !fe[key]) fe[key] = issue.message;
       }
       setFieldErrors(fe);
-      toast(Object.values(fe)[0] ?? "Мэдээллээ шалгана уу.", "error");
+      toast(Object.values(fe)[0] ?? "Please check your information.", "error");
       return;
     }
 
@@ -47,7 +47,7 @@ export function OnboardingForm({ defaultFullName, defaultPhone, redirectTo }: Pr
       toast(msg, "error");
       return;
     }
-    toast("Хадгалагдлаа", "success");
+    toast("Saved", "success");
     const destination =
       redirectTo && redirectTo.startsWith("/coaching/")
         ? redirectTo
@@ -69,7 +69,7 @@ export function OnboardingForm({ defaultFullName, defaultPhone, redirectTo }: Pr
     >
       <div>
         <div className="u-eyebrow" style={{ marginBottom: 8 }}>
-          Овог нэр
+          Full name
         </div>
         <input
           name="full_name"
@@ -90,7 +90,7 @@ export function OnboardingForm({ defaultFullName, defaultPhone, redirectTo }: Pr
 
       <div>
         <div className="u-eyebrow" style={{ marginBottom: 8 }}>
-          Утасны дугаар
+          Phone number
         </div>
         <input
           name="phone"
@@ -128,7 +128,7 @@ export function OnboardingForm({ defaultFullName, defaultPhone, redirectTo }: Pr
       ) : null}
 
       <button type="submit" disabled={pending} className="u-btn-submit">
-        {pending ? "Хадгалж байна…" : "Үргэлжлүүлэх"}
+        {pending ? "Saving\u2026" : "Continue"}
       </button>
     </form>
   );

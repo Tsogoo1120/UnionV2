@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -154,7 +154,7 @@ export function ServicePreviewModal({ open, onClose, service, items }: Props) {
             ref={closeBtnRef}
             type="button"
             onClick={handleClose}
-            aria-label="Хаах"
+            aria-label="Close"
             className="-mr-2 -mt-2 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-[var(--u-r-pill)] text-[var(--u-ink-2)] transition-[background-color,color] duration-[var(--u-dur-2)] ease-[var(--u-ease)] hover:bg-[var(--u-surface)] hover:text-[var(--u-ink)]"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -203,13 +203,13 @@ export function ServicePreviewModal({ open, onClose, service, items }: Props) {
 
         <div className="flex flex-col items-stretch gap-3 border-t border-[var(--u-rule)] px-[var(--u-s-6)] py-[var(--u-s-5)] sm:flex-row sm:items-center sm:justify-between sm:px-[var(--u-s-8)] sm:py-[var(--u-s-6)]">
           <p className="font-[var(--u-body-s)] text-[var(--u-ink-3)]">
-            Гишүүнчлэл аваад бүгдийг бүрэн үзэх боломжтой.
+            Get a membership to view everything in full.
           </p>
           <Link
             href="/dashboard"
             className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-[var(--u-r-pill)] bg-[var(--u-ink)] px-5 py-2.5 font-[var(--u-body-s)] font-medium text-[var(--u-bg)] no-underline transition-[background-color,transform] duration-[var(--u-dur-2)] ease-[var(--u-ease)] hover:bg-[var(--u-ember)] motion-reduce:transition-none"
           >
-            Бүгдийг үзэх <span aria-hidden>→</span>
+            View all <span aria-hidden>→</span>
           </Link>
         </div>
       </div>

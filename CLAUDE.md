@@ -7,7 +7,7 @@ This file gives Claude Code (and any new contributor) the minimum context to be 
 
 ## Stack
 
-Next.js 14 (App Router) + React 18 + TypeScript (strict) + Tailwind. Backend on Supabase (Postgres + RLS + Storage + Auth). Cloudflare R2 (S3-compatible) for video files. Resend for transactional email. Deployed on Vercel. UI is Mongolian.
+Next.js 14 (App Router) + React 18 + TypeScript (strict) + Tailwind. Backend on Supabase (Postgres + RLS + Storage + Auth). Cloudflare R2 (S3-compatible) for video files. Resend for transactional email. Deployed on Vercel. User-facing UI is in English (admin panels may still contain Mongolian copy).
 
 ## Conventions
 
@@ -17,7 +17,7 @@ Next.js 14 (App Router) + React 18 + TypeScript (strict) + Tailwind. Backend on 
   - `@/lib/supabase/server` — server components / actions, anon key, RLS-enforced, reads cookies.
   - `@/lib/supabase/admin` — service-role, bypasses RLS, **server-only**, use sparingly.
 - **Queries centralized**: never call `supabase.from(...)` in components. All DB access goes through `@/lib/queries/*`. New queries belong there.
-- **Server Actions**: under `app/actions/*`, return shape `{ ok: true, ... } | { ok: false, code: string, fieldErrors?: Record<string,string> }`. Errors map to Mongolian via `@/lib/i18n/action-feedback`.
+- **Server Actions**: under `app/actions/*`, return shape `{ ok: true, ... } | { ok: false, code: string, fieldErrors?: Record<string,string> }`. Errors map to English via `@/lib/i18n/action-feedback`.
 - **Route guards**: do not re-implement auth in pages. Use `requireSession()`, `requireActive()`, `requireAdmin()` from `@/lib/auth`. The middleware (`middleware.ts`) gates routes at the edge as a defense layer; the in-page helpers still verify on the server.
 - **Validation**: Zod schemas in `@/lib/validation/client-forms` for forms; reuse on server actions for parity.
 
@@ -80,4 +80,4 @@ Each cron route validates `Authorization: Bearer ${CRON_SECRET}` via `app/api/cr
 - **CRLF**: git is configured to autocrlf on this Windows box; expect CRLF warnings on `git add` for new text files. Harmless.
 - **`design-fetch.bin`** in repo root is intentionally untracked — confirm with the author before committing.
 - **N+1 in community feed**: `app/community/page.tsx` issues 20 `createSignedUrl` calls per page load. Acceptable today; batch if scaling.
-- **Mongolian copy**: user-facing strings are Mongolian. When adding new copy, mirror the tone of existing files; do not auto-translate from English.
+- **User-facing copy is English**: all user-facing strings in `components/` and `app/` user routes are English. Shared presentation helpers (`@/lib/format` status/date labels, `components/transactions/transaction-ui`, `@/lib/i18n/action-feedback`) also emit English. When adding new copy, write clear, concise English and mirror the tone of existing files. (Admin-only surfaces under `components/admin/` and `app/admin/` may still contain Mongolian.)

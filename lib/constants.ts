@@ -27,13 +27,13 @@ export const DEFAULT_COACHING_CURRENCY = "MNT";
 
 export const COACHING_SERVICE_TYPES = {
   "1vs1_coaching": {
-    label: "1 vs 1 Коучинг",
+    label: "1-on-1 Coaching",
     price: 150_000,
     durationMinutes: 60,
     currency: "MNT",
   },
   tarot_reading: {
-    label: "Хувийн таро уншлага",
+    label: "Personal tarot reading",
     price: 75_000,
     durationMinutes: 30,
     currency: "MNT",
@@ -49,31 +49,31 @@ export type CoachingServiceType = keyof typeof COACHING_SERVICE_TYPES;
 export const SERVICES = [
   {
     key: "video-lessons",
-    title: "Видео хичээл",
+    title: "Video lessons",
     description: "Self-hosted video courses",
     href: "/dashboard/video-lessons",
   },
   {
     key: "collective-readings",
-    title: "Хамтын уншилт",
+    title: "Collective readings",
     description: "Collective tarot readings",
     href: "/dashboard/collective-readings",
   },
   {
     key: "articles",
-    title: "Эссэ",
+    title: "Essays",
     description: "Long-form articles",
     href: "/dashboard/articles",
   },
   {
     key: "tests",
-    title: "Сэтгэл судлалын тест",
+    title: "Psychology tests",
     description: "Psychology self-assessments",
     href: "/dashboard/tests",
   },
   {
     key: "community",
-    title: "Нийгэмлэг",
+    title: "Community",
     description: "Community posts and discussion",
     href: "/dashboard/community",
   },

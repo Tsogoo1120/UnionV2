@@ -64,7 +64,7 @@ export function ArticleReader({ title, bodyMd, readingMinutes, heroImageUrl, des
               borderRadius: "var(--u-r-pill)",
             }}
           >
-            Унших цаг · {readingMinutes} мин
+            Reading time &middot; {readingMinutes} min
           </span>
         ) : null}
       </header>

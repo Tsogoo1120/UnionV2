@@ -34,7 +34,7 @@ export default async function CoachingSlotPage({
             textDecoration: "none",
           }}
         >
-          ← Коучинг
+          &larr; Coaching
         </Link>
         <CoachingSlotBookForm slot={slot} />
       </div>

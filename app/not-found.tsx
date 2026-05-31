@@ -24,9 +24,9 @@ export default function NotFound() {
           boxShadow: "var(--u-shadow-2)",
         }}
       >
-        <h1 style={{ font: "var(--u-h2)", margin: "0 0 12px" }}>Олдсонгүй</h1>
+        <h1 style={{ font: "var(--u-h2)", margin: "0 0 12px" }}>Page not found</h1>
         <p style={{ color: "var(--u-ink-2)", margin: "0 0 16px", lineHeight: 1.55 }}>
-          Хайсан хуудас байхгүй эсвэл устгагдсан байна.
+          The page you&apos;re looking for doesn&apos;t exist or has been removed.
         </p>
         <Link
           href="/"
@@ -43,7 +43,7 @@ export default function NotFound() {
             textDecoration: "none",
           }}
         >
-          Нүүр хуудас руу
+          Back to home
         </Link>
       </div>
     </div>

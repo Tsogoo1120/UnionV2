@@ -30,9 +30,9 @@ export default function RootError({
           boxShadow: "var(--u-shadow-2)",
         }}
       >
-        <h1 style={{ font: "var(--u-h2)", margin: "0 0 12px" }}>Алдаа гарлаа</h1>
+        <h1 style={{ font: "var(--u-h2)", margin: "0 0 12px" }}>Something went wrong</h1>
         <p style={{ color: "var(--u-ink-2)", margin: "0 0 8px", lineHeight: 1.55 }}>
-          Уучлаарай, серверт эсвэл сүлжээнд түр саатал гарлаа. Хуудсыг дахин ачаалж үзнэ үү.
+          Sorry, there was a temporary server or network issue. Please try reloading the page.
         </p>
         {process.env.NODE_ENV === "development" && error?.message ? (
           <pre
@@ -65,7 +65,7 @@ export default function RootError({
             cursor: "pointer",
           }}
         >
-          Дахин оролдох
+          Try again
         </button>
       </div>
     </div>

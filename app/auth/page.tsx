@@ -23,15 +23,15 @@ const inputStyle: React.CSSProperties = {
 
 function translateError(msg: string): string {
   if (msg.includes("Invalid login credentials"))
-    return "Имэйл эсвэл нууц үг буруу байна";
+    return "Invalid email or password";
   if (msg.includes("Email not confirmed"))
-    return "Имэйл баталгаажаагүй байна. Имэйлээ шалгана уу.";
+    return "Email not confirmed. Please check your email.";
   if (msg.includes("User already registered"))
-    return "Энэ имэйл хаяг бүртгэгдсэн байна";
+    return "This email is already registered";
   if (msg.includes("Password should be at least"))
-    return "Нууц үг хамгийн багадаа 6 тэмдэгт байх ёстой";
+    return "Password must be at least 6 characters";
   if (msg.includes("Unable to validate email address"))
-    return "Имэйл хаяг буруу байна";
+    return "Invalid email address";
   return msg;
 }
 
@@ -100,18 +100,18 @@ function AuthInner() {
       <div style={wrapStyle}>
         <div style={{ maxWidth: 400, width: "100%", textAlign: "center" }}>
           <h1 style={{ font: "var(--u-display-s)", margin: "0 0 12px" }}>
-            Имэйлээ шалгана уу
+            Check your email
           </h1>
           <p style={{ font: "var(--u-body)", color: "var(--u-ink-2)", margin: "0 0 28px" }}>
-            <strong>{email}</strong> хаяг руу баталгаажуулах холбоос илгээлээ.
-            Имэйлдээ ирсэн холбоос дарж бүртгэлээ идэвхжүүлнэ үү.
+            We sent a confirmation link to <strong>{email}</strong>.
+            Click the link in your email to activate your account.
           </p>
           <button
             type="button"
             onClick={() => switchMode("signin")}
             style={{ font: "var(--u-body-s)", color: "var(--u-ink-2)", background: "none", border: "none", cursor: "pointer", padding: 0 }}
           >
-            ← Нэвтрэх хуудас руу буцах
+            &larr; Back to sign in
           </button>
         </div>
       </div>
@@ -133,18 +133,18 @@ function AuthInner() {
           color: "var(--u-ink)",
           lineHeight: 1.6,
         }}>
-          <strong style={{ display: "block", marginBottom: 4 }}>⚠ Анхааруулга</strong>
-          Сайт шинэчлэгдсэн тул өмнө нь бүртгүүлж төлбөрөө төлсөн хэрэглэгч болон Подкаст бүлгийн гишүүд <strong>дахин төлбөр төлөх шаардлагагүй.</strong>
-          {" "}Шинээр бүртгүүлж, screenshot хэсэгт Facebook, YMU эсвэл Instagram профайлынхаа screenshot-г оруулна уу. Бүртгэлийг нэмж дуусаад би өөрөө мэдэгдэх болно.
+          <strong style={{ display: "block", marginBottom: 4 }}>&#9888; Notice</strong>
+          Since the site has been updated, users who previously registered and paid, as well as members of the Podcast group, <strong>do not need to pay again.</strong>
+          {" "}Please sign up again and upload a screenshot of your Facebook, YMU, or Instagram profile in the screenshot section. I&apos;ll confirm your account myself once it is added.
         </div>
 
         <h1 style={{ font: "var(--u-display-s)", margin: "0 0 8px", textAlign: "center" }}>
-          {mode === "signin" ? "Нэвтрэх" : "Бүртгүүлэх"}
+          {mode === "signin" ? "Sign in" : "Sign up"}
         </h1>
         <p style={{ font: "var(--u-body)", color: "var(--u-ink-2)", margin: "0 0 24px", textAlign: "center" }}>
           {mode === "signin"
-            ? "Union үйлчилгээ ашиглахын тулд нэвтэрнэ үү."
-            : "Шинэ бүртгэл үүсгэх."}
+            ? "Sign in to use Union services."
+            : "Create a new account."}
         </p>
 
         {err ? (
@@ -153,7 +153,7 @@ function AuthInner() {
           </p>
         ) : null}
 
-        {/* Google button — keep as-is */}
+        {/* Google button */}
         <button
           type="button"
           onClick={onGoogle}
@@ -170,13 +170,13 @@ function AuthInner() {
             marginBottom: 20,
           }}
         >
-          {busy ? "Уншиж байна…" : "Google-ээр нэвтрэх"}
+          {busy ? "Processing\u2026" : "Continue with Google"}
         </button>
 
         {/* Divider */}
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
           <div style={{ flex: 1, height: 1, background: "var(--u-rule)" }} />
-          <span style={{ font: "var(--u-body-s)", color: "var(--u-ink-3)" }}>эсвэл</span>
+          <span style={{ font: "var(--u-body-s)", color: "var(--u-ink-3)" }}>or</span>
           <div style={{ flex: 1, height: 1, background: "var(--u-rule)" }} />
         </div>
 
@@ -184,7 +184,7 @@ function AuthInner() {
         <form onSubmit={onSubmit} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           <input
             type="email"
-            placeholder="Имэйл хаяг"
+            placeholder="Email address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -193,7 +193,7 @@ function AuthInner() {
           />
           <input
             type="password"
-            placeholder="Нууц үг"
+            placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -215,13 +215,14 @@ function AuthInner() {
               fontWeight: 600,
               cursor: busy ? "wait" : "pointer",
               marginTop: 4,
+              boxShadow: "0 1px 2px rgba(0,0,0,0.08)",
             }}
           >
             {busy
-              ? "Уншиж байна…"
+              ? "Processing\u2026"
               : mode === "signin"
-              ? "Нэвтрэх"
-              : "Бүртгүүлэх"}
+              ? "Sign in"
+              : "Sign up"}
           </button>
         </form>
 
@@ -229,24 +230,24 @@ function AuthInner() {
         <p style={{ font: "var(--u-body-s)", color: "var(--u-ink-2)", textAlign: "center", marginTop: 20 }}>
           {mode === "signin" ? (
             <>
-              Бүртгэл байхгүй юу?{" "}
+              Don&apos;t have an account?{" "}
               <button
                 type="button"
                 onClick={() => switchMode("signup")}
                 style={{ color: "var(--u-ember)", background: "none", border: "none", cursor: "pointer", font: "var(--u-body-s)", fontWeight: 600, padding: 0 }}
               >
-                Бүртгүүлэх
+                Sign up
               </button>
             </>
           ) : (
             <>
-              Бүртгэл байгаа юу?{" "}
+              Already have an account?{" "}
               <button
                 type="button"
                 onClick={() => switchMode("signin")}
                 style={{ color: "var(--u-ember)", background: "none", border: "none", cursor: "pointer", font: "var(--u-body-s)", fontWeight: 600, padding: 0 }}
               >
-                Нэвтрэх
+                Sign in
               </button>
             </>
           )}
@@ -271,7 +272,7 @@ export default function AuthPage() {
     <Suspense
       fallback={
         <div style={{ minHeight: "100vh", display: "grid", placeItems: "center" }}>
-          Ачааллаж байна…
+          Loading&hellip;
         </div>
       }
     >

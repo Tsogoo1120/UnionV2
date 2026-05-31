@@ -8,7 +8,7 @@ export default function GlobalError({
   reset: () => void;
 }) {
   return (
-    <html lang="mn">
+    <html lang="en">
       <body>
         <div
           style={{
@@ -20,9 +20,9 @@ export default function GlobalError({
           }}
         >
           <div style={{ maxWidth: 440, textAlign: "center" }}>
-            <h1 style={{ margin: "0 0 12px" }}>Алдаа гарлаа</h1>
+            <h1 style={{ margin: "0 0 12px" }}>Something went wrong</h1>
             <p style={{ color: "#555", margin: "0 0 16px", lineHeight: 1.55 }}>
-              Уучлаарай, серверт эсвэл сүлжээнд түр саатал гарлаа.
+              Sorry, there was a temporary server or network issue.
             </p>
             {process.env.NODE_ENV === "development" && error?.message ? (
               <pre
@@ -56,7 +56,7 @@ export default function GlobalError({
                 cursor: "pointer",
               }}
             >
-              Дахин оролдох
+              Try again
             </button>
           </div>
         </div>

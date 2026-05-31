@@ -108,7 +108,7 @@ export function MobileBottomNav({ items }: MobileBottomNavProps) {
   return (
     <nav
       role="navigation"
-      aria-label="Үндсэн навигаци"
+      aria-label="Primary navigation"
       style={{
         position: "fixed",
         left: 0,

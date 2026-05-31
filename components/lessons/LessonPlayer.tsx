@@ -61,10 +61,10 @@ export function LessonPlayer({
       .then((res) => {
         if (cancelled) return;
         if (res.url) setStreamUrl(res.url);
-        else setStreamError(res.error ?? "Видео ачаалж чадсангүй.");
+        else setStreamError(res.error ?? "Couldn't load the video.");
       })
       .catch(() => {
-        if (!cancelled) setStreamError("Видео ачаалж чадсангүй.");
+        if (!cancelled) setStreamError("Couldn't load the video.");
       });
     return () => {
       cancelled = true;
@@ -95,7 +95,7 @@ export function LessonPlayer({
             textDecoration: "none",
           }}
         >
-          ← Хичээлүүд
+          ← Lessons
         </Link>
       </div>
       {heroImageUrl ? (
@@ -177,7 +177,7 @@ export function LessonPlayer({
                 borderRadius: 8,
               }}
             >
-              {streamError ?? "Видео бэлдэж байна…"}
+              {streamError ?? "Preparing video…"}
             </span>
           </div>
         )}
@@ -224,20 +224,20 @@ export function LessonPlayer({
         >
           {prevLessonHref ? (
             <Link href={prevLessonHref} style={navBtnStyle}>
-              ← Өмнөх
+              ← Previous
             </Link>
           ) : (
             <span style={{ ...navBtnStyle, opacity: 0.4, pointerEvents: "none" }} aria-hidden>
-              ← Өмнөх
+              ← Previous
             </span>
           )}
           {nextLessonHref ? (
             <Link href={nextLessonHref} style={navBtnStyle}>
-              Дараах →
+              Next →
             </Link>
           ) : (
             <span style={{ ...navBtnStyle, opacity: 0.4, pointerEvents: "none" }} aria-hidden>
-              Дараах →
+              Next →
             </span>
           )}
         </div>

@@ -31,15 +31,15 @@ export function MarketingHero({ memberCtaHref }: MarketingHeroProps) {
         className="mt-[var(--u-s-10)] grid items-end gap-[var(--u-s-8)] sm:gap-[var(--u-s-12)] md:grid-cols-2 md:gap-[var(--u-s-16)]"
       >
         <p className="m-0 max-w-[30ch] font-[var(--u-body-l)] text-[var(--u-ink-2)] text-pretty sm:max-w-[32rem]">
-          гэдэг нь хүн эхлээд оршин байдаг, харин дараа нь өөрийн сонголт, үйлдэл, туршлагаараа “хэн
-          болохоо” бүтээдэг.
+          It means a person first exists, and only then, through their own choices, actions, and experience, creates “who they
+          become”.
         </p>
         <div className="flex w-full min-w-0 flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:justify-end">
           <Link
             href={memberCtaHref}
             className={cn(ctaBase, "w-full bg-[var(--u-ink)] text-[var(--u-bg)] sm:w-auto")}
           >
-            Гишүүн болох
+            Become a member
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
               <path d="M5 12h14M13 6l6 6-6 6" />
             </svg>
@@ -51,7 +51,7 @@ export function MarketingHero({ memberCtaHref }: MarketingHeroProps) {
               "w-full border border-[var(--u-rule-2)] bg-[var(--u-surface-2)] text-[var(--u-ink)] sm:w-auto"
             )}
           >
-            Үйлчилгээ үзэх
+            Explore services
           </Link>
         </div>
       </div>

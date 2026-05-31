@@ -20,7 +20,7 @@ export async function submitOnboarding(
   });
   if (!parsed.success) {
     return {
-      error: parsed.error.issues[0]?.message ?? "Мэдээллээ шалгана уу.",
+      error: parsed.error.issues[0]?.message ?? "Please check your information.",
     };
   }
 

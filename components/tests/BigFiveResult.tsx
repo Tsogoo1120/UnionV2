@@ -18,6 +18,15 @@ export function BigFiveResult({
     return rules.resultLevels.find((l) => s >= l.min && s <= l.max);
   }
 
+  const highLevel = rules.resultLevels.reduce(
+    (best, l) => (l.min > best.min ? l : best),
+    rules.resultLevels[0],
+  );
+  const lowLevel = rules.resultLevels.reduce(
+    (worst, l) => (l.min < worst.min ? l : worst),
+    rules.resultLevels[0],
+  );
+
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       {TRAIT_ORDER.map((traitKey) => {
@@ -30,9 +39,9 @@ export function BigFiveResult({
 
         const levelColor =
           !level ? "var(--u-ink-3)" :
-          level.level === "Өндөр" ? "var(--u-ember)" :
-          level.level === "Дундаж" ? "var(--u-ink-2)" :
-          "var(--u-ink-3)";
+          level === highLevel ? "var(--u-ember)" :
+          level === lowLevel ? "var(--u-ink-3)" :
+          "var(--u-ink-2)";
 
         return (
           <div
@@ -79,7 +88,7 @@ export function BigFiveResult({
                     marginTop: 2,
                   }}
                 >
-                  {level?.level ?? "—"}
+                  {level?.level ?? "\u2014"}
                 </div>
               </div>
             </div>

@@ -129,10 +129,10 @@ export async function createCoachingSlots(input: {
 
     const validDates = input.dates.filter(Boolean);
     const validTimes = input.startTimes.filter(Boolean);
-    if (validDates.length === 0) return { errors: ["Огноо сонгоно уу."] };
-    if (validTimes.length === 0) return { errors: ["Цаг оруулна уу."] };
+    if (validDates.length === 0) return { errors: ["Please select a date."] };
+    if (validTimes.length === 0) return { errors: ["Please enter a time."] };
     if (validDates.length * validTimes.length > 50) {
-      return { errors: ["Нэг удаад хамгийн ихдээ 50 цаг үүсгэх боломжтой."] };
+      return { errors: ["You can create at most 50 slots at once."] };
     }
 
     const now = new Date();
@@ -151,11 +151,11 @@ export async function createCoachingSlots(input: {
       for (const time of validTimes) {
         const startAt = new Date(`${date}T${time}:00`);
         if (Number.isNaN(startAt.getTime())) {
-          skipped.push(`Буруу огноо/цаг: ${date} ${time}`);
+          skipped.push(`Invalid date/time: ${date} ${time}`);
           continue;
         }
         if (startAt <= now) {
-          skipped.push(`Өнгөрсөн цаг алгасав: ${date} ${time}`);
+          skipped.push(`Skipped past slot: ${date} ${time}`);
           continue;
         }
         const endAt = new Date(startAt.getTime() + svc.durationMinutes * 60_000);
@@ -174,7 +174,7 @@ export async function createCoachingSlots(input: {
     if (rows.length === 0) {
       return {
         errors: [
-          "Үүсгэх боломжтой цаг олдсонгүй.",
+          "No valid slots could be created.",
           ...skipped,
         ],
       };
@@ -238,7 +238,7 @@ export async function bookCoachingSlot(
     ) {
       return {
         error:
-          "Энэ цаг саяхан захиалагдсан байна. Өөр цаг сонгоно уу.",
+          "This slot was just booked. Please choose another time.",
       };
     }
     return { error: rpcError.message };

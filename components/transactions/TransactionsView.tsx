@@ -59,7 +59,7 @@ export function TransactionsView({
   return (
     <div style={{ minHeight: "100vh", background: "var(--u-bg)" }}>
       <MobileTopBar
-        title="Гүйлгээ"
+        title="Transactions"
         onMenuClick={() => setMenuOpen(true)}
         rightSlot={
           <Link
@@ -72,7 +72,7 @@ export function TransactionsView({
               padding: "8px 4px",
             }}
           >
-            Самбар
+            Dashboard
           </Link>
         }
       />
@@ -84,21 +84,21 @@ export function TransactionsView({
             onClick={() => setMenuOpen(false)}
             style={{ font: "var(--u-body)", color: "var(--u-ink)", textDecoration: "none" }}
           >
-            Хяналтын самбар
+            Dashboard
           </Link>
           <Link
             href="/transactions"
             onClick={() => setMenuOpen(false)}
             style={{ font: "var(--u-body)", fontWeight: 600, color: "var(--u-ink)" }}
           >
-            Гүйлгээ
+            Transactions
           </Link>
           <Link
             href="/payment"
             onClick={() => setMenuOpen(false)}
             style={{ font: "var(--u-body)", color: "var(--u-ink)", textDecoration: "none" }}
           >
-            Төлбөр
+            Payment
           </Link>
         </nav>
       </MobileDrawer>
@@ -124,7 +124,7 @@ export function TransactionsView({
               textDecoration: "none",
             }}
           >
-            ← Самбар
+            ← Dashboard
           </Link>
         ) : null}
         <div
@@ -138,7 +138,7 @@ export function TransactionsView({
           }}
         >
           <div style={{ font: "var(--u-h3)", fontWeight: 600 }}>
-            Нийт:{" "}
+            Total:{" "}
             <span style={{ fontFamily: "var(--u-mono)" }}>{total}</span>
           </div>
           <ExportButton total={total} filters={filters} />
@@ -217,7 +217,7 @@ export function TransactionsView({
                   cursor: "pointer",
                 }}
               >
-                Шүүлт
+                Filters
               </button>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -285,10 +285,10 @@ function EmptyState({ subscriptionStatus }: { subscriptionStatus: string }) {
       }}
     >
       <div style={{ font: "var(--u-h3)", fontWeight: 600, marginBottom: 8 }}>
-        Гүйлгээ алга
+        No transactions
       </div>
       <p style={{ font: "var(--u-body)", color: "var(--u-ink-2)", margin: "0 0 20px" }}>
-        Таны дансанд одоогоор харагдах гүйлгээ байхгүй байна.
+        You don&apos;t have any transactions to show yet.
       </p>
       {subscriptionStatus === "inactive" ? (
         <Link
@@ -307,7 +307,7 @@ function EmptyState({ subscriptionStatus }: { subscriptionStatus: string }) {
             textDecoration: "none",
           }}
         >
-          Гишүүнчлэл төлөх
+          Pay for membership
         </Link>
       ) : null}
     </div>
@@ -360,7 +360,7 @@ function Pagination({
           textDecoration: "none",
         }}
       >
-        Өмнөх
+        Previous
       </Link>
       <span
         style={{
@@ -390,7 +390,7 @@ function Pagination({
           textDecoration: "none",
         }}
       >
-        Дараах
+        Next
       </Link>
     </div>
   );

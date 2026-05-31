@@ -49,15 +49,9 @@ export function suggestedWaitSecondsFromAuthError(error: unknown): number {
   return 30;
 }
 
-export function formatTooManyAttemptsMessage(
-  seconds: number,
-  locale: "mn" | "en" = "mn",
-): string {
+export function formatTooManyAttemptsMessage(seconds: number): string {
   const s = Math.ceil(Math.max(1, seconds));
-  if (locale === "en") {
-    return `Too many attempts. Please wait ${s} seconds and try again.`;
-  }
-  return `Хэт олон оролдлого хийгдлээ. ${s} секундын дараа дахин оролдоно уу.`;
+  return `Too many attempts. Please wait ${s} seconds and try again.`;
 }
 
 export async function sleepMs(ms: number): Promise<void> {

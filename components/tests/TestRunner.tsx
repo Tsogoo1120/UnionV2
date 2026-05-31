@@ -64,7 +64,7 @@ export function TestRunner({
         toast(m, "error");
         return;
       }
-      toast("Тестийн хариу амжилттай илгээгдлээ", "success");
+      toast("Your answers were submitted", "success");
       window.setTimeout(() => {
         router.push(`/tests/${slug}/result`);
         router.refresh();
@@ -75,9 +75,9 @@ export function TestRunner({
   if (!q) {
     return (
       <div style={{ padding: 24, font: "var(--u-body)", color: "var(--u-ink-2)" }}>
-        <p style={{ margin: "0 0 16px" }}>Асуулт одоогоор бүртгэгдээгүй байна.</p>
+        <p style={{ margin: "0 0 16px" }}>No questions are available yet.</p>
         <a href="/dashboard?tab=hub" style={{ color: "var(--u-ember)", fontWeight: 600 }}>
-          Хяналт руу буцах →
+          Back to dashboard →
         </a>
       </div>
     );
@@ -147,7 +147,7 @@ export function TestRunner({
       </div>
 
       <div className="u-eyebrow" style={{ marginBottom: 8 }}>
-        Асуулт {index + 1} / {total}
+        Question {index + 1} / {total}
       </div>
       <p style={{ font: "var(--u-h3)", margin: "0 0 20px", color: "var(--u-ink)" }}>{q.text}</p>
 
@@ -205,7 +205,7 @@ export function TestRunner({
             minHeight: 48,
           }}
         >
-          Өмнөх
+          Previous
         </button>
         {index < total - 1 ? (
           <button
@@ -225,7 +225,7 @@ export function TestRunner({
               minHeight: 48,
             }}
           >
-            Дараах
+            Next
           </button>
         ) : (
           <button
@@ -245,7 +245,7 @@ export function TestRunner({
               minHeight: 48,
             }}
           >
-            {pending ? "Илгээж байна…" : "Дуусгах"}
+            {pending ? "Submitting…" : "Finish"}
           </button>
         )}
       </div>

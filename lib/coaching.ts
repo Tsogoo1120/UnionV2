@@ -21,15 +21,15 @@ export function isSlotBookable(slot: Pick<CoachingSlot, "status" | "start_at">):
 export function slotStatusLabel(status: CoachingSlotStatus): string {
   switch (status) {
     case "available":
-      return "Боломжтой";
+      return "Available";
     case "pending":
-      return "Хүлээгдэж буй";
+      return "Pending";
     case "booked":
-      return "Захиалагдсан";
+      return "Booked";
     case "expired":
-      return "Хугацаа дууссан";
+      return "Expired";
     case "cancelled":
-      return "Цуцалсан";
+      return "Cancelled";
   }
 }
 
@@ -44,13 +44,13 @@ export function formatSlotRange(
 ): string {
   const start = new Date(startIso);
   const end = new Date(endIso);
-  const dateFmt = new Intl.DateTimeFormat("mn-MN", {
+  const dateFmt = new Intl.DateTimeFormat("en-US", {
     timeZone,
     year: "numeric",
     month: "long",
     day: "numeric",
   });
-  const timeFmt = new Intl.DateTimeFormat("mn-MN", {
+  const timeFmt = new Intl.DateTimeFormat("en-US", {
     timeZone,
     hour: "2-digit",
     minute: "2-digit",

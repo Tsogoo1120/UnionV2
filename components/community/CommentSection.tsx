@@ -55,7 +55,7 @@ export function CommentSection({ postId, initialComments, currentUserId }: Props
   return (
     <section style={{ marginTop: 40, borderTop: "1px solid var(--u-rule)", paddingTop: 24 }}>
       <h2 className="u-eyebrow" style={{ marginBottom: 16 }}>
-        Сэтгэгдэл ({initialComments.length})
+        Comments ({initialComments.length})
       </h2>
 
       {initialComments.length === 0 ? (
@@ -70,7 +70,7 @@ export function CommentSection({ postId, initialComments, currentUserId }: Props
           }}
         >
           <p style={{ color: "var(--u-ink-2)", font: "var(--u-body)", margin: 0 }}>
-            Одоогоор сэтгэгдэл алга. Эхний сэтгэгдлийг та үлдээгээрэй.
+            No comments yet. Be the first to leave one.
           </p>
         </div>
       ) : (
@@ -94,7 +94,7 @@ export function CommentSection({ postId, initialComments, currentUserId }: Props
                   }}
                 >
                   <span style={{ font: "var(--u-body-s)", color: "var(--u-ink-3)", fontWeight: 600 }}>
-                    {isOwn ? "Та" : "Гишүүн"}
+                    {isOwn ? "You" : "Member"}
                   </span>
                   <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                     <span style={{ font: "var(--u-mono)", fontSize: 11, color: "var(--u-ink-4)" }}>
@@ -113,11 +113,11 @@ export function CommentSection({ postId, initialComments, currentUserId }: Props
                         padding: 0,
                       }}
                     >
-                      Хариулах
+                      Reply
                     </button>
                   </div>
                 </div>
-                <div style={{ font: "var(--u-body-s)", color: "var(--u-ink-2)", lineHeight: 1.6 }}>
+                <div style={{ font: "var(--u-body-s)", color: "var(--u-ink-2)", lineHeight: 1.6, paddingLeft: 12, borderLeft: '2px solid var(--u-rule-2)' }}>
                   <ReactMarkdown remarkPlugins={[remarkGfm]}>{c.body}</ReactMarkdown>
                 </div>
               </div>
@@ -132,7 +132,7 @@ export function CommentSection({ postId, initialComments, currentUserId }: Props
           value={body}
           onChange={(e) => setBody(e.target.value)}
           rows={4}
-          placeholder="Сэтгэгдлээ бичнэ үү…"
+          placeholder="Write a comment…"
           disabled={isPending}
           style={{
             width: "100%",
@@ -166,7 +166,7 @@ export function CommentSection({ postId, initialComments, currentUserId }: Props
               opacity: isPending || !body.trim() ? 0.6 : 1,
             }}
           >
-            {isPending ? "Илгээж байна…" : "Илгээх"}
+            {isPending ? "Sending…" : "Send"}
           </button>
         </div>
       </form>

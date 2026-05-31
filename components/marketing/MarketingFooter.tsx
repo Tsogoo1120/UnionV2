@@ -2,9 +2,9 @@
 import { MarketingReveal } from "./MarketingReveal";
 
 const cols = [
-  { h: "Үйлчилгээ", l: ["Видео хичээл", "Хамтын уншилт", "Нийгэмлэг", "Тест", "Нийтлэл"] },
+  { h: "Services", l: ["Video lessons", "Collective readings", "Community", "Tests", "Articles"] },
   {
-    h: "Холбоос",
+    h: "Links",
     l: [
       { label: "Instagram", href: "https://www.instagram.com/tsogoo_1120/" },
       { label: "Facebook", href: "https://www.facebook.com/altan.tsog.373688/" },
@@ -35,15 +35,15 @@ export function MarketingFooter() {
               </span>
             </div>
             <p className="mt-5 max-w-[22ch] font-[var(--u-body-l)] text-[var(--u-dark-ink-2)] text-pretty sm:max-w-[360px]">
-              Өөрийгөө хөгжүүлэх зорилготой платформ
+              A platform for personal growth and self-development
             </p>
             <p className="mt-4 font-[var(--u-body-s)] text-[var(--u-dark-ink-2)]">
               <Link href="/dashboard" className={footerLinkClass}>
-                Хяналтын самбар
+                Dashboard
               </Link>
               {" · "}
               <Link href="/admin/dashboard" className={footerLinkClass}>
-                Админ
+                Admin
               </Link>
             </p>
           </div>
@@ -63,8 +63,8 @@ export function MarketingFooter() {
           ))}
         </div>
         <div className="mt-[var(--u-s-16)] flex flex-col gap-3 border-t border-[var(--u-dark-rule)] pt-6 font-[var(--u-body-s)] text-[var(--u-dark-ink-2)] sm:flex-row sm:justify-between sm:gap-4">
-          <span className="text-pretty">© 2026 Union · Улаанбаатар Г.Алтанцог энэ өөрөө энэ вэбсайт хийв</span>
-          <span className="shrink-0">Сар бүрийн гишүүнчлэл · 50,000₮</span>
+          <span className="text-pretty">© 2026 Union · Ulaanbaatar · Built by G.Altantsog</span>
+          <span className="shrink-0">Monthly membership · 50,000₮</span>
         </div>
       </div>
     </MarketingReveal>

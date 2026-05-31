@@ -23,7 +23,7 @@ function TransactionsFallback() {
         color: "var(--u-ink-2)",
       }}
     >
-      Ачааллаж байна…
+      Loading…
     </div>
   );
 }

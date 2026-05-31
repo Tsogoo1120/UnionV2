@@ -30,10 +30,10 @@ export default function StatusPendingPage() {
         …
       </div>
       <h1 style={{ font: "var(--u-display-xs)", margin: "0 0 12px" }}>
-        Төлбөр хүлээгдэж байна
+        Payment pending
       </h1>
       <p style={{ font: "var(--u-body)", color: "var(--u-ink-2)", maxWidth: 420, margin: "0 0 28px" }}>
-        Бид таны шилжүүлгийг шалгаж байна. Батлагдсаны дараа имэйлээр мэдэгдэнэ.
+        We&apos;re reviewing your transfer. We&apos;ll email you once it&apos;s approved.
       </p>
       <Link
         href="/dashboard"
@@ -50,7 +50,7 @@ export default function StatusPendingPage() {
           textDecoration: "none",
         }}
       >
-        Самбар руу буцах
+        Back to dashboard
       </Link>
     </div>
   );

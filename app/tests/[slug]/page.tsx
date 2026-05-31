@@ -49,7 +49,7 @@ export default async function TestPage({
             {test.title}
           </h1>
           <p style={{ font: "var(--u-body-s)", color: "var(--u-ink-3)", margin: "0 0 24px" }}>
-            Сүүлд өгсөн: {formatDate(bundle.result.created_at, { withTime: true })}
+            Last taken: {formatDate(bundle.result.created_at, { withTime: true })}
           </p>
 
           {bundle.result.result_summary ? (
@@ -81,7 +81,7 @@ export default async function TestPage({
               marginBottom: 16,
             }}
           >
-            ← Тестүүд
+            &larr; Tests
           </Link>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -99,7 +99,7 @@ export default async function TestPage({
                 textDecoration: "none",
               }}
             >
-              Үр дүн харах
+              View result
             </Link>
             <Link
               href={`/tests/${params.slug}?retake=1`}
@@ -116,7 +116,7 @@ export default async function TestPage({
                 textDecoration: "none",
               }}
             >
-              Дахин өгөх
+              Retake
             </Link>
           </div>
         </div>

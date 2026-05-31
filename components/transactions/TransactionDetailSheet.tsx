@@ -28,7 +28,7 @@ function slotWhenLabel(
   const ms = new Date(end).getTime() - new Date(start).getTime();
   if (!Number.isFinite(ms) || ms <= 0) return startTxt;
   const mins = Math.round(ms / 60000);
-  return `${startTxt} · ${mins} мин`;
+  return `${startTxt} · ${mins} min`;
 }
 
 export function TransactionDetailSheet({
@@ -135,7 +135,7 @@ export function TransactionDetailSheet({
               flexShrink: 0,
             }}
           >
-            <div className="u-eyebrow">Гүйлгээ</div>
+            <div className="u-eyebrow">Transaction</div>
             <button
               type="button"
               onClick={onClose}
@@ -148,7 +148,7 @@ export function TransactionDetailSheet({
                 minWidth: 44,
                 minHeight: 44,
               }}
-              aria-label="Хаах"
+              aria-label="Close"
             >
               ×
             </button>
@@ -156,7 +156,7 @@ export function TransactionDetailSheet({
           <div style={innerScroll}>
             {pending && !d ? (
               <div style={{ font: "var(--u-body)", color: "var(--u-ink-2)" }}>
-                Ачааллаж байна…
+                Loading…
               </div>
             ) : null}
             {err ? (
@@ -192,7 +192,7 @@ export function TransactionDetailSheet({
 
                 <section>
                   <div className="u-eyebrow" style={{ marginBottom: 6 }}>
-                    Төрөл
+                    Type
                   </div>
                   <div style={{ font: "var(--u-body)", fontWeight: 500 }}>
                     {transactionKindDetailTitle(
@@ -211,18 +211,18 @@ export function TransactionDetailSheet({
                   }}
                 >
                   <div>
-                    <span style={{ color: "var(--u-ink-3)" }}>Илгээсэн: </span>
+                    <span style={{ color: "var(--u-ink-3)" }}>Submitted: </span>
                     {formatDate(d.submitted_at, { withTime: true })}
                   </div>
                   {d.reviewed_at ? (
                     <div>
-                      <span style={{ color: "var(--u-ink-3)" }}>Шалгасан: </span>
+                      <span style={{ color: "var(--u-ink-3)" }}>Reviewed: </span>
                       {formatDate(d.reviewed_at, { withTime: true })}
                     </div>
                   ) : null}
                   {isAdmin && reviewerFullName ? (
                     <div>
-                      <span style={{ color: "var(--u-ink-3)" }}>Шалгагч: </span>
+                      <span style={{ color: "var(--u-ink-3)" }}>Reviewer: </span>
                       <span style={{ color: "var(--u-ink)" }}>{reviewerFullName}</span>
                     </div>
                   ) : null}
@@ -231,7 +231,7 @@ export function TransactionDetailSheet({
                 {d.bank_reference ? (
                   <section>
                     <div className="u-eyebrow" style={{ marginBottom: 6 }}>
-                      Банкны лавлагаа
+                      Bank reference
                     </div>
                     <div
                       style={{
@@ -267,7 +267,7 @@ export function TransactionDetailSheet({
                           cursor: "pointer",
                         }}
                       >
-                        Хуулах
+                        Copy
                       </button>
                     </div>
                   </section>
@@ -276,7 +276,7 @@ export function TransactionDetailSheet({
                 {d.status === "denied" && d.admin_note ? (
                   <section>
                     <div className="u-eyebrow" style={{ marginBottom: 6 }}>
-                      Админ тайлбар
+                      Admin note
                     </div>
                     <div
                       style={{
@@ -295,7 +295,7 @@ export function TransactionDetailSheet({
                 {d.screenshot_url ? (
                   <section>
                     <div className="u-eyebrow" style={{ marginBottom: 8 }}>
-                      Дэлгэцийн зураг
+                      Screenshot
                     </div>
                     <button
                       type="button"
@@ -315,7 +315,7 @@ export function TransactionDetailSheet({
                     >
                       <Image
                         src={d.screenshot_url}
-                        alt="Төлбөрийн дэлгэцийн агшин"
+                        alt="Payment screenshot"
                         fill
                         sizes="(max-width: 640px) 100vw, 440px"
                         style={{ objectFit: "contain" }}
@@ -327,7 +327,7 @@ export function TransactionDetailSheet({
                 {d.kind === "coaching" ? (
                   <section>
                     <div className="u-eyebrow" style={{ marginBottom: 6 }}>
-                      Зөвлөгөөний цаг
+                      Coaching slot
                     </div>
                     <div style={{ font: "var(--u-body)", marginBottom: 10 }}>
                       {slotWhenLabel(d.related.slot_start_at, d.related.slot_end_at)}
@@ -341,7 +341,7 @@ export function TransactionDetailSheet({
                         color: "var(--u-ember)",
                       }}
                     >
-                      Коучинг хэсэл рүү →
+                      Go to coaching →
                     </Link>
                   </section>
                 ) : null}
@@ -354,7 +354,7 @@ export function TransactionDetailSheet({
       {zoomUrl ? (
         <button
           type="button"
-          aria-label="Хаах"
+          aria-label="Close"
           onClick={() => setZoomUrl(null)}
           style={{
             position: "fixed",
@@ -371,7 +371,7 @@ export function TransactionDetailSheet({
         >
           <ImageWithFallback
             src={zoomUrl}
-            alt="Төлбөрийн дэлгэцийн зураг — том харагдац"
+            alt="Payment screenshot — enlarged view"
             loading="eager"
             style={{
               maxWidth: "100%",

@@ -48,10 +48,10 @@ export function MarketingNav({ signInHref, memberHref }: MarketingNavProps) {
   const drawerLinks = (
     <nav className="flex flex-col gap-1 px-5 pb-6 pt-2">
       <Link href="#services" className={navLinkClass} onClick={() => setMenuOpen(false)}>
-        Үйлчилгээ
+        Services
       </Link>
       <Link href="#articles" className={navLinkClass} onClick={() => setMenuOpen(false)}>
-        Нийтлэл
+        Articles
       </Link>
       <Link href="#coaching" className={navLinkClass} onClick={() => setMenuOpen(false)}>
         1vs1 meeting
@@ -62,10 +62,10 @@ export function MarketingNav({ signInHref, memberHref }: MarketingNavProps) {
           className={cn(navLinkClass, "text-[var(--u-ink-2)]")}
           onClick={() => setMenuOpen(false)}
         >
-          Нэвтрэх
+          Sign in
         </Link>
         <Link href={memberHref} className={memberCtaClass} onClick={() => setMenuOpen(false)}>
-          Гишүүн болох →
+          Become a member →
         </Link>
       </div>
     </nav>
@@ -78,11 +78,11 @@ export function MarketingNav({ signInHref, memberHref }: MarketingNavProps) {
           {logo}
           <div className="flex shrink-0 items-center gap-2">
             <Link href={memberHref} className={mobileCtaClass}>
-              Гишүүн болох →
+              Become a member →
             </Link>
             <button
               type="button"
-              aria-label="Цэс нээх"
+              aria-label="Open menu"
               aria-expanded={menuOpen}
               onClick={() => setMenuOpen(true)}
               className="grid h-11 w-11 min-h-11 min-w-11 place-items-center rounded-[var(--u-r-2)] border-0 bg-transparent p-0 text-[var(--u-ink)] cursor-pointer"
@@ -99,10 +99,10 @@ export function MarketingNav({ signInHref, memberHref }: MarketingNavProps) {
           {logo}
           <nav className="flex gap-7 font-[var(--u-body-s)] font-medium text-[var(--u-ink-2)]">
             <Link href="#services" className="no-underline text-inherit transition-colors duration-[var(--u-dur-2)] hover:text-[var(--u-ink)]">
-              Үйлчилгээ
+              Services
             </Link>
             <Link href="#articles" className="no-underline text-inherit transition-colors duration-[var(--u-dur-2)] hover:text-[var(--u-ink)]">
-              Нийтлэл
+              Articles
             </Link>
             <Link href="#coaching" className="no-underline text-inherit transition-colors duration-[var(--u-dur-2)] hover:text-[var(--u-ink)]">
               1:1 meeting
@@ -113,10 +113,10 @@ export function MarketingNav({ signInHref, memberHref }: MarketingNavProps) {
               href={signInHref}
               className="min-h-11 flex items-center font-[var(--u-body-s)] font-medium text-[var(--u-ink-2)] no-underline transition-colors duration-[var(--u-dur-2)] hover:text-[var(--u-ink)]"
             >
-              Нэвтрэх
+              Sign in
             </Link>
             <Link href={memberHref} className={cn(memberCtaClass, "px-4 py-2")}>
-              Гишүүн болох →
+              Become a member →
             </Link>
           </div>
         </div>

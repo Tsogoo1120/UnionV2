@@ -1,4 +1,4 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { MarketingReveal } from "./MarketingReveal";
@@ -28,13 +28,13 @@ export function MarketingArticleRow({ items = [] }: Props) {
     >
       <div className="mb-[var(--u-s-8)] flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <h2 className="text-balance font-[family-name:var(--u-display)] text-[clamp(2.25rem,8vw,4rem)] font-bold leading-none tracking-[-0.02em]">
-          Нийтлэл
+          Articles
         </h2>
         <Link
           href="/dashboard"
           className="inline-flex min-h-11 shrink-0 items-center gap-1.5 self-start rounded-[var(--u-r-pill)] border border-[var(--u-rule-2)] px-3.5 py-2.5 font-[var(--u-body-s)] font-medium text-[var(--u-ink-2)] no-underline transition-[border-color,color,box-shadow] duration-[var(--u-dur-2)] ease-[var(--u-ease)] hover:border-[var(--u-ink-3)] hover:text-[var(--u-ink)] hover:shadow-[var(--u-shadow-1)] sm:self-auto"
         >
-          Бүгдийг үзэх <span aria-hidden>→</span>
+          View all <span aria-hidden>→</span>
         </Link>
       </div>
 
@@ -60,7 +60,7 @@ export function MarketingArticleRow({ items = [] }: Props) {
               ) : (
                 <Image
                   src="/union-monogram.svg"
-                  alt="Union — нийтлэлийн зураг"
+                  alt="Union — article image"
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
                   loading="lazy"

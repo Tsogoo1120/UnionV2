@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { MarketingReveal } from "./MarketingReveal";
@@ -21,36 +21,36 @@ const items: ServiceItem[] = [
     n: "",
     serviceId: "lessons",
     title: "Video lessons",
-    sub: "Видео хичээлүүд",
-    body: "Би та бүхэнд Докторуудын судалгааны ажлуудыг өөрийнхөө амьдралд хэрхэн ашиглаж болох талаас маш энгийн үг хэллэг жишээ ашиглаж хичээл бэлдсэн",
+    sub: "Video lessons",
+    body: "I have prepared these lessons in very simple language with examples, showing how to apply the research of PhDs to your own everyday life.",
   },
   {
     n: "",
     serviceId: "readings",
     title: "collective readings",
-    sub: "Тарот уншлага",
-    body: "7 хоног тутам тарот хөзрөөр ямар энерги төлөвтэй байна бас юун дээр анхаарах хэрэгтэй талаар уншлага хийх болно",
+    sub: "Tarot readings",
+    body: "Every week I read the tarot cards to see the current energy and what is worth paying attention to.",
   },
   {
     n: "",
     serviceId: "community",
     title: "community",
-    sub: "өөрийгөө илэрхийлэх",
-    body: "Та өөрийнхөө сурсан туршлага мэдлэгээ бусадтай хуваалцах боломжтой",
+    sub: "Self-expression",
+    body: "You can share the experience and knowledge you have gained with others.",
   },
   {
     n: "",
     serviceId: "tests",
     title: "psychology tests",
-    sub: "сэтгэл зүйн тестүүд",
-    body: "Internet-д нээлттэй байдаг тэстүүдийг хариутай нь хамт орчуулан нийтэлсэн болно",
+    sub: "Psychology tests",
+    body: "Tests that are freely available online, translated and published together with their answers.",
   },
   {
     n: "",
     serviceId: "articles",
     title: "articles and essays",
-    sub: "нийтлэл",
-    body: "Та бүхэнд өөрийнхөө уншиж судалсанаа тогтмол нийтлэх.",
+    sub: "Articles",
+    body: "I regularly publish what I read and study.",
   },
 ];
 
@@ -79,9 +79,9 @@ export function MarketingServiceList({ previews }: MarketingServiceListProps = {
       <div className="mx-auto max-w-container px-[var(--u-gutter)] pb-5 pt-[var(--u-s-12)] sm:pt-[var(--u-s-16)]">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <div className="u-eyebrow mb-2">Гишүүнчлэл — 5 үйлчилгээ бүгд орно</div>
+            <div className="u-eyebrow mb-2">Membership — all 5 services included</div>
             <p className="m-0 font-[var(--u-body)] text-[var(--u-ink-2)]">
-              Сарын <strong className="text-[var(--u-ink)]">50,000₮</strong> төлснөөр доорх бүх үйлчилгээнд нэвтрэх боломжтой.
+              For <strong className="text-[var(--u-ink)]">50,000₮</strong> a month, you get access to all the services below.
             </p>
           </div>
           <span
@@ -102,7 +102,7 @@ export function MarketingServiceList({ previews }: MarketingServiceListProps = {
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
               <path d="M20 6L9 17l-5-5" />
             </svg>
-            Нэг дор нэвтрэх
+            All in one place
           </span>
         </div>
       </div>

@@ -13,6 +13,7 @@ import {
   formatMNT,
   formatMongolianLongDate,
   formatMongolianShortWeekday,
+  formatMonthLong,
   formatRelative,
   statusLabel,
   subscriptionDaysRemaining,
@@ -45,7 +46,7 @@ const dashBackLinkStyle: CSSProperties = {
   textDecoration: "none",
 };
 
-function DashBackToHub({ label = "← Хяналт" }: { label?: string }) {
+function DashBackToHub({ label = "← Dashboard" }: { label?: string }) {
   return (
     <Link href="/dashboard?tab=hub" style={dashBackLinkStyle}>
       {label}
@@ -81,9 +82,9 @@ function DashNav({
   showDesktop: boolean;
 }) {
   const tabs: { id: Tab; label: string }[] = [
-    { id: "hub", label: "dashboard" },
-    { id: "coaching", label: "1vs1 meeting" },
-    { id: "profile", label: "profile" },
+    { id: "hub", label: "Dashboard" },
+    { id: "coaching", label: "Coaching" },
+    { id: "profile", label: "Profile" },
   ];
 
   const eff = getEffectiveStatus(profile);
@@ -232,13 +233,13 @@ function StatusCard({
         boxSizing: "border-box",
       }}
     >
-      Сунгах
+      Renew
     </Link>
   );
 
   const statusHeadline = (
     <div>
-      <div className="u-eyebrow">Гишүүнчлэл</div>
+      <div className="u-eyebrow">Membership</div>
       <div
         style={{
           fontFamily: "var(--u-display)",
@@ -253,7 +254,7 @@ function StatusCard({
           <>
             {" "}
             ·{" "}
-            <span style={{ fontWeight: 300, color: "var(--u-ink-2)" }}>{days} өдөр үлдсэн</span>
+            <span style={{ fontWeight: 300, color: "var(--u-ink-2)" }}>{days} days left</span>
           </>
         ) : null}
       </div>
@@ -262,14 +263,14 @@ function StatusCard({
 
   const metaNext = (
     <div>
-      <div className="u-eyebrow">Дараагийн төлбөр</div>
+      <div className="u-eyebrow">Next payment</div>
       <div style={{ font: "var(--u-h3)", marginTop: 6 }}>{nextPay}</div>
     </div>
   );
 
   const metaAmount = (
     <div>
-      <div className="u-eyebrow">Дүн</div>
+      <div className="u-eyebrow">Amount</div>
       <div style={{ font: "var(--u-h3)", marginTop: 6, fontFamily: "var(--u-mono)" }}>
         {formatMNT(PAYMENT_INFO.amount)}
       </div>
@@ -329,7 +330,7 @@ function ServiceHub({
   firstArticleSlug: string | null;
   contentLocked: boolean;
 }) {
-  const displayName = profile.full_name?.trim() || "Хэрэглэгч";
+  const displayName = profile.full_name?.trim() || "there";
   const isDesktop = useMediaQuery("(min-width: 1100px)");
   const isTablet = useMediaQuery("(min-width: 641px)") && !isDesktop;
   const cardMinHeight = isDesktop ? 160 : 140;
@@ -346,34 +347,34 @@ function ServiceHub({
   }[] = [
     {
       n: "01",
-      title: "Видео хичээл",
-      meta: `${hubStats.videoLessons} хичээл`,
+      title: "Video lessons",
+      meta: `${hubStats.videoLessons} lessons`,
       href: "/dashboard?tab=lessons",
     },
     {
       n: "02",
-      title: "Хамтын уншилт",
-      meta: `${hubStats.collectiveReadings} уншилт`,
+      title: "Collective readings",
+      meta: `${hubStats.collectiveReadings} readings`,
       inverted: true,
       href: firstReadingSlug ? `/readings/${firstReadingSlug}` : "#",
     },
     {
       n: "03",
       title: "Community",
-      meta: `7 хоногт ${hubStats.communityPostsWeek} пост`,
+      meta: `${hubStats.communityPostsWeek} posts this week`,
       emberMeta: true,
       href: "/community",
     },
     {
       n: "04",
-      title: "Тест",
-      meta: `${hubStats.tests} тест`,
+      title: "Tests",
+      meta: `${hubStats.tests} tests`,
       href: "/tests",
     },
     {
       n: "05",
-      title: "Нийтлэл",
-      meta: `${hubStats.articles} нийтлэл`,
+      title: "Articles",
+      meta: `${hubStats.articles} articles`,
       href: firstArticleSlug ? `/articles/${firstArticleSlug}` : "#",
     },
   ];
@@ -399,7 +400,7 @@ function ServiceHub({
             margin: 0,
           }}
         >
-          Сайн уу,
+          Hi,
           <br />
           <span style={{ fontWeight: 300, color: "var(--u-ink-2)", whiteSpace: "nowrap" }}>{displayName}.</span>
         </h2>
@@ -491,9 +492,9 @@ function ContinueRow({
   return (
     <section style={{ marginTop: 48 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 14 }}>
-        <div className="u-eyebrow">Үргэлжлүүлэх</div>
+        <div className="u-eyebrow">Continue</div>
         <Link href="/dashboard?tab=lessons" style={{ font: "var(--u-body-s)", color: "var(--u-ink-2)" }}>
-          Бүх хичээл →
+          All lessons →
         </Link>
       </div>
       <div
@@ -550,7 +551,7 @@ function ContinueRow({
                   zIndex: 1,
                 }}
               >
-                Хичээл {String(i + 1).padStart(2, "0")}
+                Lesson {String(i + 1).padStart(2, "0")}
               </span>
               <div
                 style={{
@@ -575,7 +576,7 @@ function ContinueRow({
               <div style={{ height: 3, background: "var(--u-rule)", borderRadius: 2, overflow: "hidden" }}>
                 <div style={{ width: "8%", height: "100%", background: "var(--u-ember)" }} />
               </div>
-              <div style={{ font: "var(--u-body-s)", color: "var(--u-ink-3)", marginTop: 8 }}>Шинэ</div>
+              <div style={{ font: "var(--u-body-s)", color: "var(--u-ink-3)", marginTop: 8 }}>New</div>
             </div>
           </LockedContentLink>
         ))}
@@ -596,7 +597,8 @@ function LessonGridSection({
   contentLocked: boolean;
 }) {
   const isWide = useMediaQuery("(min-width: 900px)");
-  const pills = ["Бүгд", ...lessonCategories];
+  const ALL = "All";
+  const pills = [ALL, ...lessonCategories];
 
   return (
     <section>
@@ -612,17 +614,17 @@ function LessonGridSection({
         }}
       >
         <div>
-          <div className="u-eyebrow">Видео хичээл · 01</div>
+          <div className="u-eyebrow">Video lessons · 01</div>
           <h2 style={{ fontFamily: "var(--u-display)", fontWeight: 700, fontSize: "clamp(36px, 7vw, 56px)", letterSpacing: "-0.02em", margin: "8px 0 0" }}>
-            Хичээлүүд<span style={{ color: "var(--u-ember)" }}>.</span>
+            Lessons<span style={{ color: "var(--u-ember)" }}>.</span>
           </h2>
         </div>
         <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
           {pills.map((c) => {
             const active =
-              c === "Бүгд" ? !levelFilter : levelFilter === c;
+              c === ALL ? !levelFilter : levelFilter === c;
             const href =
-              c === "Бүгд"
+              c === ALL
                 ? "/dashboard?tab=lessons"
                 : `/dashboard?tab=lessons&level=${encodeURIComponent(c)}`;
             return (
@@ -653,10 +655,10 @@ function LessonGridSection({
                   <path d="M17 9l4-2v10l-4-2" />
                 </svg>
               }
-              title="Энэ шүүлтээр хичээл алга"
-              body="Ангилал өөрчлөх эсвэл дараа дахин шалгана уу."
+              title="No lessons match this filter"
+              body="Try a different category or check back later."
               ctaHref="/dashboard?tab=lessons"
-              ctaLabel="Бүх ангиллыг харах"
+              ctaLabel="View all categories"
             />
           </div>
         ) : (
@@ -707,11 +709,11 @@ function LessonGridSection({
                   zIndex: 1,
                 }}
               >
-                Хичээл {String(idx + 1).padStart(2, "0")}
+                Lesson {String(idx + 1).padStart(2, "0")}
               </span>
               {l.duration_seconds != null ? (
                 <span style={{ position: "absolute", top: 12, right: 14, font: "var(--u-body-s)", color: "var(--u-dark-ink-2)", zIndex: 1 }}>
-                  {Math.round(l.duration_seconds / 60)} мин
+                  {Math.round(l.duration_seconds / 60)} min
                 </span>
               ) : null}
               <div
@@ -735,7 +737,7 @@ function LessonGridSection({
             </div>
             <div style={{ padding: "14px 18px 16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <span style={{ font: "var(--u-body-s)", color: "var(--u-ink-3)" }}>{l.category ?? "—"}</span>
-              <span style={{ font: "var(--u-body-s)", color: "var(--u-ink-3)" }}>Шинэ</span>
+              <span style={{ font: "var(--u-body-s)", color: "var(--u-ink-3)" }}>New</span>
             </div>
           </LockedContentLink>
         ))
@@ -764,25 +766,25 @@ function CoachingSection({
   );
 
   const stateChip = {
-    available: { bg: "transparent", fg: "var(--u-ember)", txt: "Захиалах →" },
-    pending: { bg: "var(--u-warn-soft)", fg: "#7A4F00", txt: "Хүлээгдэж буй" },
-    booked: { bg: "var(--u-rule)", fg: "var(--u-ink-3)", txt: "Захиалагдсан" },
+    available: { bg: "transparent", fg: "var(--u-ember)", txt: "Book →" },
+    pending: { bg: "var(--u-warn-soft)", fg: "#7A4F00", txt: "Pending" },
+    booked: { bg: "var(--u-rule)", fg: "var(--u-ink-3)", txt: "Booked" },
   };
 
   return (
     <section>
       <DashBackToHub />
       <div style={{ marginBottom: 28 }}>
-        <div className="u-eyebrow">1:1 коучинг</div>
+        <div className="u-eyebrow">1:1 coaching</div>
         <h2 style={{ fontFamily: "var(--u-display)", fontWeight: 700, fontSize: "clamp(36px, 7vw, 56px)", letterSpacing: "-0.02em", margin: "8px 0 0" }}>
-          Нээлттэй цаг<span style={{ color: "var(--u-ember)" }}>.</span>
+          Open slots<span style={{ color: "var(--u-ember)" }}>.</span>
         </h2>
       </div>
 
       {myBookings.length > 0 ? (
         <div style={{ marginBottom: 24 }}>
           <div className="u-eyebrow" style={{ marginBottom: 8 }}>
-            Миний захиалга
+            My bookings
           </div>
           <div style={{ border: "1px solid var(--u-rule)", borderRadius: "var(--u-r-3)", overflow: "hidden" }}>
             {myBookings.map((b, i) => (
@@ -812,10 +814,10 @@ function CoachingSection({
                 <path d="M12 7v5l3 2" />
               </svg>
             }
-            title="Нээлттэй цаг алга"
-            body="Шинэ цаг нэмэгдмэгц энд харагдана. Хяналтын хэсгээс үргэлжлүүлнэ үү."
+            title="No open slots"
+            body="New slots will appear here as they open. Head back to the dashboard meanwhile."
             ctaHref="/dashboard?tab=hub"
-            ctaLabel="Хяналт руу буцах"
+            ctaLabel="Back to dashboard"
           />
         ) : isTable ? (
           upcomingSlots.map((slot, i) => {
@@ -823,7 +825,7 @@ function CoachingSection({
             const end = new Date(slot.end_at);
             const s = {
               date: String(start.getDate()),
-              month: `${start.getMonth() + 1}-р сар`,
+              month: formatMonthLong(start),
               day: formatMongolianShortWeekday(start),
               time: `${formatHM(start)} — ${formatHM(end)}`,
               state: slotRowState(slot, myPendingSlotIds),
@@ -849,7 +851,7 @@ function CoachingSection({
                   </div>
                   <div style={{ font: "var(--u-h4)", marginTop: 2 }}>{s.time}</div>
                 </div>
-                <div style={{ font: "var(--u-body)", color: "var(--u-ink-2)" }}>1 цагийн уулзалт · онлайн</div>
+                <div style={{ font: "var(--u-body)", color: "var(--u-ink-2)" }}>1-hour session · online</div>
                 <div style={{ font: "var(--u-mono)", color: "var(--u-ink-2)" }}>{formatMNT(slot.price)}</div>
                 <div style={{ textAlign: "right" }}>
                   {s.state === "available" ? (
@@ -927,7 +929,7 @@ function CoachingSection({
                       {String(start.getDate())}
                     </div>
                     <div style={{ textAlign: "right", font: "var(--u-body-s)", color: "var(--u-ink-3)" }}>
-                      <div>{`${start.getMonth() + 1}-р сар`}</div>
+                      <div>{formatMonthLong(start)}</div>
                       <div style={{ marginTop: 2 }}>{formatMongolianShortWeekday(start)}</div>
                     </div>
                   </div>
@@ -1034,12 +1036,12 @@ function ProfileScreen({
   recentTransactions: TransactionRow[];
 }) {
   const isWide = useMediaQuery("(min-width: 900px)");
-  const displayName = profile.full_name?.trim() || "Хэрэглэгч";
+  const displayName = profile.full_name?.trim() || "Member";
 
   return (
     <section>
       <DashBackToHub />
-      <div className="u-eyebrow">Профайл</div>
+      <div className="u-eyebrow">Profile</div>
       <h2
         style={{
           fontFamily: "var(--u-display)",
@@ -1081,7 +1083,7 @@ function ProfileScreen({
               gap: 8,
             }}
           >
-            <div style={{ font: "var(--u-h3)" }}>Сүүлийн 5 гүйлгээ</div>
+            <div style={{ font: "var(--u-h3)" }}>Last 5 transactions</div>
             <Link
               href="/transactions"
               style={{
@@ -1091,7 +1093,7 @@ function ProfileScreen({
                 textDecoration: "none",
               }}
             >
-              Бүгдийг харах →
+              View all →
             </Link>
           </div>
           {recentTransactions.length === 0 ? (
@@ -1101,10 +1103,10 @@ function ProfileScreen({
                   <path d="M4 6h16v12H4zM8 10h8M8 14h5" />
                 </svg>
               }
-              title="Гүйлгээ байхгүй"
-              body="Төлбөр төлөх эсвэл гүйлгээний түүхээ эндээс харна."
+              title="No transactions yet"
+              body="Make a payment or view your transaction history here."
               ctaHref="/payment"
-              ctaLabel="Төлбөр илгээх"
+              ctaLabel="Submit payment"
             />
           ) : (
             recentTransactions.map((row, i) => {
@@ -1167,10 +1169,10 @@ function ProfileScreen({
             gap: 18,
           }}
         >
-          <div className="u-eyebrow">Тохиргоо</div>
-          <Toggle label="И-мэйл сануулга" defaultOn />
-          <Toggle label="Шинэ нийтлэлийн мэдэгдэл" defaultOn />
-          <Toggle label="Коучингын сануулга" />
+          <div className="u-eyebrow">Settings</div>
+          <Toggle label="Email reminders" defaultOn />
+          <Toggle label="New article alerts" defaultOn />
+          <Toggle label="Coaching reminders" />
           <form action={signOut}>
             <button
               type="submit"
@@ -1189,7 +1191,7 @@ function ProfileScreen({
               <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
                 <path d="M9 6L4 12l5 6M4 12h16" />
               </svg>
-              Гарах
+              Sign out
             </button>
           </form>
         </div>
@@ -1247,7 +1249,7 @@ export function DashboardExperience({
   const bottomItems: MobileBottomNavItem[] = [
     {
       key: "hub",
-      label: "Хяналт",
+      label: "Dashboard",
       href: "/dashboard?tab=hub",
       active: tab === "hub",
       icon: (
@@ -1258,7 +1260,7 @@ export function DashboardExperience({
     },
     {
       key: "lessons",
-      label: "Хичээл",
+      label: "Lessons",
       href: "/dashboard?tab=lessons",
       active: tab === "lessons",
       icon: (
@@ -1270,7 +1272,7 @@ export function DashboardExperience({
     },
     {
       key: "coaching",
-      label: "Зөвлөгөө",
+      label: "Coaching",
       href: "/dashboard?tab=coaching",
       active: tab === "coaching",
       icon: (
@@ -1282,7 +1284,7 @@ export function DashboardExperience({
     },
     {
       key: "profile",
-      label: "Профайл",
+      label: "Profile",
       href: "/dashboard?tab=profile",
       active: tab === "profile",
       icon: (

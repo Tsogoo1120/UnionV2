@@ -1,5 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import type { CollectiveReading, ShortsFeedCursor, VideoLesson } from "@/lib/types";
+import type { CollectiveReading, VideoLesson } from "@/lib/types";
+
+type ShortsFeedCursor = { published_at: string; id: string };
 
 export async function listPublishedLessons(
   supabase: SupabaseClient,

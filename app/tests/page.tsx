@@ -40,10 +40,10 @@ export default async function TestsPage() {
           marginBottom: "var(--u-s-4)",
         }}
       >
-        ← Самбар руу
+        &larr; Dashboard
       </Link>
       <div className="u-eyebrow" style={{ marginBottom: 8 }}>
-        Тест · 04
+        Tests &middot; 04
       </div>
       <h1
         style={{
@@ -54,12 +54,12 @@ export default async function TestsPage() {
           margin: "0 0 32px",
         }}
       >
-        Тестүүд<span style={{ color: "var(--u-ember)" }}>.</span>
+        Tests<span style={{ color: "var(--u-ember)" }}>.</span>
       </h1>
 
       {tests.length === 0 ? (
         <p style={{ color: "var(--u-ink-3)", font: "var(--u-body)" }}>
-          Одоогоор нийтлэгдсэн тест алга.
+          No published tests yet.
         </p>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -147,7 +147,7 @@ export default async function TestsPage() {
                           color: "var(--u-ink-3)",
                         }}
                       >
-                        Сүүлд өгсөн:{" "}
+                        Last taken:{" "}
                         {formatDate(result.created_at, { withTime: true })}
                       </div>
                       {result.result_summary ? (
@@ -182,7 +182,7 @@ export default async function TestsPage() {
                             textDecoration: "none",
                           }}
                         >
-                          Үр дүн харах
+                          View result
                         </Link>
                         <Link
                           href={`/tests/${test.slug}?retake=1`}
@@ -198,7 +198,7 @@ export default async function TestsPage() {
                             textDecoration: "none",
                           }}
                         >
-                          Дахин өгөх
+                          Retake
                         </Link>
                       </>
                     ) : (
@@ -216,7 +216,7 @@ export default async function TestsPage() {
                           textDecoration: "none",
                         }}
                       >
-                        Тест өгөх →
+                        Take test &rarr;
                       </Link>
                     )}
                   </div>

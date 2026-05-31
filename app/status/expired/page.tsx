@@ -30,10 +30,10 @@ export default function StatusExpiredPage() {
         ⏱
       </div>
       <h1 style={{ font: "var(--u-display-xs)", margin: "0 0 12px" }}>
-        Хугацаа дууссан
+        Membership expired
       </h1>
       <p style={{ font: "var(--u-body)", color: "var(--u-ink-2)", maxWidth: 420, margin: "0 0 28px" }}>
-        Таны гишүүнчлэлийн хугацаа дууссан байна. Үйлчилгээг үргэлжлүүлэхийн тулд дахин төлбөр төлнө үү.
+        Your membership has expired. Renew your payment to keep using the service.
       </p>
       <Link
         href="/payment"
@@ -50,7 +50,7 @@ export default function StatusExpiredPage() {
           textDecoration: "none",
         }}
       >
-        Дахин төлбөр төлөх
+        Renew payment
       </Link>
     </div>
   );

@@ -9,7 +9,7 @@ import { parseCoachingBookFormData } from "@/lib/validation/client-forms";
 
 export function CoachingSlotBookForm({
   slot,
-  successMessage = "Амжилттай илгээгдлээ. Админ баталгаажуулалт хүлээнэ үү.",
+  successMessage = "Submitted successfully. Please await admin confirmation.",
 }: {
   slot: CoachingSlot;
   successMessage?: string;
@@ -33,7 +33,7 @@ export function CoachingSlotBookForm({
         if (typeof key === "string" && !fe[key]) fe[key] = issue.message;
       }
       setFieldErrors(fe);
-      toast(Object.values(fe)[0] ?? "Мэдээллээ шалгана уу.", "error");
+      toast(Object.values(fe)[0] ?? "Please check your information.", "error");
       return;
     }
 
@@ -46,11 +46,11 @@ export function CoachingSlotBookForm({
         return;
       }
       setMsg(successMessage);
-      toast("Захиалга илгээгдлээ", "success");
+      toast("Booking submitted", "success");
     });
   }
 
-  const isSuccess = msg && (msg.includes("хүлээгдэж") || msg.includes("Амжилттай"));
+  const isSuccess = msg && (msg.includes("pending") || msg.includes("successfully"));
 
   return (
     <form
@@ -59,7 +59,7 @@ export function CoachingSlotBookForm({
     >
       {/* Screenshot upload zone */}
       <div>
-        <div className="u-eyebrow" style={{ marginBottom: 8 }}>Дансны баримтын зураг</div>
+        <div className="u-eyebrow" style={{ marginBottom: 8 }}>Payment screenshot</div>
         <label
           htmlFor="coaching-screenshot"
           style={{
@@ -92,10 +92,10 @@ export function CoachingSlotBookForm({
           </svg>
           <div>
             <div style={{ font: "var(--u-body-s)", fontWeight: 600, color: "var(--u-ink)" }}>
-              {fileName ?? "Зураг сонгох"}
+              {fileName ?? "Choose image"}
             </div>
             <div style={{ marginTop: 4, fontSize: 12, color: "var(--u-ink-3)" }}>
-              PNG, JPG, WEBP · 5 MB хүртэл
+              PNG, JPG, WEBP · up to 5 MB
             </div>
           </div>
           <input
@@ -121,14 +121,14 @@ export function CoachingSlotBookForm({
           className="u-eyebrow"
           style={{ display: "block", marginBottom: 8 }}
         >
-          Лавлагаа (заавал биш)
+          Reference (optional)
         </label>
         <input
           id="coaching-ref"
           name="bank_reference"
           type="text"
           aria-invalid={Boolean(fieldErrors.bank_reference)}
-          placeholder="Банкны гүйлгээний дугаар"
+          placeholder="Bank transaction number"
           className={fieldErrors.bank_reference ? "u-field u-field--error" : "u-field"}
         />
         {fieldErrors.bank_reference ? (
@@ -142,9 +142,9 @@ export function CoachingSlotBookForm({
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ animation: "spin 1s linear infinite" }} aria-hidden>
               <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
             </svg>
-            Илгээж байна…
+            Submitting&hellip;
           </>
-        ) : "Захиалга илгээх"}
+        ) : "Submit booking"}
       </button>
 
       {msg ? (

@@ -1,28 +1,32 @@
 const THIN_SPACE = "\u202f";
 
-const MN_MONTHS_ORDINAL = [
-  "\u043d\u044d\u0433\u0434\u04af\u0433\u044d\u044d\u0440",
-  "\u0445\u043e\u0451\u0440\u0434\u0443\u0433\u0430\u0430\u0440",
-  "\u0433\u0443\u0440\u0430\u0432\u0434\u0443\u0433\u0430\u0430\u0440",
-  "\u0434\u04e9\u0440\u04e9\u0432\u0434\u04af\u0433\u044d\u044d\u0440",
-  "\u0442\u0430\u0432\u0434\u0443\u0433\u0430\u0430\u0440",
-  "\u0437\u0443\u0440\u0433\u0430\u0430\u0434\u0443\u0433\u0430\u0430\u0440",
-  "\u0434\u043e\u043b\u0434\u0443\u0433\u0430\u0430\u0440",
-  "\u043d\u0430\u0439\u043c\u0434\u0443\u0433\u0430\u0430\u0440",
-  "\u0435\u0441\u0434\u04af\u0433\u044d\u044d\u0440",
-  "\u0430\u0440\u0430\u0432\u0434\u0443\u0433\u0430\u0430\u0440",
-  "\u0430\u0440\u0432\u0430\u043d \u043d\u044d\u0433\u0434\u04af\u0433\u044d\u044d\u0440",
-  "\u0430\u0440\u0432\u0430\u043d \u0445\u043e\u0451\u0440\u0434\u0443\u0433\u0430\u0430\u0440",
+const MONTHS_LONG = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 
-const MN_WEEKDAYS_SHORT = ["\u041d\u044f", "\u0414\u0430", "\u041c\u044f", "\u041b\u0445", "\u041f\u04af", "\u0411\u0430", "\u0411\u044f"];
+const WEEKDAYS_SHORT = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 export function formatMongolianLongDate(date: Date): string {
-  return `${date.getFullYear()} \u043e\u043d\u044b ${MN_MONTHS_ORDINAL[date.getMonth()]} \u0441\u0430\u0440\u044b\u043d ${date.getDate()}`;
+  return `${MONTHS_LONG[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
 }
 
 export function formatMongolianShortWeekday(date: Date): string {
-  return MN_WEEKDAYS_SHORT[date.getDay()] ?? "";
+  return WEEKDAYS_SHORT[date.getDay()] ?? "";
+}
+
+export function formatMonthLong(date: Date): string {
+  return MONTHS_LONG[date.getMonth()] ?? "";
 }
 
 export function formatHM(date: Date): string {
@@ -31,7 +35,7 @@ export function formatHM(date: Date): string {
 }
 
 export function formatMNT(amount: number): string {
-  const formatted = new Intl.NumberFormat("mn-MN", {
+  const formatted = new Intl.NumberFormat("en-US", {
     maximumFractionDigits: 2,
     minimumFractionDigits: 0,
   }).format(amount);
@@ -58,7 +62,7 @@ export function formatDate(
   return datePart;
 }
 
-const relativeTimeFormatter = new Intl.RelativeTimeFormat("mn", {
+const relativeTimeFormatter = new Intl.RelativeTimeFormat("en", {
   numeric: "auto",
 });
 
@@ -102,29 +106,29 @@ export function formatRelative(iso: string): string {
 export type StatusTone = "success" | "warn" | "danger" | "neutral" | "pending";
 
 const subscriptionLabelMap: Record<string, { label: string; tone: StatusTone }> = {
-  active: { label: "Идэвхтэй", tone: "success" },
-  pending: { label: "Хүлээгдэж байна", tone: "pending" },
-  denied: { label: "Татгалзсан", tone: "danger" },
-  expired: { label: "Хугацаа дууссан", tone: "warn" },
-  inactive: { label: "Идэвхгүй", tone: "neutral" },
+  active: { label: "Active", tone: "success" },
+  pending: { label: "Pending", tone: "pending" },
+  denied: { label: "Denied", tone: "danger" },
+  expired: { label: "Expired", tone: "warn" },
+  inactive: { label: "Inactive", tone: "neutral" },
 };
 
 const paymentLabelMap: Record<string, { label: string; tone: StatusTone }> = {
-  pending: { label: "Хүлээгдэж байна", tone: "pending" },
-  approved: { label: "Зөвшөөрсөн", tone: "success" },
-  denied: { label: "Татгалзсан", tone: "danger" },
+  pending: { label: "Pending", tone: "pending" },
+  approved: { label: "Approved", tone: "success" },
+  denied: { label: "Denied", tone: "danger" },
 };
 
 /** Coaching slot statuses (`coaching_slots.status`). */
 const slotLabelMap: Record<string, { label: string; tone: StatusTone }> = {
-  available: { label: "Боломжтой", tone: "success" },
-  pending: { label: "Хүлээгдэж байна", tone: "pending" },
-  booked: { label: "Захиалсан", tone: "warn" },
-  expired: { label: "Хугацаа дууссан", tone: "danger" },
-  cancelled: { label: "Цуцалсан", tone: "danger" },
+  available: { label: "Available", tone: "success" },
+  pending: { label: "Pending", tone: "pending" },
+  booked: { label: "Booked", tone: "warn" },
+  expired: { label: "Expired", tone: "danger" },
+  cancelled: { label: "Cancelled", tone: "danger" },
 };
 
-const defaultLabel = { label: "Тодорхойгүй", tone: "neutral" as StatusTone };
+const defaultLabel = { label: "Unknown", tone: "neutral" as StatusTone };
 
 export function statusLabel(
   status: string,
