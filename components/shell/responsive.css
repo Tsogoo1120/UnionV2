@@ -1,0 +1,41 @@
+/* Mobile shell primitives — ≤640px aligns with Tailwind `sm` upper bound */
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (max-width: 640px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  button,
+  [role="button"],
+  input[type="submit"],
+  input[type="button"] {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@keyframes skeleton-pulse {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.4;
+  }
+}
+
+.u-skeleton-pulse {
+  background: var(--u-rule);
+  border-radius: var(--u-r-2);
+  animation: skeleton-pulse 1.4s ease-in-out infinite alternate;
+}

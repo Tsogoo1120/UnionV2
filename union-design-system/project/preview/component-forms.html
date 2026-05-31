@@ -1,0 +1,37 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="_preview.css">
+<style>
+  .field { display:flex; flex-direction:column; gap:6px; max-width:320px }
+  .label { font: var(--u-label); letter-spacing:.08em; text-transform: uppercase; color: var(--u-ink-2) }
+  .input { height:44px; padding:0 14px; background: var(--u-surface-2); border:1px solid var(--u-rule-2); border-radius: var(--u-r-2); font: var(--u-body); color:var(--u-ink); outline:none }
+  .input:focus { border-color: var(--u-ink); box-shadow: var(--u-focus) }
+  .input::placeholder { color: var(--u-ink-3) }
+  .hint  { font: var(--u-body-s); color: var(--u-ink-3) }
+  .err   { color: var(--u-danger) }
+  .input.err-state { border-color: var(--u-danger) }
+</style></head>
+<body><div class="card">
+  <div class="eyebrow">Forms</div>
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap:24px; margin-top:14px">
+    <div class="field">
+      <label class="label">И-мэйл</label>
+      <input class="input" type="email" placeholder="you@example.com" value="aldar@union.mn">
+      <div class="hint">Бид зөвхөн Gmail хаягийг дэмждэг.</div>
+    </div>
+    <div class="field">
+      <label class="label">Гүйлгээний дугаар</label>
+      <input class="input err-state" placeholder="REF-000000">
+      <div class="hint err">8 оронтой лавлагааны дугаар оруулна уу.</div>
+    </div>
+    <div class="field">
+      <label class="label">Тайлбар</label>
+      <textarea class="input" rows="3" style="height:auto; padding:10px 14px; resize:vertical">Энэхүү жилийн зорилго…</textarea>
+    </div>
+    <div class="field">
+      <label class="label">Дансны мэдээлэл</label>
+      <div class="input" style="display:flex; align-items:center; justify-content:space-between; cursor:pointer">
+        <span>Голомт банк · 2705130475</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+    </div>
+  </div>
+</div></body></html>
